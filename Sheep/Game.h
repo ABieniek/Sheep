@@ -16,6 +16,8 @@
 
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
+#include "Drawable.h"
+#include "Unit.h"
 #include <irrKlang.h>
 
 

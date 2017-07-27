@@ -1,4 +1,5 @@
 #include "Drawable.h"
+#include <iostream>
 
 Drawable::Drawable()
 	: position(0, 0), size(1, 1), color(1.0f), rotation(0.0f), sprite(), bDraw(false)
