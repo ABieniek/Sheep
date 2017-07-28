@@ -27,7 +27,8 @@ void Unit::setDestination(glm::vec2 argDestination)
 	if (position != argDestination)
 	{
 		destination = argDestination;
-		angle = atan2((float)(destination.y - position.y), (float)(destination.x-position.x));
+		angle = -atan2(destination.y - position.y, destination.x - position.x);
+		cout << angle / 3.14159 << "pi" << endl;
 		moving = true;
 	}
 }
@@ -38,24 +39,22 @@ void Unit::move()
 	{
 		if (position.x < destination.x)
 		{
-			position.x = std::min(position.x + velocity*cos(angle), destination.x);
+			position.x = std::max(position.x - velocity*cos(angle), destination.x);
 		}
 		else if (position.x > destination.x)
 		{
-			position.x = std::max(position.x - velocity*cos(angle), destination.x);
+			position.x = std::min(position.x + velocity*cos(angle), destination.x);
 		}
 		if (position.y < destination.y)
 		{
-			position.y = std::min(position.y + velocity*sin(angle), destination.y);
+			position.y = std::max(position.y - velocity*sin(angle), destination.y);
 		}
 		else if (position.y > destination.y)
 		{
-			position.y = std::max(position.y - velocity*sin(angle), destination.y);
+			position.y = std::min(position.y + velocity*sin(angle), destination.y);
 		}
 		if (position == destination)
 			moving = false;
-		else
-			setDestination(destination);
 	}	
 }
 

@@ -87,11 +87,21 @@ void Game::ProcessInput(GLfloat dt)
 			if (abs(units[i]->position.x + selectRange - mXpos) <= selectRange
 				&& abs(units[i]->position.y + selectRange - mYpos) <= selectRange)
 			{
-				cout << "unit x position: " << units[i]->position.x << endl;
-				cout << "mouse x position: " << mXpos << endl;
-				cout << "unit y position: " << units[i]->position.y << endl;
-				cout << "mouse y position: " << mYpos << endl;
 				units[i]->select();
+			}
+			else
+			{
+				units[i]->deselect();
+			}
+		}
+	}
+	if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS)
+	{
+		for (int i = 0; i < unitsSize; i++)
+		{
+			if (units[i]->selected)
+			{
+				units[i]->setDestination(glm::vec2(mXpos, mYpos));
 			}
 		}
 	}
