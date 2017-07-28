@@ -7,7 +7,7 @@ Unit::Unit()
 	Drawable();
 }
 
-Unit::Unit(glm::vec2 argPos, glm::vec2 argSize, Texture2D argSprite, glm::vec3 argColor, GLboolean argDraw, GLuint argVelocity)
+Unit::Unit(glm::vec2 argPos, glm::vec2 argSize, Texture2D argSprite, glm::vec3 argColor, GLboolean argDraw, GLfloat argVelocity)
 	: velocity(argVelocity)
 {
 	position = argPos;
@@ -28,7 +28,6 @@ void Unit::setDestination(glm::vec2 argDestination)
 	{
 		destination = argDestination;
 		angle = -atan2(destination.y - position.y, destination.x - position.x);
-		cout << angle / 3.14159 << "pi" << endl;
 		moving = true;
 	}
 }
@@ -61,7 +60,7 @@ void Unit::move()
 void Unit::select()
 {
 	selected = true;
-	color = glm::vec3(0.0f, 0.0f, 0.0f);
+	color = glm::vec3(0.7f, 0.7f, 1.0f);
 }
 
 void Unit::deselect()

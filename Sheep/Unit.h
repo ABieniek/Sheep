@@ -23,7 +23,7 @@ public:
 	glm::vec2 destination;
 
 	Unit();
-	Unit(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec3 color, GLboolean argDraw, GLuint velocity);
+	Unit(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec3 color, GLboolean argDraw, GLfloat velocity);
 
 	virtual void draw(SpriteRenderer& Renderer);
 	void setDestination(glm::vec2 argDestination);

@@ -61,7 +61,7 @@ void Game::Init()
 	for (int i = 0; i < unitsSize; i++)
 	{
 		units[i] = new Unit(locs[i], glm::vec2(50, 50),
-			ResourceManager::GetTexture("sheep"), glm::vec3(1.0f, 1.0f, 1.0f), true, 1.0f);
+			ResourceManager::GetTexture("sheep"), glm::vec3(1.0f, 1.0f, 1.0f), true, .1);
 	}
 	
 	
@@ -100,7 +100,7 @@ void Game::ProcessInput(GLfloat dt)
 		{
 			if (units[i]->selected)
 			{
-				units[i]->setDestination(glm::vec2(mXpos, mYpos));
+				units[i]->setDestination(glm::vec2(mXpos-25, mYpos-25));
 			}
 		}
 	}
