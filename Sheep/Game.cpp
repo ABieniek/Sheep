@@ -56,8 +56,7 @@ void Game::Init()
 	ResourceManager::LoadTexture("Textures/GrassBackground.png", GL_TRUE, "background");
 	
 	// Set Game Variables
-	//Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
-	glm::vec2 locs[] = { glm::vec2(100, 100), glm::vec2(750, 0), glm::vec2(0, 550), glm::vec2(750, 550), glm::vec2(400, 250) };
+	glm::vec2 locs[] = { glm::vec2(0, 0), glm::vec2(750, 0), glm::vec2(0, 550), glm::vec2(750, 550), glm::vec2(400, 250) };
 	unitsSize = 5;
 	for (int i = 0; i < unitsSize; i++)
 	{
