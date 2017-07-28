@@ -20,8 +20,6 @@
 #include "Unit.h"
 #include <irrKlang.h>
 
-
-
 // Represents the current state of the game
 enum GameState {
 	GAME_ACTIVE,
@@ -37,9 +35,21 @@ class Game
 public:
 	// Game state
 	GameState				State;
-	GLboolean				Keys[1024];
 	GLuint					Width, Height;
 	
+	/// controls
+	// key
+	GLboolean keys[1024];
+	int scancode;
+	int action;
+	int mode;
+	// mouse position
+	double mXpos;
+	double mYpos;
+	// mouse button
+	int mbButton;
+	int mbAction;
+	int mbMods;
 
 	// Constructor/Destructor
 	Game(GLuint width, GLuint height);

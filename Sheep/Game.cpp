@@ -10,16 +10,24 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <math.h>
 
 using namespace std;
 using namespace irrklang;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
 
+// ugly constants
+const static int selectRange = 35;
+
+// unit stuff
 Unit* units[1024];
+static int unitsSize = 0;
+int unitsSizeMax = 1024;
+
 SpriteRenderer* Renderer;
 
 Game::Game(GLuint width, GLuint height)
-	: State(GAME_ACTIVE), Keys(), Width(width), Height(height)
+	: State(GAME_ACTIVE), keys(), Width(width), Height(height)
 {
 
 }
@@ -49,19 +57,44 @@ void Game::Init()
 	
 	// Set Game Variables
 	//Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
-	units[0] = new Unit(glm::vec2(0, 0), glm::vec2(200, 200),
-		ResourceManager::GetTexture("sheep"), glm::vec3(1.0f, 1.0f, 1.0f), true, 5.0f);
+	glm::vec2 locs[] = { glm::vec2(100, 100), glm::vec2(750, 0), glm::vec2(0, 550), glm::vec2(750, 550), glm::vec2(400, 250) };
+	unitsSize = 5;
+	for (int i = 0; i < unitsSize; i++)
+	{
+		units[i] = new Unit(locs[i], glm::vec2(50, 50),
+			ResourceManager::GetTexture("sheep"), glm::vec3(1.0f, 1.0f, 1.0f), true, 1.0f);
+	}
+	
+	
 
 }
 
 void Game::Update(GLfloat dt)
 {
-	
+	// updating values in units
+	for (int i = 0; i < unitsSize; i++)
+	{
+		units[i]->move();
+	}
 }
 
 void Game::ProcessInput(GLfloat dt)
 {
-	
+	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_PRESS)
+	{
+		for (int i = 0; i < unitsSize; i++)
+		{
+			if (abs(units[i]->position.x - mXpos) <= selectRange
+				&& abs(units[i]->position.y - mYpos) <= selectRange)
+			{
+				cout << "unit x position: " << units[i]->position.x << endl;
+				cout << "mouse x position: " << mXpos << endl;
+				cout << "unit y position: " << units[i]->position.y << endl;
+				cout << "mouse y position: " << mYpos << endl;
+				units[i]->select();
+			}
+		}
+	}
 }
 
 void Game::Render()
@@ -74,6 +107,7 @@ void Game::Render()
 	{
 		e->draw(*Renderer);
 	}*/
-	units[0]->draw(*Renderer);
+	for (int i = 0; i < unitsSize; i++)
+		units[i]->draw(*Renderer);
 }
 
