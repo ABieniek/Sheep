@@ -17,7 +17,7 @@ using namespace irrklang;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
 
 // ugly constants
-const static int selectRange = 35;
+const static int selectRange = 25;
 
 // unit stuff
 Unit* units[1024];
@@ -84,8 +84,8 @@ void Game::ProcessInput(GLfloat dt)
 	{
 		for (int i = 0; i < unitsSize; i++)
 		{
-			if (abs(units[i]->position.x - mXpos) <= selectRange
-				&& abs(units[i]->position.y - mYpos) <= selectRange)
+			if (abs(units[i]->position.x + selectRange - mXpos) <= selectRange
+				&& abs(units[i]->position.y + selectRange - mYpos) <= selectRange)
 			{
 				cout << "unit x position: " << units[i]->position.x << endl;
 				cout << "mouse x position: " << mXpos << endl;
