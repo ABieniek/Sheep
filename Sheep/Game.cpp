@@ -11,6 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include <math.h>
+#include <vector>
 
 using namespace std;
 using namespace irrklang;
@@ -18,11 +19,6 @@ ISoundEngine* SoundEngine = createIrrKlangDevice();
 
 // ugly constants
 const static int selectRange = 25;
-
-// unit stuff
-Unit* units[1024];
-static int unitsSize = 0;
-int unitsSizeMax = 1024;
 
 SpriteRenderer* Renderer;
 
@@ -57,11 +53,10 @@ void Game::Init()
 	
 	// Set Game Variables
 	glm::vec2 locs[] = { glm::vec2(0, 0), glm::vec2(750, 0), glm::vec2(0, 550), glm::vec2(750, 550), glm::vec2(400, 250) };
-	unitsSize = 5;
-	for (int i = 0; i < unitsSize; i++)
+	for (int i = 0; i < 5; i++)
 	{
-		units[i] = new Unit(locs[i], glm::vec2(50, 50),
-			ResourceManager::GetTexture("sheep"), glm::vec3(1.0f, 1.0f, 1.0f), true, .1);
+		units.push_back(Unit(locs[i], glm::vec2(50, 50),
+			ResourceManager::GetTexture("sheep"), glm::vec3(1.0f, 1.0f, 1.0f), true, .1));
 	}
 	
 	
@@ -71,39 +66,79 @@ void Game::Init()
 void Game::Update(GLfloat dt)
 {
 	// updating values in units
-	for (int i = 0; i < unitsSize; i++)
+	for (int i = 0; i < units.size(); i++)
 	{
-		units[i]->move();
+		units[i].move();
 	}
 }
 
 void Game::ProcessInput(GLfloat dt)
 {
-	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_PRESS)
+	// selection input
+	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_PRESS && mbActionPrev == GLFW_RELEASE)
 	{
-		for (int i = 0; i < unitsSize; i++)
+		// place first point of selection box
+		selectPosStart = glm::vec2(mXpos, mYpos);
+	}
+	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbActionPrev != GLFW_RELEASE && mbAction == GLFW_RELEASE)
+	{
+		// place second point of selection box
+		selectPosEnd = glm::vec2(mXpos, mYpos);
+		// for convenience of calculation, I'm gonna swap around the selection box vertices
+		// so that the start is at the top left and the end is at the bottom right
+		if (selectPosStart.x > selectPosEnd.x)
+			swap(selectPosStart.x, selectPosEnd.x);
+		if (selectPosStart.y > selectPosEnd.y)
+			swap(selectPosStart.y, selectPosEnd.y);
+
+		// select units within bounds
+		for (int i = 0; i < units.size(); i++)
+		{
+			// if within box, select unit
+			if (((units[i].center().x + units[i].size.x / 2) > selectPosStart.x)
+				&& ((units[i].center().x - units[i].size.x / 2) < selectPosEnd.x)
+				&& ((units[i].center().y + units[i].size.y / 2) > selectPosStart.y)
+				&& ((units[i].center().y - units[i].size.y / 2) < selectPosEnd.y))
+				units[i].select();
+			//if not within box
+			else
+			{
+				// if not holding shift, deselect
+				if (mbMods != GLFW_MOD_SHIFT)
+					units[i].deselect();
+			}
+		}
+		// clear selection box positions
+		selectPosStart = glm::vec2(-100.0, -100.0);
+		selectPosEnd = glm::vec2(-100.0, -100.0);
+	}
+	/*
+	for (int i = 0; i < unitsSize; i++)
 		{
 			if (abs(units[i]->position.x + selectRange - mXpos) <= selectRange
 				&& abs(units[i]->position.y + selectRange - mYpos) <= selectRange)
 			{
 				units[i]->select();
 			}
-			else
+			else if (mbMods != GLFW_MOD_SHIFT)
 			{
 				units[i]->deselect();
 			}
-		}
-	}
-	if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS)
+		}*/
+	// movement input
+	else if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS)
 	{
-		for (int i = 0; i < unitsSize; i++)
+		for (int i = 0; i < units.size(); i++)
 		{
-			if (units[i]->selected)
+			if (units[i].selected)
 			{
-				units[i]->setDestination(glm::vec2(mXpos-25, mYpos-25));
+				units[i].setDestination(glm::vec2(mXpos-25, mYpos-25));
 			}
 		}
 	}
+	mbButtonPrev = mbButton;
+	mbActionPrev = mbAction;
+	mbModsPrev = mbMods;
 }
 
 void Game::Render()
@@ -116,7 +151,7 @@ void Game::Render()
 	{
 		e->draw(*Renderer);
 	}*/
-	for (int i = 0; i < unitsSize; i++)
-		units[i]->draw(*Renderer);
+	for (int i = 0; i < units.size(); i++)
+		units[i].draw(*Renderer);
 }
 

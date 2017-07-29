@@ -10,12 +10,15 @@
 class Drawable
 {
 public:
+	// variables
 	glm::vec2 position, size;
 	glm::vec3 color;
 	GLfloat rotation;
 	GLboolean bDraw;
-
 	Texture2D sprite;
+	// relationships
+	glm::vec2 center() { return position + (size / glm::vec2(2.0)); }
+	
 
 	Drawable();
 	Drawable(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec3 color, GLboolean argDraw);

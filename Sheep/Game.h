@@ -46,10 +46,22 @@ public:
 	// mouse position
 	double mXpos;
 	double mYpos;
-	// mouse button
+	// mouse button - this frame
 	int mbButton;
 	int mbAction;
 	int mbMods;
+	// mouse button - last frame
+	int mbButtonPrev;
+	int mbActionPrev;
+	int mbModsPrev;
+
+	// units
+	vector<Unit> units;
+
+	// unit selection variables
+	glm::vec2 selectPosStart = glm::vec2(-100, -100);	// give it some out of bounds initial value
+														// to make sure we don't accidentally select stuff
+	glm::vec2 selectPosEnd = glm::vec2(-100, -100);
 
 	// Constructor/Destructor
 	Game(GLuint width, GLuint height);
