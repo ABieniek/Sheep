@@ -57,6 +57,14 @@ public:
 
 	// units
 	vector<Unit> units;
+	
+	// other stuff to draw
+	Drawable* selectionBox;
+
+	// renderers
+	SpriteRenderer* spriteRenderer;
+	SpriteRenderer* selectionBoxRenderer;
+
 
 	// unit selection variables
 	glm::vec2 selectPosStart = glm::vec2(-100, -100);	// give it some out of bounds initial value

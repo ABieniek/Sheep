@@ -7,19 +7,21 @@ Unit::Unit()
 	Drawable();
 }
 
-Unit::Unit(glm::vec2 argPos, glm::vec2 argSize, Texture2D argSprite, glm::vec4 argColor, GLboolean argDraw, GLfloat argVelocity)
+Unit::Unit(glm::vec2 argPos, glm::vec2 argSize, Texture2D argSprite, glm::vec4 argColor, GLboolean argDraw, GLfloat argRotation, GLfloat argVelocity)
 	: velocity(argVelocity)
 {
 	position = argPos;
 	size = argSize;
 	sprite = argSprite;
 	color = argColor;
+	rotation = argRotation;
 	bDraw = argDraw;
 }
 
 void Unit::draw(SpriteRenderer& renderer)
 {
-	renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
+	if (bDraw)
+		renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
 }
 
 void Unit::setDestination(glm::vec2 argDestination)
