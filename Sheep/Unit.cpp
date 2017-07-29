@@ -24,6 +24,7 @@ void Unit::draw(SpriteRenderer& renderer)
 		renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
 }
 
+// selection
 void Unit::setDestination(glm::vec2 argDestination)
 {
 	if (position != argDestination)
@@ -33,7 +34,6 @@ void Unit::setDestination(glm::vec2 argDestination)
 		moving = true;
 	}
 }
-
 void Unit::move()
 {
 	if (moving)
@@ -58,13 +58,17 @@ void Unit::move()
 			moving = false;
 	}	
 }
+void Unit::stop()
+{
+	moving = false;
+}
 
+// selection
 void Unit::select()
 {
 	selected = true;
 	color = glm::vec4(0.7f, 0.7f, 1.0f, 1.0f);
 }
-
 void Unit::deselect()
 {
 	selected = false;

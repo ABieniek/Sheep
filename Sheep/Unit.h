@@ -32,6 +32,7 @@ public:
 	// movement
 	void setDestination(glm::vec2 argDestination);
 	void move();
+	void stop();
 	// selection
 	void select();
 	void deselect();

@@ -137,6 +137,15 @@ void Game::ProcessInput(GLfloat dt)
 			}
 		}
 	}
+	if (keys[GLFW_KEY_S])
+	{
+		for (int i = 0; i < units.size(); i++)
+		{
+			if (units[i].selected)
+				units[i].stop();
+		}
+	}
+	// update previous frame stuff
 	mbButtonPrev = mbButton;
 	mbActionPrev = mbAction;
 	mbModsPrev = mbMods;
