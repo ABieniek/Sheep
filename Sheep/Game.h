@@ -65,12 +65,6 @@ public:
 	SpriteRenderer* spriteRenderer;
 	SpriteRenderer* selectionBoxRenderer;
 
-
-	// unit selection variables
-	glm::vec2 selectPosStart = glm::vec2(-100, -100);	// give it some out of bounds initial value
-														// to make sure we don't accidentally select stuff
-	glm::vec2 selectPosEnd = glm::vec2(-100, -100);
-
 	// Constructor/Destructor
 	Game(GLuint width, GLuint height);
 	~Game();

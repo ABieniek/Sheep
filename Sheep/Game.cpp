@@ -63,7 +63,7 @@ void Game::Init()
 			ResourceManager::GetTexture("sheep"), glm::vec4(1.0f), true, 0.0, .1));
 	}
 	// selection box - don't draw it initially
-	selectionBox = new Drawable(glm::vec2(0, 0), glm::vec2(0, 0),
+	selectionBox = new Drawable(glm::vec2(0, 0), glm::vec2(0,0),
 		ResourceManager::GetTexture("selectionBox"), glm::vec4(1.0, 1.0, .4, .25), 0.0, false);
 }
 
@@ -82,7 +82,6 @@ void Game::ProcessInput(GLfloat dt)
 	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_PRESS && mbActionPrev == GLFW_RELEASE)
 	{
 		// place first point of selection box
-		selectPosStart = glm::vec2(mXpos, mYpos);
 		selectionBox->position = glm::vec2(mXpos, mYpos);
 		selectionBox->size = glm::vec2(0.0);
 		selectionBox->bDraw = true;
@@ -94,24 +93,29 @@ void Game::ProcessInput(GLfloat dt)
 	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbActionPrev != GLFW_RELEASE && mbAction == GLFW_RELEASE)
 	{
 		// place second point of selection box - also, stop rendering it
-		selectPosEnd = glm::vec2(mXpos, mYpos);
 		selectionBox->size = glm::vec2(mXpos, mYpos) - selectionBox->position;
 		selectionBox->bDraw = false;
-		// for convenience of calculation, I'm gonna swap around the selection box vertices
-		// so that the start is at the top left and the end is at the bottom right
-		if (selectPosStart.x > selectPosEnd.x)
-			swap(selectPosStart.x, selectPosEnd.x);
-		if (selectPosStart.y > selectPosEnd.y)
-			swap(selectPosStart.y, selectPosEnd.y);
-
+		// for convenience of calculation, I'm gonna force the starting position to be the top-left
+		if (selectionBox->size.x < 0)
+		{
+			selectionBox->size.x *= -1;
+			selectionBox->position.x -= selectionBox->size.x;
+		}
+		if (selectionBox->size.y < 0)
+		{
+			selectionBox->size.y *= -1;
+			selectionBox->position.y -= selectionBox->size.y;
+		}
+		
+		
 		// select units within bounds
 		for (int i = 0; i < units.size(); i++)
 		{
 			// if within box, select unit
-			if (((units[i].center().x + units[i].size.x / 2) > selectPosStart.x)
-				&& ((units[i].center().x - units[i].size.x / 2) < selectPosEnd.x)
-				&& ((units[i].center().y + units[i].size.y / 2) > selectPosStart.y)
-				&& ((units[i].center().y - units[i].size.y / 2) < selectPosEnd.y))
+			if (((units[i].center().x + units[i].size.x / 2) > selectionBox->position.x)
+				&& ((units[i].center().x - units[i].size.x / 2) < selectionBox->position.x + selectionBox->size.x)
+				&& ((units[i].center().y + units[i].size.y / 2) > selectionBox->position.y)
+				&& ((units[i].center().y - units[i].size.y / 2) < selectionBox->position.y + selectionBox->size.y))
 				units[i].select();
 			//if not within box
 			else
@@ -121,23 +125,7 @@ void Game::ProcessInput(GLfloat dt)
 					units[i].deselect();
 			}
 		}
-		// clear selection box positions
-		selectPosStart = glm::vec2(-100.0, -100.0);
-		selectPosEnd = glm::vec2(-100.0, -100.0);
 	}
-	/*
-	for (int i = 0; i < unitsSize; i++)
-		{
-			if (abs(units[i]->position.x + selectRange - mXpos) <= selectRange
-				&& abs(units[i]->position.y + selectRange - mYpos) <= selectRange)
-			{
-				units[i]->select();
-			}
-			else if (mbMods != GLFW_MOD_SHIFT)
-			{
-				units[i]->deselect();
-			}
-		}*/
 	// movement input
 	else if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS)
 	{
