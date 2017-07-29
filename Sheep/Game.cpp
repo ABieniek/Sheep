@@ -56,7 +56,7 @@ void Game::Init()
 	for (int i = 0; i < 5; i++)
 	{
 		units.push_back(Unit(locs[i], glm::vec2(50, 50),
-			ResourceManager::GetTexture("sheep"), glm::vec3(1.0f, 1.0f, 1.0f), true, .1));
+			ResourceManager::GetTexture("sheep"), glm::vec4(1.0f), true, .1));
 	}
 	
 	
@@ -144,7 +144,7 @@ void Game::ProcessInput(GLfloat dt)
 void Game::Render()
 {	
 	Renderer->DrawSprite(ResourceManager::GetTexture("background"),
-		glm::vec2(0, 0), glm::vec2(800, 600), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+		glm::vec2(0, 0), glm::vec2(800, 600), 0.0f, glm::vec4(1.0f));
 
 	
 	/*for (Drawable* e : drawables)

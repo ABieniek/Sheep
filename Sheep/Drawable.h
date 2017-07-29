@@ -12,7 +12,7 @@ class Drawable
 public:
 	// variables
 	glm::vec2 position, size;
-	glm::vec3 color;
+	glm::vec4 color;
 	GLfloat rotation;
 	GLboolean bDraw;
 	Texture2D sprite;
@@ -21,7 +21,7 @@ public:
 	
 
 	Drawable();
-	Drawable(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec3 color, GLboolean argDraw);
+	Drawable(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec4 color, GLboolean argDraw);
 	virtual void draw(SpriteRenderer &renderer);
 };
 

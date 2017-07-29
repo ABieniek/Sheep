@@ -7,7 +7,7 @@ Unit::Unit()
 	Drawable();
 }
 
-Unit::Unit(glm::vec2 argPos, glm::vec2 argSize, Texture2D argSprite, glm::vec3 argColor, GLboolean argDraw, GLfloat argVelocity)
+Unit::Unit(glm::vec2 argPos, glm::vec2 argSize, Texture2D argSprite, glm::vec4 argColor, GLboolean argDraw, GLfloat argVelocity)
 	: velocity(argVelocity)
 {
 	position = argPos;
@@ -60,11 +60,11 @@ void Unit::move()
 void Unit::select()
 {
 	selected = true;
-	color = glm::vec3(0.7f, 0.7f, 1.0f);
+	color = glm::vec4(0.7f, 0.7f, 1.0f, 1.0f);
 }
 
 void Unit::deselect()
 {
 	selected = false;
-	color = glm::vec3(1.0f, 1.0f, 1.0f);
+	color = glm::vec4(1.0f);
 }

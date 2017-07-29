@@ -25,7 +25,7 @@ public:
 
 	// constructors
 	Unit();
-	Unit(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec3 color, GLboolean argDraw, GLfloat velocity);
+	Unit(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec4 color, GLboolean argDraw, GLfloat velocity);
 
 	// rendering 
 	virtual void draw(SpriteRenderer& Renderer);
