@@ -115,6 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CollisionUtil.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -125,7 +126,9 @@
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CollisionUtil.h" />
     <ClInclude Include="Drawable.h" />
+    <ClInclude Include="Flock.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Shader.h" />

@@ -6,12 +6,14 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#include "game.h"
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <math.h>
 #include <vector>
+
+#include "game.h"
+#include "CollisionUtil.h"
 
 using namespace std;
 using namespace irrklang;
@@ -57,7 +59,7 @@ void Game::Init()
 	/// Set Game Variables
 	// sheep
 	glm::vec2 locs[] = { glm::vec2(0, 0), glm::vec2(750, 0), glm::vec2(0, 550), glm::vec2(750, 550), glm::vec2(400, 250) };
-	for (int i = 0; i < 5; i++)
+	for (unsigned int i = 0; i < 5; i++)
 	{
 		units.push_back(Unit(locs[i], glm::vec2(50, 50),
 			ResourceManager::GetTexture("sheep"), glm::vec4(1.0f), true, 0.0, .1));
@@ -70,9 +72,19 @@ void Game::Init()
 void Game::Update(GLfloat dt)
 {
 	// updating values in units
-	for (int i = 0; i < units.size(); i++)
+	for (unsigned int i = 0; i < units.size(); i++)
 	{
 		units[i].move();
+		for (unsigned int j = 0; j < units.size(); j++)
+		{
+			if (i == j)  // if the unit we're looking at is not the same one we just moved, skip
+				continue;
+			if (doesPenetrate(units[i], units[j]))
+			{
+				units[i].position -= penetrationVector(units[i], units[j]);
+				units[i].stop();
+			}
+		}
 	}
 }
 
@@ -109,7 +121,7 @@ void Game::ProcessInput(GLfloat dt)
 		
 		
 		// select units within bounds
-		for (int i = 0; i < units.size(); i++)
+		for (unsigned int i = 0; i < units.size(); i++)
 		{
 			// if within box, select unit
 			if (((units[i].center().x + units[i].size.x / 2) > selectionBox->position.x)
@@ -129,7 +141,7 @@ void Game::ProcessInput(GLfloat dt)
 	// movement input
 	else if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS)
 	{
-		for (int i = 0; i < units.size(); i++)
+		for (unsigned int i = 0; i < units.size(); i++)
 		{
 			if (units[i].selected)
 			{
@@ -139,7 +151,7 @@ void Game::ProcessInput(GLfloat dt)
 	}
 	if (keys[GLFW_KEY_S])
 	{
-		for (int i = 0; i < units.size(); i++)
+		for (unsigned int i = 0; i < units.size(); i++)
 		{
 			if (units[i].selected)
 				units[i].stop();
@@ -157,7 +169,7 @@ void Game::Render()
 	spriteRenderer->DrawSprite(ResourceManager::GetTexture("background"),
 		glm::vec2(0, 0), glm::vec2(800, 600), 0.0f, glm::vec4(1.0f));
 	// draw units
-	for (int i = 0; i < units.size(); i++)
+	for (unsigned int i = 0; i < units.size(); i++)
 		units[i].draw(*spriteRenderer);
 	// draw selection box - low alpha value, so I can draw it over stuff
 	selectionBox->draw(*selectionBoxRenderer);
