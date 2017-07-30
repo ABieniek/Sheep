@@ -82,7 +82,8 @@ void Game::Update(GLfloat dt)
 			if (doesPenetrate(units[i], units[j]))
 			{
 				units[i].position -= penetrationVector(units[i], units[j]);
-				units[i].stop();
+				if (!units[j].moving)
+					units[i].stop();
 			}
 		}
 	}
