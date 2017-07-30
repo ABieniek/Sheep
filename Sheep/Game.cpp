@@ -144,9 +144,16 @@ void Game::ProcessInput(GLfloat dt)
 	{
 		for (unsigned int i = 0; i < units.size(); i++)
 		{
+			int tempRadius = units[i].radius();
 			if (units[i].selected)
 			{
-				units[i].setDestination(glm::vec2(mXpos-25, mYpos-25));
+				// make sure that the unit placement is within bounds of the map
+				if (mXpos < tempRadius) mXpos = tempRadius;
+				if (mXpos > this->Width - tempRadius) mXpos = this->Width - tempRadius;
+				if (mYpos < tempRadius) mYpos = tempRadius;
+				if (mYpos > this->Height - tempRadius) mYpos = this->Height - tempRadius;
+				
+				units[i].setDestination(glm::vec2(mXpos - tempRadius, mYpos - tempRadius));
 			}
 		}
 	}
