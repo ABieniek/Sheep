@@ -14,11 +14,13 @@
 #include <vector>
 #include <tuple>
 
+#include <irrKlang.h>
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
 #include "Drawable.h"
 #include "Unit.h"
-#include <irrKlang.h>
+#include "Flock.h"
+
 
 // Represents the current state of the game
 enum GameState {
@@ -57,6 +59,7 @@ public:
 
 	// units
 	vector<Unit> units;
+	vector<Flock> flocks;
 	
 	// other stuff to draw
 	Drawable* selectionBox;

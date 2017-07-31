@@ -142,6 +142,16 @@ void Game::ProcessInput(GLfloat dt)
 	// movement input
 	else if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS)
 	{
+		// destroy previous flocks
+		while (flocks.size())
+			flocks.pop_back();
+
+		// creating flocks here, as necessary
+		for (unsigned int i = 0; i < units.size(); i++)
+		{
+
+		}
+
 		for (unsigned int i = 0; i < units.size(); i++)
 		{
 			int tempRadius = units[i].radius();

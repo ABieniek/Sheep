@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="CollisionUtil.cpp" />
     <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="Flock.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
