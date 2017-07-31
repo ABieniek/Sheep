@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "game.h"
-#include "CollisionUtil.h"
 
 using namespace std;
 using namespace irrklang;
@@ -62,7 +61,7 @@ void Game::Init()
 	for (unsigned int i = 0; i < 5; i++)
 	{
 		units.push_back(Unit(locs[i], glm::vec2(50, 50),
-			ResourceManager::GetTexture("sheep"), glm::vec4(1.0f), true, 0.0, .1));
+			ResourceManager::GetTexture("sheep"), glm::vec4(1.0f), true, 0.0f, .1f));
 	}
 	// selection box - don't draw it initially
 	selectionBox = new Drawable(glm::vec2(0, 0), glm::vec2(0,0),
@@ -142,15 +141,9 @@ void Game::ProcessInput(GLfloat dt)
 	// movement input
 	else if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS)
 	{
-		// destroy previous flocks
-		while (flocks.size())
-			flocks.pop_back();
+		// use helper function to recreate flocks, which destroys previous flocks
+		recreateFlocks(units, flocks, 1.0 * Width, 1.0 * Height, 5.0);
 
-		// creating flocks here, as necessary
-		for (unsigned int i = 0; i < units.size(); i++)
-		{
-
-		}
 
 		for (unsigned int i = 0; i < units.size(); i++)
 		{

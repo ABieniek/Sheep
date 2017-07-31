@@ -20,6 +20,7 @@
 #include "Drawable.h"
 #include "Unit.h"
 #include "Flock.h"
+#include "CollisionUtil.h"
 
 
 // Represents the current state of the game
