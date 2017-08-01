@@ -142,9 +142,7 @@ void Game::ProcessInput(GLfloat dt)
 	else if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS)
 	{
 		// use helper function to recreate flocks, which destroys previous flocks
-		cout << "before recreate flocks" << endl;
 		recreateFlocks(units, flocks, 1.0 * Width, 1.0 * Height, 5.0);
-		cout << "after recreate flocks" << endl;
 
 		for (unsigned int i = 0; i < units.size(); i++)
 		{

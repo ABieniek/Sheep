@@ -13,7 +13,6 @@ GLboolean doesPenetrate(Unit & unit1, Unit & unit2)
 
 glm::vec2 penetrationVector(glm::vec2 position1, GLfloat radius1, glm::vec2 position2, GLfloat radius2)
 {
-	cout << "still going" << endl;
 	// for each component, the amount of penetration should be r1 + r2 - (c1 - c2)
 	return -(glm::normalize(position2 - position1) * ((norm(position2 - position1)) - (radius2 + radius1)));
 

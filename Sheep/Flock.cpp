@@ -9,6 +9,7 @@ Flock::Flock(GLfloat argWidth, GLfloat argHeight)
 void Flock::add(Unit* argUnit)
 {
 	units.push_back(argUnit);
+
 	// handle calculation of new center
 	if (argUnit->position.x < minX)
 		minX = argUnit->position.x;
@@ -56,11 +57,15 @@ void Flock::setDestination(glm::vec2 argDestination)
 void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat argWidth, GLfloat argHeight, GLfloat distanceMax)
 {
 	//destroy previous flock stuff
+	cout << argFlocks.size() << endl;
 	while (argFlocks.size())
+	{
 		argFlocks.pop_back();
+	}
 	
 	for (unsigned int i = 0; i < argUnits.size(); i++)
 	{
+		if (!argUnits[i].selected) continue; // don't add the unit to a flock if he's not selected
 		GLboolean added = false;	// keep track of whether we've added this unit to a flock or not
 		// loop through flocks
 		for (unsigned int j = 0; j < argFlocks.size(); j++)
@@ -68,9 +73,12 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 			// loop through each unit in the flock for comparison
 			for (unsigned int k = 0; k < argFlocks[j].units.size(); k++)
 			{
+				if (&argUnits[i] == argFlocks[j].units[k])
+					continue;
 				if (closeEnough(argUnits[i], *argFlocks[j].units[k],
 					argUnits[i].radius() + argFlocks[j].units[k]->radius() + distanceMax))
 				{
+					cout << "close enough" << endl;
 					argFlocks[j].add(&argUnits[i]);
 					added = true;
 				}
@@ -80,6 +88,7 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 		// if we haven't put the unit into a flock, make a new flock for it
 		if (!added)
 		{
+			cout << "adding not added" << endl;
 			argFlocks.push_back(Flock(argWidth, argHeight));
 			argFlocks[argFlocks.size() - 1].add(&argUnits[i]);
 		}
