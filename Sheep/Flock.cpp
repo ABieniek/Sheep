@@ -55,30 +55,29 @@ void Flock::setDestination(glm::vec2 argDestination)
 
 void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat argWidth, GLfloat argHeight, GLfloat distanceMax)
 {
-	// use clustering algorithm to put units together into clusters
+	//destroy previous flock stuff
+	while (argFlocks.size())
+		argFlocks.pop_back();
+	
 	for (unsigned int i = 0; i < argUnits.size(); i++)
 	{
-		// if the unit is not selected, then we won't be giving him a new destination
-		// so skip him
-		if (!argUnits[i].selected)
-			continue;
-		// keep track of if we've put this unit into a flock
-		// otherwise, make a new flock
-		GLboolean added = false;
+		GLboolean added = false;	// keep track of whether we've added this unit to a flock or not
+		// loop through flocks
 		for (unsigned int j = 0; j < argFlocks.size(); j++)
 		{
+			// loop through each unit in the flock for comparison
 			for (unsigned int k = 0; k < argFlocks[j].units.size(); k++)
 			{
 				if (closeEnough(argUnits[i], *argFlocks[j].units[k],
-					(argUnits[i].radius() + argFlocks[j].units[k]->radius() + distanceMax)))
+					argUnits[i].radius() + argFlocks[j].units[k]->radius() + distanceMax))
 				{
 					argFlocks[j].add(&argUnits[i]);
 					added = true;
-					continue;
 				}
+				if (added) continue;
 			}
 		}
-		// if we haven't added the unit to a flock, make a new one and add it
+		// if we haven't put the unit into a flock, make a new flock for it
 		if (!added)
 		{
 			argFlocks.push_back(Flock(argWidth, argHeight));
