@@ -57,8 +57,10 @@ void Game::Init()
 	
 	/// Set Game Variables
 	// sheep
-	glm::vec2 locs[] = { glm::vec2(0, 0), glm::vec2(750, 0), glm::vec2(0, 550), glm::vec2(750, 550), glm::vec2(400, 250) };
-	for (unsigned int i = 0; i < 5; i++)
+	glm::vec2 locs[] = { glm::vec2(0, 0), glm::vec2(750, 0), glm::vec2(0, 550), glm::vec2(750, 550), glm::vec2(400, 250),
+						glm::vec2(125, 50), glm::vec2(600, 100), glm::vec2(400, 400), glm::vec2(400, 0), glm::vec2(300, 100),
+						glm::vec2(200, 200), glm::vec2(100, 300) };
+	for (unsigned int i = 0; i < 12; i++)
 	{
 		units.push_back(Unit(locs[i], glm::vec2(50, 50),
 			ResourceManager::GetTexture("sheep"), glm::vec4(1.0f), true, 0.0f, .1f));
@@ -82,7 +84,10 @@ void Game::Update(GLfloat dt)
 			{
 				units[i].position -= penetrationVector(units[i], units[j]);
 				if (!units[j].moving)
+				{
 					units[i].stop();
+					units[j].stop();
+				}
 			}
 		}
 	}
@@ -118,8 +123,8 @@ void Game::ProcessInput(GLfloat dt)
 			selectionBox->size.y *= -1;
 			selectionBox->position.y -= selectionBox->size.y;
 		}
-		
-		
+
+
 		// select units within bounds
 		for (unsigned int i = 0; i < units.size(); i++)
 		{
@@ -139,10 +144,14 @@ void Game::ProcessInput(GLfloat dt)
 		}
 	}
 	// movement input
-	else if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS)
+	else if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS && mbActionPrev == GLFW_RELEASE)
 	{
 		// use helper function to recreate flocks, which destroys previous flocks
-		recreateFlocks(units, flocks, 1.0 * Width, 1.0 * Height, 5.0);
+		recreateFlocks(units, flocks, 1.0 * Width, 1.0 * Height, 65.0);
+		for (unsigned int temp = 0; temp < flocks.size(); temp++)
+		{
+			cout << "flock " << temp << " size: " << flocks[temp].units.size() << endl;
+		}
 
 		for (unsigned int i = 0; i < units.size(); i++)
 		{

@@ -37,4 +37,5 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 bool closeEnough(Unit& unit1, Unit& unit2, GLfloat distanceTolerance);
 bool closeEnough(glm::vec2 position1, glm::vec2 position2, GLfloat distanceTolerance);
 
+
 #endif

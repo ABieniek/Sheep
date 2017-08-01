@@ -56,41 +56,53 @@ void Flock::setDestination(glm::vec2 argDestination)
 
 void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat argWidth, GLfloat argHeight, GLfloat distanceMax)
 {
+	// idea for algorithm: https://stackoverflow.com/questions/3937663/2d-point-clustering/3939542#3939542
+
 	//destroy previous flock stuff
-	cout << argFlocks.size() << endl;
 	while (argFlocks.size())
 	{
 		argFlocks.pop_back();
 	}
-	
+
+	// use a tuple to label units as assigned or unassigned
+	// index of argUnits will correspond with same index of indexAssignStatus
+	vector<GLboolean> indexAssignStatus;
+	for (unsigned int i = 0; i < argUnits.size(); i++)
+		indexAssignStatus.push_back(GL_FALSE);	//initialize all to false because no unit has been assigned
+
 	for (unsigned int i = 0; i < argUnits.size(); i++)
 	{
-		if (!argUnits[i].selected) continue; // don't add the unit to a flock if he's not selected
-		GLboolean added = false;	// keep track of whether we've added this unit to a flock or not
-		// loop through flocks
-		for (unsigned int j = 0; j < argFlocks.size(); j++)
+		// if the unit has been assigned to a group, skip him
+		if (indexAssignStatus[i]) continue;
+		// otherwise, he must be the start of a group
+		argFlocks.push_back(Flock(argWidth, argHeight));
+		argFlocks[argFlocks.size() - 1].add(&argUnits[i]);
+		indexAssignStatus[i] = true;
+		// start appending other units to the group
+		for (unsigned int j = 0; j < argUnits.size(); j++)
 		{
-			// loop through each unit in the flock for comparison
-			for (unsigned int k = 0; k < argFlocks[j].units.size(); k++)
+			// if the unit has already been assigned, don't look at him again
+			if (indexAssignStatus[j]) continue;
+			if (i == j) continue;
+			if (closeEnough(argUnits[i], argUnits[j], distanceMax))
 			{
-				if (&argUnits[i] == argFlocks[j].units[k])
-					continue;
-				if (closeEnough(argUnits[i], *argFlocks[j].units[k],
-					argUnits[i].radius() + argFlocks[j].units[k]->radius() + distanceMax))
-				{
-					cout << "close enough" << endl;
-					argFlocks[j].add(&argUnits[i]);
-					added = true;
-				}
-				if (added) continue;
+				cout << " add 1 " << endl;
+				argFlocks[argFlocks.size() - 1].add(&argUnits[j]);
+				indexAssignStatus[j] = true;
 			}
-		}
-		// if we haven't put the unit into a flock, make a new flock for it
-		if (!added)
-		{
-			cout << "adding not added" << endl;
-			argFlocks.push_back(Flock(argWidth, argHeight));
-			argFlocks[argFlocks.size() - 1].add(&argUnits[i]);
+			for (unsigned int k = 0; k < argUnits.size(); k++)
+			{
+				// if the unit has already been assigned, don't look at him again
+				if (!indexAssignStatus[j]) continue;
+				if (indexAssignStatus[k]) continue;
+				if (j == k) continue;
+				if (closeEnough(argUnits[j], argUnits[k], distanceMax))
+				{
+					cout << " add 2 " << endl;
+					argFlocks[argFlocks.size() - 1].add(&argUnits[k]);
+					indexAssignStatus[k] = true;
+				}
+			}
 		}
 	}
 }
