@@ -17,6 +17,7 @@ public:
 	GLboolean bDraw;
 	Texture2D sprite;
 	// relationships
+	GLfloat radius() { return size.x / 2; };
 	glm::vec2 center() { return position + (size / glm::vec2(2.0)); }
 	
 

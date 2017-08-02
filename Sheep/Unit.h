@@ -36,8 +36,6 @@ public:
 	// selection
 	void select();
 	void deselect();
-	// collision - will be handled as if the hurtboxes for the units are circular
-	GLfloat radius(){ return size.x / 2; };
 };
 
 #endif

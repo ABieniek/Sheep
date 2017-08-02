@@ -27,6 +27,7 @@ void Unit::draw(SpriteRenderer& renderer)
 // selection
 void Unit::setDestination(glm::vec2 argDestination)
 {
+	argDestination -= glm::vec2(radius(), radius());
 	if (position != argDestination)
 	{
 		destination = argDestination;

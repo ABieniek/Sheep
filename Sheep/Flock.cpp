@@ -30,8 +30,6 @@ void Flock::add(Unit* argUnit)
 
 glm::vec2 Flock::center()
 {
-	cout << minX << ", " << minY << endl;
-	cout << maxX << ", " << maxY << endl;
 	return glm::vec2((maxX + minX) / 2, (maxY + minY) / 2);
 }
 
@@ -41,9 +39,9 @@ void Flock::setDestination(glm::vec2 argDestination)
 	// we're essentially subtracting by the vector of maximum x and y penetrations
 	// that would result if our units left the bounds of the world
 	glm::vec2 additionVector = argDestination - center();
-	cout << center().x <<  ", " << center().y << endl;
-	/*for (unsigned int i = 0; i < units.size(); i++)
+	for (unsigned int i = 0; i < units.size(); i++)
 	{
+		/*
 		// X
 		if (units[i]->position.x + additionVector.x < units[i]->radius())
 			additionVector.x -= units[i]->radius() - argDestination.x;
@@ -54,7 +52,8 @@ void Flock::setDestination(glm::vec2 argDestination)
 			additionVector.y -= units[i]->radius() - argDestination.y;
 		if (units[i]->position.y + additionVector.y > worldHeight - units[i]->radius())
 			additionVector.y -= (worldHeight - units[i]->radius()) - argDestination.y;
-	}*/
+			*/
+	}
 
 	for (unsigned int i = 0; i < units.size(); i++)
 	{
