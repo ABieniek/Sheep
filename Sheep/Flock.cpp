@@ -63,7 +63,7 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 	{
 		argFlocks.pop_back();
 	}
-
+	cout << "# units: " << argUnits.size() << endl;
 	// use a tuple to label units as assigned or unassigned
 	// index of argUnits will correspond with same index of indexAssignStatus
 	vector<GLboolean> indexAssignStatus;
@@ -82,7 +82,6 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 		for (unsigned int j = 0; j < argUnits.size(); j++)
 		{
 			// if the unit has already been assigned, don't look at him again
-			if (indexAssignStatus[j]) continue;
 			if (i == j) continue;
 			if (closeEnough(argUnits[i], argUnits[j], distanceMax))
 			{
@@ -101,6 +100,7 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 					cout << " add 2 " << endl;
 					argFlocks[argFlocks.size() - 1].add(&argUnits[k]);
 					indexAssignStatus[k] = true;
+					j = 0;
 				}
 			}
 		}
