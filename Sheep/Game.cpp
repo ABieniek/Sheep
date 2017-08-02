@@ -148,24 +148,19 @@ void Game::ProcessInput(GLfloat dt)
 	// movement input
 	else if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS && mbActionPrev == GLFW_RELEASE)
 	{
-		// use helper function to recreate flocks, which destroys previous flocks
-		recreateFlocks(units, flocks, 1.0 * Width, 1.0 * Height, 65.0);
-		for (unsigned int temp = 0; temp < flocks.size(); temp++)
-			cout << "flock #" << temp << ": " << flocks[temp].units.size() << endl;
-
+		// only consider units that are selected in the flock stuff
+		selectedUnits.clear();
 		for (unsigned int i = 0; i < units.size(); i++)
 		{
-			int tempRadius = units[i]->radius();
 			if (units[i]->selected)
-			{
-				// make sure that the unit placement is within bounds of the map
-				if (mXpos < tempRadius) mXpos = tempRadius;
-				if (mXpos > this->Width - tempRadius) mXpos = this->Width - tempRadius;
-				if (mYpos < tempRadius) mYpos = tempRadius;
-				if (mYpos > this->Height - tempRadius) mYpos = this->Height - tempRadius;
-				
-				units[i]->setDestination(glm::vec2(mXpos - tempRadius, mYpos - tempRadius));
-			}
+				selectedUnits.push_back(units[i]);
+		}
+		// use helper function to recreate flocks, which destroys previous flocks
+		recreateFlocks(selectedUnits, flocks, Width, Height, 65.0);
+
+		for (unsigned int i = 0; i < flocks.size(); i++)
+		{
+			flocks[i].setDestination(glm::vec2(mXpos, mYpos));
 		}
 	}
 	if (keys[GLFW_KEY_S])

@@ -2,8 +2,15 @@
 
 Flock::Flock(GLfloat argWidth, GLfloat argHeight)
 {
+
 	worldWidth = argWidth;
 	worldHeight = argHeight;
+
+	// set mins and maxes to ridiculous values so they will inevitably be updated
+	minX = argWidth;
+	maxX = 0;
+	minY = argHeight;
+	maxY = 0;
 }
 
 void Flock::add(Unit* argUnit)
@@ -11,19 +18,19 @@ void Flock::add(Unit* argUnit)
 	units.push_back(argUnit);
 
 	// handle calculation of new center
-	if (argUnit->position.x < minX)
-		minX = argUnit->position.x;
-	else if (argUnit->position.x > maxX)
-		maxX = argUnit->position.x;
-	if (argUnit->position.y < minY)
-		minY = argUnit->position.y;
-	if (argUnit->position.y > minY)
-		minY = argUnit->position.y;
+	if (argUnit->center().x < minX)
+		minX = argUnit->center().x;
+	if (argUnit->center().x > maxX)
+		maxX = argUnit->center().x;
+	if (argUnit->center().y < minY)
+		minY = argUnit->center().y;
+	if (argUnit->center().y > maxY)
+		maxY = argUnit->center().y;
 }
 
 glm::vec2 Flock::center()
 {
-	return glm::vec2((maxX - minX) / 2, (maxY - minY) / 2);
+	return glm::vec2((minX - maxX) / 2, (minY - maxY) / 2);
 }
 
 void Flock::setDestination(glm::vec2 argDestination)
@@ -31,8 +38,9 @@ void Flock::setDestination(glm::vec2 argDestination)
 	// find the farthest point that each unit can travel
 	// we're essentially subtracting by the vector of maximum x and y penetrations
 	// that would result if our units left the bounds of the world
-	glm::vec2 additionVector = argDestination + center();
-	for (unsigned int i = 0; i < units.size(); i++)
+	glm::vec2 additionVector = argDestination - center();
+	cout << center().x <<  ", " << center().y << endl;
+	/*for (unsigned int i = 0; i < units.size(); i++)
 	{
 		// X
 		if (units[i]->position.x + additionVector.x < units[i]->radius())
@@ -44,12 +52,13 @@ void Flock::setDestination(glm::vec2 argDestination)
 			additionVector.y -= units[i]->radius() - argDestination.y;
 		if (units[i]->position.y + additionVector.y > worldHeight - units[i]->radius())
 			additionVector.y -= (worldHeight - units[i]->radius()) - argDestination.y;
-	}
+	}*/
 
 	for (unsigned int i = 0; i < units.size(); i++)
 	{
 		// new destination is equal to the position of the unit
 		// plus the vector from the flock's center to the new point
+		// units[i]->setDestination(additionVector);
 		units[i]->setDestination(units[i]->position + additionVector);
 	}
 }
@@ -63,7 +72,6 @@ void recreateFlocks(vector<Unit*>& argUnits, vector<Flock>& argFlocks, GLfloat a
 	{
 		argFlocks.pop_back();
 	}
-	cout << "# units: " << argUnits.size() << endl;
 	// use a tuple to label units as assigned or unassigned
 	// index of argUnits will correspond with same index of indexAssignStatus
 	vector<GLboolean> indexAssignStatus;
