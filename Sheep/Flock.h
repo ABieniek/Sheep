@@ -32,9 +32,9 @@ public:
 
 /// helper functions
 // function that will put units into flocks accordingly
-void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat argWidth, GLfloat argHeight, GLfloat distanceMax);
+void recreateFlocks(vector<Unit*>& argUnits, vector<Flock>& argFlocks, GLfloat argWidth, GLfloat argHeight, GLfloat distanceMax);
 // function that will test if units are close enough to be put into the same cluster
-bool closeEnough(Unit& unit1, Unit& unit2, GLfloat distanceTolerance);
+bool closeEnough(Unit* unit1, Unit* unit2, GLfloat distanceTolerance);
 bool closeEnough(glm::vec2 position1, glm::vec2 position2, GLfloat distanceTolerance);
 
 

@@ -15,9 +15,9 @@ using namespace std;
 
 
 GLboolean doesPenetrate(glm::vec2 position1, GLfloat radius1, glm::vec2 position2, GLfloat radius2);
-GLboolean doesPenetrate(Unit& unit1, Unit& unit2);
+GLboolean doesPenetrate(Unit* unit1, Unit* unit2);
 glm::vec2 penetrationVector(glm::vec2 position1, GLfloat radius1, glm::vec2 position2, GLfloat radius2);
-glm::vec2 penetrationVector(Unit& unit1, Unit& unit2);
+glm::vec2 penetrationVector(Unit* unit1, Unit* unit2);
 
 GLfloat norm(glm::vec2 vec);
 

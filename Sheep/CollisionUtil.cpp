@@ -6,9 +6,9 @@ GLboolean doesPenetrate(glm::vec2 position1, GLfloat radius1, glm::vec2 position
 	return (glm::distance(position1, position2) < (radius1 + radius2));
 }
 
-GLboolean doesPenetrate(Unit & unit1, Unit & unit2)
+GLboolean doesPenetrate(Unit* unit1, Unit* unit2)
 {
-	return (doesPenetrate(unit1.position, unit1.radius(), unit2.position, unit2.radius()));
+	return (doesPenetrate(unit1->position, unit1->radius(), unit2->position, unit2->radius()));
 }
 
 glm::vec2 penetrationVector(glm::vec2 position1, GLfloat radius1, glm::vec2 position2, GLfloat radius2)
@@ -21,9 +21,9 @@ glm::vec2 penetrationVector(glm::vec2 position1, GLfloat radius1, glm::vec2 posi
 	// but if the distance is zero, then the direction of movement can't be determined
 }
 
-glm::vec2 penetrationVector(Unit & unit1, Unit & unit2)
+glm::vec2 penetrationVector(Unit* unit1, Unit* unit2)
 {
-	return penetrationVector(unit1.position, unit1.radius(), unit2.position, unit2.radius());
+	return penetrationVector(unit1->position, unit1->radius(), unit2->position, unit2->radius());
 }
 
 GLfloat norm(glm::vec2 vec)

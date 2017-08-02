@@ -29,6 +29,8 @@ Game::~Game()
 	delete spriteRenderer;
 	delete selectionBoxRenderer;
 	delete selectionBox;
+	for (unsigned int i = 0; i < units.size(); i++)
+		delete units[i];
 }
 
 void Game::Init()
@@ -62,7 +64,7 @@ void Game::Init()
 						glm::vec2(200, 200), glm::vec2(100, 300) };
 	for (unsigned int i = 0; i < 12; i++)
 	{
-		units.push_back(Unit(locs[i], glm::vec2(50, 50),
+		units.push_back(new Unit(locs[i], glm::vec2(50, 50),
 			ResourceManager::GetTexture("sheep"), glm::vec4(1.0f), true, 0.0f, .1f));
 	}
 	// selection box - don't draw it initially
@@ -75,18 +77,18 @@ void Game::Update(GLfloat dt)
 	// updating values in units
 	for (unsigned int i = 0; i < units.size(); i++)
 	{
-		units[i].move();
+		units[i]->move();
 		for (unsigned int j = 0; j < units.size(); j++)
 		{
 			if (i == j)  // if the unit we're looking at is not the same one we just moved, skip
 				continue;
 			if (doesPenetrate(units[i], units[j]))
 			{
-				units[i].position -= penetrationVector(units[i], units[j]);
-				if (!units[j].moving)
+				units[i]->position -= penetrationVector(units[i], units[j]);
+				if (!units[j]->moving)
 				{
-					units[i].stop();
-					units[j].stop();
+					units[i]->stop();
+					units[j]->stop();
 				}
 			}
 		}
@@ -129,17 +131,17 @@ void Game::ProcessInput(GLfloat dt)
 		for (unsigned int i = 0; i < units.size(); i++)
 		{
 			// if within box, select unit
-			if (((units[i].center().x + units[i].size.x / 2) > selectionBox->position.x)
-				&& ((units[i].center().x - units[i].size.x / 2) < selectionBox->position.x + selectionBox->size.x)
-				&& ((units[i].center().y + units[i].size.y / 2) > selectionBox->position.y)
-				&& ((units[i].center().y - units[i].size.y / 2) < selectionBox->position.y + selectionBox->size.y))
-				units[i].select();
+			if (((units[i]->center().x + units[i]->size.x / 2) > selectionBox->position.x)
+				&& ((units[i]->center().x - units[i]->size.x / 2) < selectionBox->position.x + selectionBox->size.x)
+				&& ((units[i]->center().y + units[i]->size.y / 2) > selectionBox->position.y)
+				&& ((units[i]->center().y - units[i]->size.y / 2) < selectionBox->position.y + selectionBox->size.y))
+				units[i]->select();
 			//if not within box
 			else
 			{
 				// if not holding shift, deselect
 				if (mbMods != GLFW_MOD_SHIFT)
-					units[i].deselect();
+					units[i]->deselect();
 			}
 		}
 	}
@@ -149,14 +151,12 @@ void Game::ProcessInput(GLfloat dt)
 		// use helper function to recreate flocks, which destroys previous flocks
 		recreateFlocks(units, flocks, 1.0 * Width, 1.0 * Height, 65.0);
 		for (unsigned int temp = 0; temp < flocks.size(); temp++)
-		{
-			cout << "flock " << temp << " size: " << flocks[temp].units.size() << endl;
-		}
+			cout << "flock #" << temp << ": " << flocks[temp].units.size() << endl;
 
 		for (unsigned int i = 0; i < units.size(); i++)
 		{
-			int tempRadius = units[i].radius();
-			if (units[i].selected)
+			int tempRadius = units[i]->radius();
+			if (units[i]->selected)
 			{
 				// make sure that the unit placement is within bounds of the map
 				if (mXpos < tempRadius) mXpos = tempRadius;
@@ -164,7 +164,7 @@ void Game::ProcessInput(GLfloat dt)
 				if (mYpos < tempRadius) mYpos = tempRadius;
 				if (mYpos > this->Height - tempRadius) mYpos = this->Height - tempRadius;
 				
-				units[i].setDestination(glm::vec2(mXpos - tempRadius, mYpos - tempRadius));
+				units[i]->setDestination(glm::vec2(mXpos - tempRadius, mYpos - tempRadius));
 			}
 		}
 	}
@@ -172,8 +172,8 @@ void Game::ProcessInput(GLfloat dt)
 	{
 		for (unsigned int i = 0; i < units.size(); i++)
 		{
-			if (units[i].selected)
-				units[i].stop();
+			if (units[i]->selected)
+				units[i]->stop();
 		}
 	}
 	// update previous frame stuff
@@ -189,7 +189,7 @@ void Game::Render()
 		glm::vec2(0, 0), glm::vec2(800, 600), 0.0f, glm::vec4(1.0f));
 	// draw units
 	for (unsigned int i = 0; i < units.size(); i++)
-		units[i].draw(*spriteRenderer);
+		units[i]->draw(*spriteRenderer);
 	// draw selection box - low alpha value, so I can draw it over stuff
 	selectionBox->draw(*selectionBoxRenderer);
 }

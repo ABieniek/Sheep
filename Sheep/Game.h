@@ -59,7 +59,8 @@ public:
 	int mbModsPrev;
 
 	// units
-	vector<Unit> units;
+	vector<Unit*> units;
+	vector<Unit*> selectedUnits;
 	vector<Flock> flocks;
 	
 	// other stuff to draw

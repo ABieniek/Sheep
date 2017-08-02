@@ -54,7 +54,7 @@ void Flock::setDestination(glm::vec2 argDestination)
 	}
 }
 
-void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat argWidth, GLfloat argHeight, GLfloat distanceMax)
+void recreateFlocks(vector<Unit*>& argUnits, vector<Flock>& argFlocks, GLfloat argWidth, GLfloat argHeight, GLfloat distanceMax)
 {
 	// idea for algorithm: https://stackoverflow.com/questions/3937663/2d-point-clustering/3939542#3939542
 
@@ -76,7 +76,7 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 		if (indexAssignStatus[i]) continue;
 		// otherwise, he must be the start of a group
 		argFlocks.push_back(Flock(argWidth, argHeight));
-		argFlocks[argFlocks.size() - 1].add(&argUnits[i]);
+		argFlocks[argFlocks.size() - 1].add(argUnits[i]);
 		indexAssignStatus[i] = true;
 		// start appending other units to the group
 		for (unsigned int j = 0; j < argUnits.size(); j++)
@@ -85,7 +85,7 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 			if (i == j) continue;
 			if (!indexAssignStatus[j] && closeEnough(argUnits[i], argUnits[j], distanceMax))
 			{
-				argFlocks[argFlocks.size() - 1].add(&argUnits[j]);
+				argFlocks[argFlocks.size() - 1].add(argUnits[j]);
 				indexAssignStatus[j] = true;
 			}
 			for (unsigned int k = 0; k < argUnits.size(); k++)
@@ -96,7 +96,7 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 				if (j == k) continue;
 				if (closeEnough(argUnits[j], argUnits[k], distanceMax))
 				{
-					argFlocks[argFlocks.size() - 1].add(&argUnits[k]);
+					argFlocks[argFlocks.size() - 1].add(argUnits[k]);
 					indexAssignStatus[k] = true;
 					j = 0;
 				}
@@ -105,9 +105,9 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 	}
 }
 
-bool closeEnough(Unit & unit1, Unit & unit2, GLfloat distanceTolerance)
+bool closeEnough(Unit* unit1, Unit* unit2, GLfloat distanceTolerance)
 {
-	return closeEnough(unit1.position, unit2.position, distanceTolerance);
+	return closeEnough(unit1->position, unit2->position, distanceTolerance);
 }
 
 bool closeEnough(glm::vec2 position1, glm::vec2 position2, GLfloat distanceTolerance)
