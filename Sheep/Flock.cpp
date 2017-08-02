@@ -83,9 +83,8 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 		{
 			// if the unit has already been assigned, don't look at him again
 			if (i == j) continue;
-			if (closeEnough(argUnits[i], argUnits[j], distanceMax))
+			if (!indexAssignStatus[j] && closeEnough(argUnits[i], argUnits[j], distanceMax))
 			{
-				cout << " add 1 " << endl;
 				argFlocks[argFlocks.size() - 1].add(&argUnits[j]);
 				indexAssignStatus[j] = true;
 			}
@@ -97,7 +96,6 @@ void recreateFlocks(vector<Unit>& argUnits, vector<Flock>& argFlocks, GLfloat ar
 				if (j == k) continue;
 				if (closeEnough(argUnits[j], argUnits[k], distanceMax))
 				{
-					cout << " add 2 " << endl;
 					argFlocks[argFlocks.size() - 1].add(&argUnits[k]);
 					indexAssignStatus[k] = true;
 					j = 0;
