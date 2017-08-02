@@ -30,7 +30,9 @@ void Flock::add(Unit* argUnit)
 
 glm::vec2 Flock::center()
 {
-	return glm::vec2((minX - maxX) / 2, (minY - maxY) / 2);
+	cout << minX << ", " << minY << endl;
+	cout << maxX << ", " << maxY << endl;
+	return glm::vec2((maxX + minX) / 2, (maxY + minY) / 2);
 }
 
 void Flock::setDestination(glm::vec2 argDestination)
@@ -59,7 +61,7 @@ void Flock::setDestination(glm::vec2 argDestination)
 		// new destination is equal to the position of the unit
 		// plus the vector from the flock's center to the new point
 		// units[i]->setDestination(additionVector);
-		units[i]->setDestination(units[i]->position + additionVector);
+		units[i]->setDestination(units[i]->center() + additionVector);
 	}
 }
 
