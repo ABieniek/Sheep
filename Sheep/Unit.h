@@ -20,6 +20,7 @@ public:
 	GLfloat velocity;
 	GLboolean moving = false;
 	GLboolean selected = false;
+	glm::vec2 movementVector; 
 	GLfloat angle = 0.0;
 	glm::vec2 destination;
 

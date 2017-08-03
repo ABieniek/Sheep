@@ -50,8 +50,12 @@ void Flock::setDestination(glm::vec2 argDestination)
 			additionVector.y = units[0]->radius() - minY;
 		if (maxY + additionVector.y > worldHeight - units[0]->radius())
 			additionVector.y = worldHeight - units[0]->radius() - maxY;
-			
 	}
+
+	// above, the use of units[0] to get a radius is very hacky
+	// as of now, I only anticipate having all units of the game to have the same size
+	// I would pretty heavily need to modify the member variables of Flock if I were to use
+	// units of varying sizes
 
 	for (unsigned int i = 0; i < units.size(); i++)
 	{

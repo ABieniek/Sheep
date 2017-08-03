@@ -32,6 +32,8 @@ void Unit::setDestination(glm::vec2 argDestination)
 	{
 		destination = argDestination;
 		angle = -atan2(destination.y - position.y, destination.x - position.x);
+		movementVector = glm::vec2(velocity * cos(angle), velocity * sin(angle));
+		cout << movementVector.x << ", " << movementVector.y << endl;
 		moving = true;
 	}
 }
@@ -41,21 +43,24 @@ void Unit::move()
 	{
 		if (position.x < destination.x)
 		{
-			position.x = std::min(position.x + velocity*cos(angle), destination.x);
+			position.x = std::min(position.x + movementVector.x, destination.x);
 		}
 		else if (position.x > destination.x)
 		{
-			position.x = std::max(position.x + velocity*cos(angle), destination.x);
+			position.x = std::max(position.x + movementVector.x, destination.x);
 		}
 		if (position.y < destination.y)
 		{
-			position.y = std::min(position.y - velocity*sin(angle), destination.y);
+			position.y = std::min(position.y - movementVector.y, destination.y);
 		}
 		else if (position.y > destination.y)
 		{
-			position.y = std::max(position.y - velocity*sin(angle), destination.y);
+			position.y = std::max(position.y - movementVector.y, destination.y);
 		}
-		if (position == destination)
+		if ((position.x < destination.x && movementVector.x < 0)
+			|| (position.x > destination.x && movementVector.x > 0)
+			|| (position.y < destination.y && movementVector.y > 0)
+			|| (position.y > destination.y && movementVector.y < 0))
 			moving = false;
 	}	
 }
