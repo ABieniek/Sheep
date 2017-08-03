@@ -41,18 +41,16 @@ void Flock::setDestination(glm::vec2 argDestination)
 	glm::vec2 additionVector = argDestination - center();
 	for (unsigned int i = 0; i < units.size(); i++)
 	{
-		/*
 		// X
-		if (units[i]->position.x + additionVector.x < units[i]->radius())
-			additionVector.x -= units[i]->radius() - argDestination.x;
-		if (units[i]->position.x + additionVector.x > worldHeight - units[i]->radius())
-			additionVector.x -= (worldWidth - units[i]->radius()) - argDestination.x;
-		// Y
-		if (units[i]->position.y + additionVector.y < units[i]->radius())
-			additionVector.y -= units[i]->radius() - argDestination.y;
-		if (units[i]->position.y + additionVector.y > worldHeight - units[i]->radius())
-			additionVector.y -= (worldHeight - units[i]->radius()) - argDestination.y;
-			*/
+		if (minX + additionVector.x < units[0]->radius())
+			additionVector.x = units[0]->radius() - minX;
+		if (maxX + additionVector.x > worldWidth - units[0]->radius())
+			additionVector.x = worldWidth - units[0]->radius() - maxX;
+		if (minY + additionVector.y < units[0]->radius())
+			additionVector.y = units[0]->radius() - minY;
+		if (maxY + additionVector.y > worldHeight - units[0]->radius())
+			additionVector.y = worldHeight - units[0]->radius() - maxY;
+			
 	}
 
 	for (unsigned int i = 0; i < units.size(); i++)
