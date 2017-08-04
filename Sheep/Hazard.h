@@ -20,17 +20,19 @@ class Hazard : public Drawable
 public:
 	GLfloat timer; // time until the hazard will detonate
 	GLfloat duration; // holds duration that the texture will display after blowing up
-	GLboolean exploded; // holds whether the hazard has blown up or not, used for rendering purposes
+	GLboolean exploded = false; // holds whether the hazard has blown up or not
 	Texture2D detonatedSprite; // the texture to be drawn when the object explodes
+	GLfloat worldWidth, worldHeight;
 
-	// constructors and destructors
+	// constructors
 	Hazard();
-	Hazard(GLfloat timer, GLfloat duration);
-	~Hazard();
+	Hazard(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Texture2D argDetonatedSprite,
+		glm::vec4 argColor, GLfloat argRotation, GLboolean argDraw,
+		GLfloat argWidth, GLfloat argHeight, GLfloat argTimer, GLfloat argDuration);
 
-	// timer - handles duration that hazard exists
+	// behavior
 	void decreaseTime(GLfloat deltaTime); // will bring hazard closer to explosion or destruction
-	// explosion - kills units
+	// explosion
 	void detonate(vector<Unit*> units);
 	virtual GLboolean inHitbox(Unit* argUnit);
 	// rendering

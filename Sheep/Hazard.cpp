@@ -5,14 +5,18 @@ Hazard::Hazard()
 
 }
 
-Hazard::Hazard(GLfloat argTimer, GLfloat argDuration)
+Hazard::Hazard(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Texture2D argDetonatedSprite, 
+	glm::vec4 argColor, GLfloat argRotation, GLboolean argDraw,
+	GLfloat argWidth, GLfloat argHeight, GLfloat argTimer, GLfloat argDuration)
+	: worldWidth(argWidth), worldHeight(argHeight), timer(argTimer), duration(argDuration)
 {
-
-}
-
-Hazard::~Hazard()
-{
-
+	position = argPosition;
+	size = argSize;
+	sprite = argSprite;
+	detonatedSprite = argDetonatedSprite;
+	color = argColor;
+	rotation = argRotation;
+	bDraw = argDraw;
 }
 
 void Hazard::decreaseTime(GLfloat deltaTime)

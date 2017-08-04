@@ -121,7 +121,9 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Hazard.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Lazer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Rocket.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -133,7 +135,9 @@
     <ClInclude Include="Flock.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Hazard.h" />
+    <ClInclude Include="Lazer.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Rocket.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="stb_image.h" />
