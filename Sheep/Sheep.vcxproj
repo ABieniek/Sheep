@@ -119,6 +119,7 @@
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="Flock.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Hazard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Flock.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Hazard.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteRenderer.h" />

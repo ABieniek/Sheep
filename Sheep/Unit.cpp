@@ -18,13 +18,7 @@ Unit::Unit(glm::vec2 argPos, glm::vec2 argSize, Texture2D argSprite, glm::vec4 a
 	bDraw = argDraw;
 }
 
-void Unit::draw(SpriteRenderer& renderer)
-{
-	if (bDraw)
-		renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
-}
-
-// selection
+// movement
 void Unit::setDestination(glm::vec2 argDestination)
 {
 	argDestination -= glm::vec2(radius(), radius());
@@ -37,6 +31,7 @@ void Unit::setDestination(glm::vec2 argDestination)
 		moving = true;
 	}
 }
+
 void Unit::move()
 {
 	if (moving)
@@ -79,4 +74,11 @@ void Unit::deselect()
 {
 	selected = false;
 	color = glm::vec4(1.0f);
+}
+
+// rendering
+void Unit::draw(SpriteRenderer& renderer)
+{
+	if (bDraw)
+		renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
 }

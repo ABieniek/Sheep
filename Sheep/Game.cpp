@@ -156,7 +156,7 @@ void Game::ProcessInput(GLfloat dt)
 				selectedUnits.push_back(units[i]);
 		}
 		// use helper function to recreate flocks, which destroys previous flocks
-		recreateFlocks(selectedUnits, flocks, Width, Height, 65.0);
+		recreateFlocks(selectedUnits, flocks, Width, Height, 65);
 
 		for (unsigned int i = 0; i < flocks.size(); i++)
 		{
