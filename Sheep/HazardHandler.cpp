@@ -1,15 +1,36 @@
 #include "HazardHandler.h"
 
-HazardHandler::HazardHandler(Difficulty argDifficulty, GLfloat argWidth, GLfloat argHeight)
-	:difficulty(argDifficulty), width(argWidth), height(argHeight)
+HazardHandler::HazardHandler(Difficulty argDifficulty, GLfloat argWidth, GLfloat argHeight,
+	Texture2D argLazerSprite, Texture2D argLazerSpriteDetonated,
+	Texture2D argRocketSprite, Texture2D argRocketSpriteDetonated)
+	:difficulty(argDifficulty), width(argWidth), height(argHeight),
+	lazerSprite(argLazerSprite), lazerSPriteDetonated(argLazerSpriteDetonated),
+	rocketSprite(argRocketSprite), rocketSpriteDetonated(argRocketSpriteDetonated)
 {
 
 }
 
+void HazardHandler::init()
+{
+	// random seeds
+	srand(time(NULL));
+	
+	if (difficulty == SIMPLE)
+	{
+		lazerTimer = 5;
+		lazerDuration = .5;
+		frequency = 1;
+	}
+	else
+		cout << "difficulty not handled" << endl;
+}
+
 void HazardHandler::update(vector<Unit*>& argUnits, GLfloat deltaTime)
 {
-	// lazers
-	for (int i = 0; i < lazers.size(); i++)
+	// adding new hazards
+	generate(deltaTime);
+	// updating lazers
+	for (unsigned int i = 0; i < lazers.size(); i++)
 	{
 		lazers[i]->decreaseTime(deltaTime);
 		// if the timer runs out, detonate the lazer
@@ -23,8 +44,8 @@ void HazardHandler::update(vector<Unit*>& argUnits, GLfloat deltaTime)
 			i--; // push the counter back because the lazer was removed from the array
 		}
 	}
-	// rockets
-	for (int i = 0; i < rockets.size(); i++)
+	// updating rockets
+	for (unsigned int i = 0; i < rockets.size(); i++)
 	{
 		rockets[i]->decreaseTime(deltaTime);
 		// if the timer runs out, detonate the rocket
@@ -38,6 +59,43 @@ void HazardHandler::update(vector<Unit*>& argUnits, GLfloat deltaTime)
 			i--; // push the counter back because the rocket was removed from the array
 		}
 	}
+}
+
+// generation of hazards
+void HazardHandler::generate(GLfloat deltaTime)
+{
+	if (difficulty == SIMPLE)
+	{
+		simpleGenerate(deltaTime);
+	}
+	gameTime += deltaTime;
+}
+
+void HazardHandler::simpleGenerate(GLfloat deltaTime)
+{
+	// drop lazer every "frequency" seconds
+	if (floor(gameTime/frequency) != floor((gameTime + deltaTime) / frequency))	
+	{
+		addLazer(glm::vec2(randomFloat(0, width), height / 2), randomFloat(0, M_PI));
+	}
+}
+
+void HazardHandler::addLazer(glm::vec2 argPosition, GLfloat argAngle)
+{
+	// x size of 2000 so that it can stretch across screen, corner to corner, worst case
+	lazers.push_back(new Lazer(argPosition, glm::vec2(2000, 10),lazerSprite, lazerSPriteDetonated, glm::vec4(1.0f), argAngle,
+		GL_TRUE, width, height, lazerTimer, lazerDuration, glm::vec2(0, 0)));
+}
+
+void HazardHandler::addRocket()
+{
+
+}
+
+GLfloat HazardHandler::randomFloat(GLfloat min, GLfloat max)
+{
+	// https://stackoverflow.com/a/686373
+	return min + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (max-min)));
 }
 
 void HazardHandler::drawLazers(SpriteRenderer& renderer)

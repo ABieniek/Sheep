@@ -56,31 +56,39 @@ void Game::Init()
 	ResourceManager::LoadTexture("Textures/GrassBackground.png", GL_TRUE, "background");
 	ResourceManager::LoadTexture("Textures/White.png", GL_FALSE, "selectionBox");
 	ResourceManager::LoadTexture("Textures/Lazer.jpg", GL_FALSE, "Lazer");
-	ResourceManager::LoadTexture("Textures/LazerExploded.png", GL_TRUE, "LazerExploded");
-	
+	ResourceManager::LoadTexture("Textures/LazerExploded.png", GL_FALSE, "LazerExploded");
+	ResourceManager::LoadTexture("Textures/Rocket.jpg", GL_FALSE, "Rocket");
+	ResourceManager::LoadTexture("Textures/RocketExploded.png", GL_FALSE, "RocketExploded");
+
 	/// Set Game Variables
 	// sheep
-	glm::vec2 locs[] = { glm::vec2(0, 0), glm::vec2(750, 0), glm::vec2(0, 550), glm::vec2(750, 550), glm::vec2(400, 250),
-						glm::vec2(125, 50), glm::vec2(600, 100), glm::vec2(400, 400), glm::vec2(400, 0), glm::vec2(300, 100),
-						glm::vec2(200, 200), glm::vec2(100, 300) };
+	vector<glm::vec2> locs;
+	for (unsigned int i = 0; i < 4; i++)
+	{
+		for (unsigned int j = 0; j < 3; j++)
+		{
+			locs.push_back(glm::vec2(Width / 2 + i * 25, Height / 2 + j * 25));
+		}
+	}
 	for (unsigned int i = 0; i < 12; i++)
 	{
 		units.push_back(new Unit(locs[i], glm::vec2(50, 50),
 			ResourceManager::GetTexture("sheep"), glm::vec4(1.0f), true, 0.0f, .1f));
 	}
 	// selection box - don't draw it initially
-	selectionBox = new Drawable(glm::vec2(0, 0), glm::vec2(0,0),
+	selectionBox = new Drawable(glm::vec2(0, 0), glm::vec2(0, 0),
 		ResourceManager::GetTexture("selectionBox"), glm::vec4(1.0, 1.0, .4, .25), 0.0, false);
 
 	// hazards - test lazer, for now
-	hazardHandler = new HazardHandler(DEBUG, Width, Height);
-	lazer = new Lazer(glm::vec2(Width / 2, Height / 2), glm::vec2(800, 10), ResourceManager::GetTexture("Lazer"), ResourceManager::GetTexture("LazerExploded"),
-		glm::vec4(1.0f), 0.0f, GL_TRUE, Width, Height, 10.0f, 1.0f, glm::vec2(20, 20));
-	hazardHandler->lazers.push_back(lazer);
+	hazardHandler = new HazardHandler(SIMPLE, Width, Height,
+		ResourceManager::GetTexture("Lazer"), ResourceManager::GetTexture("LazerExploded"),
+		ResourceManager::GetTexture("Rocket"), ResourceManager::GetTexture("RocketExploded"));
+	hazardHandler->init();
 }
 
 void Game::Update(GLfloat dt)
 {
+
 	// updating values in units
 	for (unsigned int i = 0; i < units.size(); i++)
 	{
@@ -100,11 +108,10 @@ void Game::Update(GLfloat dt)
 				}
 			}
 		}
-		// killing units - must occur at the end of updating because
-		// array size and such get modified when a unit is killed
-		hazardHandler->update(units, dt);
-
 	}
+	// killing units - must occur at the end of updating because
+	// array size and such get modified when a unit is killed
+	hazardHandler->update(units, dt);
 }
 
 void Game::ProcessInput(GLfloat dt)
