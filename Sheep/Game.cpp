@@ -79,11 +79,10 @@ void Game::Init()
 
 void Game::Update(GLfloat dt)
 {
-	lazer->inHitbox(units[0]);
-
 	// updating values in units
 	for (unsigned int i = 0; i < units.size(); i++)
 	{
+		//updating unit positions
 		units[i]->move();
 		for (unsigned int j = 0; j < units.size(); j++)
 		{
@@ -98,6 +97,12 @@ void Game::Update(GLfloat dt)
 					units[j]->stop();
 				}
 			}
+		}
+		// killing units
+		if (lazer->inHitbox(units[i]))
+		{
+			delete units[i];
+			units.erase(units.begin() + i);
 		}
 	}
 }

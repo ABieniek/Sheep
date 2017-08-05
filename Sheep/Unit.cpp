@@ -27,7 +27,6 @@ void Unit::setDestination(glm::vec2 argDestination)
 		destination = argDestination;
 		angle = -atan2(destination.y - position.y, destination.x - position.x);
 		movementVector = glm::vec2(velocity * cos(angle), velocity * sin(angle));
-		cout << movementVector.x << ", " << movementVector.y << endl;
 		moving = true;
 	}
 }

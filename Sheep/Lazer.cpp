@@ -36,7 +36,7 @@ GLboolean Lazer::inHitbox(Unit * argUnit)
 	glm::vec2 PQ = glm::vec2(cos(rotation), sin(rotation));
 	glm::vec3 cross = glm::cross(glm::vec3(PS, 0), glm::vec3(PQ, 0));
 	GLfloat distance = norm(cross) / norm(PQ);
-	return argUnit->radius() <= distance;
+	return argUnit->radius() >= distance;
 
 }
 
