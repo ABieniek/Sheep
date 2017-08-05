@@ -30,7 +30,14 @@ void Lazer::detonate(vector<Unit*> units)
 
 GLboolean Lazer::inHitbox(Unit * argUnit)
 {
-	return GLboolean();
+	// distance from Q to PS
+	// = ||PS x PQ|| / ||PQ||
+	glm::vec2 PS = argUnit->position - position;
+	glm::vec2 PQ = glm::vec2(cos(rotation), sin(rotation));
+	glm::vec3 cross = glm::cross(glm::vec3(PS, 0), glm::vec3(PQ, 0));
+	GLfloat distance = norm(cross) / norm(PQ);
+	return argUnit->radius() <= distance;
+
 }
 
 void Lazer::draw(SpriteRenderer& renderer)

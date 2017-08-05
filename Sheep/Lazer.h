@@ -9,6 +9,7 @@
 #include "Drawable.h"
 #include "Hazard.h"
 #include "Unit.h"
+#include "CollisionUtil.h"
 
 #include <math.h>
 #include <vector>

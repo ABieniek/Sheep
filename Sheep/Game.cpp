@@ -79,7 +79,7 @@ void Game::Init()
 
 void Game::Update(GLfloat dt)
 {
-	lazer->rotation += .001f;
+	lazer->inHitbox(units[0]);
 
 	// updating values in units
 	for (unsigned int i = 0; i < units.size(); i++)

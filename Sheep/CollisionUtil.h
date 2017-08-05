@@ -20,5 +20,6 @@ glm::vec2 penetrationVector(glm::vec2 position1, GLfloat radius1, glm::vec2 posi
 glm::vec2 penetrationVector(Unit* unit1, Unit* unit2);
 
 GLfloat norm(glm::vec2 vec);
+GLfloat norm(glm::vec3 vec);
 
 #endif

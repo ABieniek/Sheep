@@ -30,3 +30,8 @@ GLfloat norm(glm::vec2 vec)
 {
 	return sqrt(vec.x * vec.x + vec.y * vec.y);
 }
+
+GLfloat norm(glm::vec3 vec)
+{
+	return sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
+}
