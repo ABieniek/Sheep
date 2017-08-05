@@ -28,7 +28,7 @@ void Rocket::setDestination(glm::vec2 argDestination)
 
 }
 
-void Rocket::detonate(vector<Unit*> units)
+void Rocket::detonate(vector<Unit*>& units)
 {
 
 }

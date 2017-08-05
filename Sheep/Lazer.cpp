@@ -18,14 +18,24 @@ Lazer::Lazer(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Text
 
 void Lazer::decreaseTime(GLfloat deltaTime)
 {
-	if (!exploded)
+	if (!detonated)
 		timer -= deltaTime;
 	else
 		duration -= deltaTime;
 }
 
-void Lazer::detonate(vector<Unit*> units)
+void Lazer::detonate(vector<Unit*>& units)
 {
+	detonated = true;
+	for (unsigned int i = 0; i < units.size(); i++)
+	{
+		// if the unit is within the hitbox, delete the memory and delete the pointer in the array
+		if (this->inHitbox(units[i]))
+		{
+			delete units[i];
+			units.erase(units.begin() + i);
+		}
+	}
 }
 
 GLboolean Lazer::inHitbox(Unit * argUnit)
@@ -44,7 +54,7 @@ void Lazer::draw(SpriteRenderer& renderer)
 {
 	if (bDraw)
 	{
-		if (!exploded)
+		if (!detonated)
 			renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
 		else
 			renderer.DrawSprite(this->detonatedSprite, this->position, this->size, this->rotation, this->color);

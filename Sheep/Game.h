@@ -26,6 +26,7 @@
 #include "Hazard.h"
 #include "Rocket.h"
 #include "Lazer.h"
+#include "HazardHandler.h"
 
 
 // Represents the current state of the game
@@ -69,6 +70,7 @@ public:
 	vector<Flock> flocks;
 	
 	// hazards
+	HazardHandler* hazardHandler;
 	Lazer* lazer;
 
 	// other stuff to draw
@@ -89,6 +91,7 @@ public:
 	void Render();
 
 	// debugging stuff
+	GLfloat totalTime = 0;
 };
 
 #endif

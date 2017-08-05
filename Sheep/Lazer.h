@@ -30,7 +30,7 @@ public:
 	// behavior
 	void decreaseTime(GLfloat deltaTime); // this function will decrease time and handle rocket travel
 	// explosion
-	void detonate(vector<Unit*> units);
+	void detonate(vector<Unit*>& units);
 	GLboolean inHitbox(Unit* argUnit);
 	// rendering
 	void draw(SpriteRenderer& renderer);

@@ -31,7 +31,7 @@ public:
 	void decreaseTime(GLfloat deltaTime); // this function will decrease time and handle rocket travel
 	void setDestination(glm::vec2 argDestination);
 	// explosion
-	void detonate(vector<Unit*> units);
+	void detonate(vector<Unit*>& units);
 	GLboolean inHitbox(Unit* argUnit);
 };
 

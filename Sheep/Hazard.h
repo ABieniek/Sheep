@@ -20,7 +20,7 @@ class Hazard : public Drawable
 public:
 	GLfloat timer; // time until the hazard will detonate
 	GLfloat duration; // holds duration that the texture will display after blowing up
-	GLboolean exploded = false; // holds whether the hazard has blown up or not
+	GLboolean detonated = false; // holds whether the hazard has blown up or not
 	Texture2D detonatedSprite; // the texture to be drawn when the object explodes
 	GLfloat worldWidth, worldHeight;
 
@@ -33,7 +33,7 @@ public:
 	// behavior
 	void decreaseTime(GLfloat deltaTime); // will bring hazard closer to explosion or destruction
 	// explosion
-	void detonate(vector<Unit*> units);
+	void detonate(vector<Unit*>& units);
 	virtual GLboolean inHitbox(Unit* argUnit);
 	// rendering
 	void draw(SpriteRenderer& renderer);

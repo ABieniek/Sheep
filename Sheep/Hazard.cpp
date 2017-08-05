@@ -21,14 +21,15 @@ Hazard::Hazard(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Te
 
 void Hazard::decreaseTime(GLfloat deltaTime)
 {
-	if (!exploded)
+	if (!detonated)
 		timer -= deltaTime;
 	else
 		duration -= deltaTime;
 }
 
-void Hazard::detonate(vector<Unit*> units)
+void Hazard::detonate(vector<Unit*>& units)
 {
+	detonated = true;
 	for (unsigned int i = 0; i < units.size(); i++)
 	{
 		// if the unit is within the hitbox, delete the memory and delete the pointer in the array
@@ -49,7 +50,7 @@ void Hazard::draw(SpriteRenderer& renderer)
 {
 	if (bDraw)
 	{
-		if (!exploded)
+		if (!detonated)
 			renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
 		else
 			renderer.DrawSprite(this->detonatedSprite, this->position, this->size, this->rotation, this->color);

@@ -73,8 +73,10 @@ void Game::Init()
 		ResourceManager::GetTexture("selectionBox"), glm::vec4(1.0, 1.0, .4, .25), 0.0, false);
 
 	// hazards - test lazer, for now
+	hazardHandler = new HazardHandler(DEBUG, Width, Height);
 	lazer = new Lazer(glm::vec2(Width / 2, Height / 2), glm::vec2(800, 10), ResourceManager::GetTexture("Lazer"), ResourceManager::GetTexture("LazerExploded"),
-		glm::vec4(1.0f), 0.0f, GL_TRUE, Width, Height, 0.0f, 0.0f, glm::vec2(20, 20));
+		glm::vec4(1.0f), 0.0f, GL_TRUE, Width, Height, 10.0f, 1.0f, glm::vec2(20, 20));
+	hazardHandler->lazers.push_back(lazer);
 }
 
 void Game::Update(GLfloat dt)
@@ -100,11 +102,8 @@ void Game::Update(GLfloat dt)
 		}
 		// killing units - must occur at the end of updating because
 		// array size and such get modified when a unit is killed
-		if (lazer->inHitbox(units[i]))
-		{
-			delete units[i];
-			units.erase(units.begin() + i);
-		}
+		hazardHandler->update(units, dt);
+
 	}
 }
 
@@ -196,7 +195,7 @@ void Game::Render()
 	spriteRenderer->DrawSprite(ResourceManager::GetTexture("background"),
 		glm::vec2(Width/2, Height/2), glm::vec2(Width, Height), 0.0f, glm::vec4(1.0f));
 	// draw Lazers
-	lazer->draw(*spriteRenderer);
+	hazardHandler->drawLazers(*spriteRenderer);
 	// draw units
 	for (unsigned int i = 0; i < units.size(); i++)
 		units[i]->draw(*spriteRenderer);
