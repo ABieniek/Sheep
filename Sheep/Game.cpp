@@ -67,7 +67,7 @@ void Game::Init()
 	{
 		for (unsigned int j = 0; j < 3; j++)
 		{
-			locs.push_back(glm::vec2(Width / 2 + i * 25, Height / 2 + j * 25));
+			locs.push_back(glm::vec2(Width / 2 + i * 100, Height / 2 + j * 100));
 		}
 	}
 	for (unsigned int i = 0; i < 12; i++)
@@ -93,7 +93,8 @@ void Game::Update(GLfloat dt)
 	for (unsigned int i = 0; i < units.size(); i++)
 	{
 		//updating unit positions
-		units[i]->move();
+		units[i]->move(dt);
+		
 		for (unsigned int j = 0; j < units.size(); j++)
 		{
 			if (i == j)  // if the unit we're looking at is not the same one we just moved, skip
@@ -112,6 +113,10 @@ void Game::Update(GLfloat dt)
 	// killing units - must occur at the end of updating because
 	// array size and such get modified when a unit is killed
 	hazardHandler->update(units, dt);
+	for (unsigned int t = 0; t < 100; t++)
+	{
+		cout << ".";
+	}
 }
 
 void Game::ProcessInput(GLfloat dt)

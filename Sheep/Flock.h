@@ -12,7 +12,6 @@ class Flock
 {
 public:
 	vector<Unit*> units;
-	GLfloat velocity;
 	glm::vec2 destination;
 	glm::vec2 position;
 	GLfloat angle;
