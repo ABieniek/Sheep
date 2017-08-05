@@ -195,6 +195,12 @@ void Game::Render()
 	for (unsigned int i = 0; i < units.size(); i++)
 		units[i]->draw(*spriteRenderer);
 	// draw selection box - low alpha value, so I can draw it over stuff
+	// now that I'm rendering from the center of objects, rendering the selection box will probably need to get hacky
+	// but this is a one-time thing because I only need one of these
+	selectionBox->position.x += selectionBox->size.x / 2;
+	selectionBox->position.y += selectionBox->size.y / 2;
 	selectionBox->draw(*selectionBoxRenderer);
+	selectionBox->position.x -= selectionBox->size.x / 2;
+	selectionBox->position.y -= selectionBox->size.y / 2;
 }
 
