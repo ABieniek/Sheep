@@ -79,6 +79,8 @@ void Game::Init()
 
 void Game::Update(GLfloat dt)
 {
+	lazer->rotation += .001f;
+
 	// updating values in units
 	for (unsigned int i = 0; i < units.size(); i++)
 	{

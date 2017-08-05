@@ -13,6 +13,8 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <tuple>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 #include <irrKlang.h>
 #include "ResourceManager.h"
@@ -85,6 +87,8 @@ public:
 	void ProcessInput(GLfloat dt);
 	void Update(GLfloat dt);
 	void Render();
+
+	// debugging stuff
 };
 
 #endif
