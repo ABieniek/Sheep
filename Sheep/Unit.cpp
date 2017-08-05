@@ -21,7 +21,7 @@ Unit::Unit(glm::vec2 argPos, glm::vec2 argSize, Texture2D argSprite, glm::vec4 a
 // movement
 void Unit::setDestination(glm::vec2 argDestination)
 {
-	argDestination -= glm::vec2(radius(), radius());
+	// argDestination -= glm::vec2(radius(), radius());
 	if (position != argDestination)
 	{
 		destination = argDestination;

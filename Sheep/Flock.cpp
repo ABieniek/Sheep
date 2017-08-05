@@ -18,14 +18,14 @@ void Flock::add(Unit* argUnit)
 	units.push_back(argUnit);
 
 	// handle calculation of new center
-	if (argUnit->center().x < minX)
-		minX = argUnit->center().x;
-	if (argUnit->center().x > maxX)
-		maxX = argUnit->center().x;
-	if (argUnit->center().y < minY)
-		minY = argUnit->center().y;
-	if (argUnit->center().y > maxY)
-		maxY = argUnit->center().y;
+	if (argUnit->position.x < minX)
+		minX = argUnit->position.x;
+	if (argUnit->position.x > maxX)
+		maxX = argUnit->position.x;
+	if (argUnit->position.y < minY)
+		minY = argUnit->position.y;
+	if (argUnit->position.y > maxY)
+		maxY = argUnit->position.y;
 }
 
 glm::vec2 Flock::center()
@@ -62,7 +62,7 @@ void Flock::setDestination(glm::vec2 argDestination)
 		// new destination is equal to the position of the unit
 		// plus the vector from the flock's center to the new point
 		// units[i]->setDestination(additionVector);
-		units[i]->setDestination(units[i]->center() + additionVector);
+		units[i]->setDestination(units[i]->position + additionVector);
 	}
 }
 

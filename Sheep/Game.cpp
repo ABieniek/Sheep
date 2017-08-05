@@ -138,10 +138,10 @@ void Game::ProcessInput(GLfloat dt)
 		for (unsigned int i = 0; i < units.size(); i++)
 		{
 			// if within box, select unit
-			if (((units[i]->center().x + units[i]->size.x / 2) > selectionBox->position.x)
-				&& ((units[i]->center().x - units[i]->size.x / 2) < selectionBox->position.x + selectionBox->size.x)
-				&& ((units[i]->center().y + units[i]->size.y / 2) > selectionBox->position.y)
-				&& ((units[i]->center().y - units[i]->size.y / 2) < selectionBox->position.y + selectionBox->size.y))
+			if (((units[i]->position.x + units[i]->size.x / 2) > selectionBox->position.x)
+				&& ((units[i]->position.x - units[i]->size.x / 2) < selectionBox->position.x + selectionBox->size.x)
+				&& ((units[i]->position.y + units[i]->size.y / 2) > selectionBox->position.y)
+				&& ((units[i]->position.y - units[i]->size.y / 2) < selectionBox->position.y + selectionBox->size.y))
 				units[i]->select();
 			//if not within box
 			else
@@ -188,7 +188,7 @@ void Game::Render()
 {	
 	// draw background
 	spriteRenderer->DrawSprite(ResourceManager::GetTexture("background"),
-		glm::vec2(0, 0), glm::vec2(800, 600), 0.0f, glm::vec4(1.0f));
+		glm::vec2(Width/2, Height/2), glm::vec2(Width, Height), 0.0f, glm::vec4(1.0f));
 	// draw Lazers
 	lazer->draw(*spriteRenderer);
 	// draw units
