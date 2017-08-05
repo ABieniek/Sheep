@@ -54,8 +54,9 @@ void Game::Init()
 	// Load textures
 	ResourceManager::LoadTexture("Textures/TempSheep.png", GL_TRUE, "sheep");
 	ResourceManager::LoadTexture("Textures/GrassBackground.png", GL_TRUE, "background");
-	ResourceManager::LoadTexture("Textures/White.png", GL_TRUE, "selectionBox");
-
+	ResourceManager::LoadTexture("Textures/White.png", GL_FALSE, "selectionBox");
+	ResourceManager::LoadTexture("Textures/Lazer.jpg", GL_FALSE, "Lazer");
+	ResourceManager::LoadTexture("Textures/LazerExploded.png", GL_TRUE, "LazerExploded");
 	
 	/// Set Game Variables
 	// sheep
@@ -70,6 +71,10 @@ void Game::Init()
 	// selection box - don't draw it initially
 	selectionBox = new Drawable(glm::vec2(0, 0), glm::vec2(0,0),
 		ResourceManager::GetTexture("selectionBox"), glm::vec4(1.0, 1.0, .4, .25), 0.0, false);
+
+	// hazards - test lazer, for now
+	lazer = new Lazer(glm::vec2(Width / 2, Height / 2), glm::vec2(800, 10), ResourceManager::GetTexture("Lazer"), ResourceManager::GetTexture("LazerExploded"),
+		glm::vec4(1.0f), 0.0f, GL_TRUE, Width, Height, 0.0f, 0.0f, glm::vec2(20, 20));
 }
 
 void Game::Update(GLfloat dt)
@@ -182,6 +187,8 @@ void Game::Render()
 	// draw background
 	spriteRenderer->DrawSprite(ResourceManager::GetTexture("background"),
 		glm::vec2(0, 0), glm::vec2(800, 600), 0.0f, glm::vec4(1.0f));
+	// draw Lazers
+	lazer->draw(*spriteRenderer);
 	// draw units
 	for (unsigned int i = 0; i < units.size(); i++)
 		units[i]->draw(*spriteRenderer);

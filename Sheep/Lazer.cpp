@@ -18,6 +18,10 @@ Lazer::Lazer(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Text
 
 void Lazer::decreaseTime(GLfloat deltaTime)
 {
+	if (!exploded)
+		timer -= deltaTime;
+	else
+		duration -= deltaTime;
 }
 
 void Lazer::detonate(vector<Unit*> units)
@@ -27,4 +31,15 @@ void Lazer::detonate(vector<Unit*> units)
 GLboolean Lazer::inHitbox(Unit * argUnit)
 {
 	return GLboolean();
+}
+
+void Lazer::draw(SpriteRenderer& renderer)
+{
+	if (bDraw)
+	{
+		if (!exploded)
+			renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
+		else
+			renderer.DrawSprite(this->detonatedSprite, this->position, this->size, this->rotation, this->color);
+	}
 }

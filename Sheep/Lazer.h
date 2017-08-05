@@ -31,6 +31,8 @@ public:
 	// explosion
 	void detonate(vector<Unit*> units);
 	GLboolean inHitbox(Unit* argUnit);
+	// rendering
+	void draw(SpriteRenderer& renderer);
 };
 
 #endif

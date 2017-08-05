@@ -21,6 +21,9 @@
 #include "Unit.h"
 #include "Flock.h"
 #include "CollisionUtil.h"
+#include "Hazard.h"
+#include "Rocket.h"
+#include "Lazer.h"
 
 
 // Represents the current state of the game
@@ -63,6 +66,9 @@ public:
 	vector<Unit*> selectedUnits;
 	vector<Flock> flocks;
 	
+	// hazards
+	Lazer* lazer;
+
 	// other stuff to draw
 	Drawable* selectionBox;
 
