@@ -120,6 +120,7 @@
     <ClCompile Include="Flock.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Hazard.cpp" />
+    <ClCompile Include="HazardHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Lazer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Flock.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Hazard.h" />
+    <ClInclude Include="HazardHandler.h" />
     <ClInclude Include="Lazer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Rocket.h" />

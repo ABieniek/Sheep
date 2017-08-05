@@ -98,7 +98,8 @@ void Game::Update(GLfloat dt)
 				}
 			}
 		}
-		// killing units
+		// killing units - must occur at the end of updating because
+		// array size and such get modified when a unit is killed
 		if (lazer->inHitbox(units[i]))
 		{
 			delete units[i];
