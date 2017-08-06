@@ -10,6 +10,16 @@ HazardHandler::HazardHandler(Difficulty argDifficulty, GLfloat argWidth, GLfloat
 
 }
 
+HazardHandler::~HazardHandler()
+{
+	for (unsigned int i = 0; i < lazers.size(); i++)
+		delete lazers[i];
+	lazers.clear();
+	for (unsigned int i = 0; i < rockets.size(); i++)
+		delete rockets[i];
+	rockets.clear();
+}
+
 void HazardHandler::init()
 {
 	// random seeds

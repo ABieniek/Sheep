@@ -31,6 +31,7 @@ Game::~Game()
 	delete selectionBox;
 	for (unsigned int i = 0; i < units.size(); i++)
 		delete units[i];
+	delete hazardHandler;
 }
 
 void Game::Init()
@@ -73,7 +74,7 @@ void Game::Init()
 	for (unsigned int i = 0; i < 12; i++)
 	{
 		units.push_back(new Unit(locs[i], glm::vec2(50, 50),
-			ResourceManager::GetTexture("sheep"), glm::vec4(1.0f), true, 0.0f, .1f));
+			ResourceManager::GetTexture("sheep"), glm::vec4(1.0f), true, 0.0f, 100.f));
 	}
 	// selection box - don't draw it initially
 	selectionBox = new Drawable(glm::vec2(0, 0), glm::vec2(0, 0),

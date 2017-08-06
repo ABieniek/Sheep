@@ -53,6 +53,7 @@ public:
 	HazardHandler(Difficulty argDifficulty, GLfloat argWidth, GLfloat argHeight,
 		Texture2D argLazerSprite, Texture2D argLazerSpriteDetonated, 
 		Texture2D argRocketSprite, Texture2D argRocketSpriteDetonated);
+	~HazardHandler();
 	void init();
 	// generating hazards
 	void generate(GLfloat deltaTime);

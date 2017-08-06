@@ -27,7 +27,7 @@ void Unit::setDestination(glm::vec2 argDestination)
 
 void Unit::move(GLfloat deltaTime)
 {
-	glm::vec2 velocityVector = movementVector * velocity;
+	glm::vec2 velocityVector = movementVector * velocity * deltaTime;
 	if (moving)
 	{
 		if (position.x < destination.x)
