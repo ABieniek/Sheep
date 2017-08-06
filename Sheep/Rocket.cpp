@@ -2,8 +2,8 @@
 
 Rocket::Rocket(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Texture2D argDetonatedSprite, Texture2D argTargetSprite,
 	glm::vec4 argColor, GLfloat argRotation, GLboolean argDraw, GLfloat argWidth, GLfloat argHeight, 
-	GLfloat argTimer, GLfloat argDuration, glm::vec2 argDestination, GLfloat argAngularVelocity)
-	: destination(argDestination), angularVelocity(argAngularVelocity), targetSprite(argTargetSprite)
+	GLfloat argTimer, GLfloat argDuration, glm::vec2 argDestination, GLfloat argVelocity, GLfloat argAngularVelocity)
+	: destination(argDestination), velocity(argVelocity), angularVelocity(argAngularVelocity), targetSprite(argTargetSprite)
 {
 	worldWidth = argWidth;
 	worldHeight = argHeight;
@@ -18,8 +18,10 @@ Rocket::Rocket(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Te
 	bDraw = argDraw;
 }
 
-void Rocket::update(GLfloat deltaTime, Unit* argUnit)
+void Rocket::update(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
+	if ((position == destination) || (timer <= 0))
+		detonate(argUnits);
 	if (!detonated)
 		timer -= deltaTime;
 	else
@@ -28,14 +30,14 @@ void Rocket::update(GLfloat deltaTime, Unit* argUnit)
 
 void Rocket::setTarget(Unit* argUnit)
 {
-	if (argUnit)
-		setDestination(argUnit->position);
+	targetUnit = argUnit;
 }
 
 void Rocket::setDestination(glm::vec2 argDestination)
 {
-
-	destination = argDestination;
+	// if the target unit pointer is still valid, update the rocket's destination
+	if (targetUnit)
+		destination = targetUnit->position;
 }
 
 void Rocket::move(GLfloat deltaTime)
@@ -92,4 +94,20 @@ void Rocket::detonate(vector<Unit*>& units)
 GLboolean Rocket::inHitbox(Unit* argUnit)
 {
 	return (norm(position - argUnit->position)) < size.x;
+}
+
+void Rocket::draw(SpriteRenderer& renderer)
+{
+	if (bDraw)
+	{
+		// if not detonated, draw the rocket and draw the lazer on the target
+		if (!detonated)
+		{
+			renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
+			renderer.DrawSprite(this->sprite, this->destination, this->size, this->rotation, this->color);
+		}
+		else
+			renderer.DrawSprite(this->detonatedSprite, this->position, this->size, this->rotation, this->color);
+	}
+	
 }

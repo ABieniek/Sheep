@@ -28,7 +28,7 @@ public:
 		GLfloat argWidth, GLfloat argHeight, GLfloat argTimer, GLfloat argDuration, glm::vec2 argChunkSize);
 
 	// behavior
-	void update(GLfloat deltaTime); // this function will decrease time and handle rocket travel
+	void update(GLfloat deltaTime, vector<Unit*>& argUnits); // this function will decrease time and handle rocket travel
 	// explosion
 	void detonate(vector<Unit*>& units);
 	GLboolean inHitbox(Unit* argUnit);

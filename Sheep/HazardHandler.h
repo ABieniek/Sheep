@@ -44,7 +44,7 @@ public:
 	Texture2D lazerSPriteDetonated;
 
 	// rocket stuff
-	GLfloat rocketTimer, rocketDuration;
+	GLfloat rocketTimer, rocketDuration, rocketVelocity, rocketAngularVelocity;
 	Texture2D rocketSprite;
 	Texture2D rocketSpriteDetonated;
 	Texture2D rocketSpriteTarget;
@@ -60,10 +60,11 @@ public:
 	void generate(GLfloat deltaTime);
 	void simpleGenerate(GLfloat deltaTime);
 	void addLazer(glm::vec2 argPosition, GLfloat argAngle);
-	void addRocket();
+	void addRocket(glm::vec2 argPosition);
 	GLfloat randomFloat(GLfloat min, GLfloat max);
 	// updating game logic
-	void update(vector<Unit*>& argUnits, GLfloat deltaTime);
+	void update(GLfloat deltaTime, vector<Unit*>& argUnits);
+	void checkRocketTargets(vector<Unit*>& argUnits);
 	// rendering - I'll separate rendering of hazards because I want some below and some above the units
 	void drawLazers(SpriteRenderer& renderer);
 	void drawRockets(SpriteRenderer& renderer);

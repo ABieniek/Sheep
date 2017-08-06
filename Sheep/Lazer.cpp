@@ -16,8 +16,10 @@ Lazer::Lazer(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Text
 	bDraw = argDraw;
 }
 
-void Lazer::update(GLfloat deltaTime)
+void Lazer::update(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
+	if (timer <= 0)
+		detonate(argUnits);
 	if (!detonated)
 		timer -= deltaTime;
 	else

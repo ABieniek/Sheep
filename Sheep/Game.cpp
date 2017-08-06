@@ -53,13 +53,14 @@ void Game::Init()
 	selectionBoxRenderer = new SpriteRenderer(ResourceManager::GetShader("selectionBox"));
 
 	// Load textures
+	// second argument asks if the image file has pixels with non-max alpha components
 	ResourceManager::LoadTexture("Textures/TempSheep.png", GL_TRUE, "sheep");
 	ResourceManager::LoadTexture("Textures/GrassBackground.png", GL_TRUE, "background");
 	ResourceManager::LoadTexture("Textures/White.png", GL_FALSE, "selectionBox");
 	ResourceManager::LoadTexture("Textures/Lazer.jpg", GL_FALSE, "Lazer");
 	ResourceManager::LoadTexture("Textures/LazerExploded.png", GL_FALSE, "LazerExploded");
 	ResourceManager::LoadTexture("Textures/Rocket.jpg", GL_FALSE, "Rocket");
-	ResourceManager::LoadTexture("Textures/RocketExploded.png", GL_FALSE, "RocketExploded");
+	ResourceManager::LoadTexture("Textures/RocketExploded.png", GL_TRUE, "RocketExploded");
 	ResourceManager::LoadTexture("Textures/RocketTarget.jpg", GL_FALSE, "RocketTarget");
 
 	/// Set Game Variables
@@ -114,7 +115,7 @@ void Game::Update(GLfloat dt)
 	}
 	// killing units - must occur at the end of updating because
 	// array size and such get modified when a unit is killed
-	hazardHandler->update(units, dt);
+	hazardHandler->update(dt, units);
 }
 
 void Game::ProcessInput(GLfloat dt)
@@ -204,11 +205,13 @@ void Game::Render()
 	// draw background
 	spriteRenderer->DrawSprite(ResourceManager::GetTexture("background"),
 		glm::vec2(Width/2, Height/2), glm::vec2(Width, Height), 0.0f, glm::vec4(1.0f));
-	// draw Lazers
+	// draw Lazers behind units
 	hazardHandler->drawLazers(*spriteRenderer);
 	// draw units
 	for (unsigned int i = 0; i < units.size(); i++)
 		units[i]->draw(*spriteRenderer);
+	// draw rockets on top of units
+	hazardHandler->drawRockets(*spriteRenderer);
 	// draw selection box - low alpha value, so I can draw it over stuff
 	// now that I'm rendering from the center of objects, rendering the selection box will probably need to get hacky
 	// but this is a one-time thing because I only need one of these
