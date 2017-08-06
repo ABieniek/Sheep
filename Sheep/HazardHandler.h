@@ -47,12 +47,13 @@ public:
 	GLfloat rocketTimer, rocketDuration;
 	Texture2D rocketSprite;
 	Texture2D rocketSpriteDetonated;
+	Texture2D rocketSpriteTarget;
 
 	
 	// constructors and initialization
 	HazardHandler(Difficulty argDifficulty, GLfloat argWidth, GLfloat argHeight,
 		Texture2D argLazerSprite, Texture2D argLazerSpriteDetonated, 
-		Texture2D argRocketSprite, Texture2D argRocketSpriteDetonated);
+		Texture2D argRocketSprite, Texture2D argRocketSpriteDetonated, Texture2D argRocketSpriteTarget);
 	~HazardHandler();
 	void init();
 	// generating hazards

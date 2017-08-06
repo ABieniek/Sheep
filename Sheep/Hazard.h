@@ -31,7 +31,7 @@ public:
 		GLfloat argWidth, GLfloat argHeight, GLfloat argTimer, GLfloat argDuration);
 
 	// behavior
-	void decreaseTime(GLfloat deltaTime); // will bring hazard closer to explosion or destruction
+	void update(GLfloat deltaTime); // will bring hazard closer to explosion or destruction
 	// explosion
 	void detonate(vector<Unit*>& units);
 	virtual GLboolean inHitbox(Unit* argUnit);

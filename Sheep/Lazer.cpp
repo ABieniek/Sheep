@@ -16,7 +16,7 @@ Lazer::Lazer(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Text
 	bDraw = argDraw;
 }
 
-void Lazer::decreaseTime(GLfloat deltaTime)
+void Lazer::update(GLfloat deltaTime)
 {
 	if (!detonated)
 		timer -= deltaTime;

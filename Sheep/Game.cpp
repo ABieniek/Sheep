@@ -60,6 +60,7 @@ void Game::Init()
 	ResourceManager::LoadTexture("Textures/LazerExploded.png", GL_FALSE, "LazerExploded");
 	ResourceManager::LoadTexture("Textures/Rocket.jpg", GL_FALSE, "Rocket");
 	ResourceManager::LoadTexture("Textures/RocketExploded.png", GL_FALSE, "RocketExploded");
+	ResourceManager::LoadTexture("Textures/RocketTarget.jpg", GL_FALSE, "RocketTarget");
 
 	/// Set Game Variables
 	// sheep
@@ -83,7 +84,7 @@ void Game::Init()
 	// hazards - test lazer, for now
 	hazardHandler = new HazardHandler(SIMPLE, Width, Height,
 		ResourceManager::GetTexture("Lazer"), ResourceManager::GetTexture("LazerExploded"),
-		ResourceManager::GetTexture("Rocket"), ResourceManager::GetTexture("RocketExploded"));
+		ResourceManager::GetTexture("Rocket"), ResourceManager::GetTexture("RocketExploded"), ResourceManager::GetTexture("RocketTarget"));
 	hazardHandler->init();
 }
 
@@ -114,10 +115,6 @@ void Game::Update(GLfloat dt)
 	// killing units - must occur at the end of updating because
 	// array size and such get modified when a unit is killed
 	hazardHandler->update(units, dt);
-	for (unsigned int t = 0; t < 100; t++)
-	{
-		cout << ".";
-	}
 }
 
 void Game::ProcessInput(GLfloat dt)

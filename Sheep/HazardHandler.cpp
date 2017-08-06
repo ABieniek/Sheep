@@ -2,10 +2,10 @@
 
 HazardHandler::HazardHandler(Difficulty argDifficulty, GLfloat argWidth, GLfloat argHeight,
 	Texture2D argLazerSprite, Texture2D argLazerSpriteDetonated,
-	Texture2D argRocketSprite, Texture2D argRocketSpriteDetonated)
+	Texture2D argRocketSprite, Texture2D argRocketSpriteDetonated, Texture2D argRocketSpriteTarget)
 	:difficulty(argDifficulty), width(argWidth), height(argHeight),
 	lazerSprite(argLazerSprite), lazerSPriteDetonated(argLazerSpriteDetonated),
-	rocketSprite(argRocketSprite), rocketSpriteDetonated(argRocketSpriteDetonated)
+	rocketSprite(argRocketSprite), rocketSpriteDetonated(argRocketSpriteDetonated), rocketSpriteTarget(argRocketSpriteDetonated)
 {
 
 }
@@ -42,7 +42,7 @@ void HazardHandler::update(vector<Unit*>& argUnits, GLfloat deltaTime)
 	// updating lazers
 	for (unsigned int i = 0; i < lazers.size(); i++)
 	{
-		lazers[i]->decreaseTime(deltaTime);
+		lazers[i]->update(deltaTime);
 		// if the timer runs out, detonate the lazer
 		if (lazers[i]->timer <= 0)
 			lazers[i]->detonate(argUnits);
@@ -57,9 +57,9 @@ void HazardHandler::update(vector<Unit*>& argUnits, GLfloat deltaTime)
 	// updating rockets
 	for (unsigned int i = 0; i < rockets.size(); i++)
 	{
-		rockets[i]->decreaseTime(deltaTime);
+		rockets[i]->update(deltaTime);
 		// if the timer runs out, detonate the rocket
-		if (rockets[i]->timer <= 0)
+		if (rockets[i]->timer <= 0 && rockets[i]->position == rockets[i]->destination)
 			rockets[i]->detonate(argUnits);
 		// if the rocket has expired, remove it from the array of rockets
 		if (rockets[i]->duration <= 0)

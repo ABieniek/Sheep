@@ -19,7 +19,7 @@ Hazard::Hazard(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Te
 	bDraw = argDraw;
 }
 
-void Hazard::decreaseTime(GLfloat deltaTime)
+void Hazard::update(GLfloat deltaTime)
 {
 	if (!detonated)
 		timer -= deltaTime;
