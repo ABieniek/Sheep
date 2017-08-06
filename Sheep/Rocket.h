@@ -9,7 +9,9 @@
 #include "Drawable.h"
 #include "Hazard.h"
 #include "Unit.h"
+#include "CollisionUtil.h"
 
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <vector>
 #include <algorithm>
@@ -20,7 +22,8 @@ public:
 	glm::vec2 destination; // the destination that the rocket approaches to explode
 	glm::vec2 trajectory;
 	GLfloat velocity;
-	GLfloat momentum;
+	GLfloat angle = 0;
+	GLfloat angularVelocity;
 	Texture2D targetSprite;
 
 	// constructors
@@ -29,7 +32,7 @@ public:
 		GLfloat argWidth, GLfloat argHeight, GLfloat argTimer, GLfloat argDuration, glm::vec2 argDestination, GLfloat argMomentum);
 
 	// behavior and movement
-	void update(GLfloat deltaTime); // this function will decrease time and handle rocket travel
+	void update(GLfloat deltaTime, Unit* argUnit); // this function will decrease time and handle rocket travel
 	void setTarget(Unit* argUnit);
 	void setDestination(glm::vec2 argDestination);
 	void move(GLfloat deltaTime);

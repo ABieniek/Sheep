@@ -1,9 +1,9 @@
 #include "Rocket.h"
 
 Rocket::Rocket(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Texture2D argDetonatedSprite, Texture2D argTargetSprite,
-	glm::vec4 argColor, GLfloat argRotation, GLboolean argDraw,
-	GLfloat argWidth, GLfloat argHeight, GLfloat argTimer, GLfloat argDuration, glm::vec2 argDestination, GLfloat argMomentum)
-	: destination(argDestination), momentum(argMomentum), targetSprite(argTargetSprite)
+	glm::vec4 argColor, GLfloat argRotation, GLboolean argDraw, GLfloat argWidth, GLfloat argHeight, 
+	GLfloat argTimer, GLfloat argDuration, glm::vec2 argDestination, GLfloat argAngularVelocity)
+	: destination(argDestination), angularVelocity(argAngularVelocity), targetSprite(argTargetSprite)
 {
 	worldWidth = argWidth;
 	worldHeight = argHeight;
@@ -18,7 +18,7 @@ Rocket::Rocket(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Te
 	bDraw = argDraw;
 }
 
-void Rocket::update(GLfloat deltaTime)
+void Rocket::update(GLfloat deltaTime, Unit* argUnit)
 {
 	if (!detonated)
 		timer -= deltaTime;
@@ -34,20 +34,62 @@ void Rocket::setTarget(Unit* argUnit)
 
 void Rocket::setDestination(glm::vec2 argDestination)
 {
-	
+
+	destination = argDestination;
 }
 
 void Rocket::move(GLfloat deltaTime)
 {
+	// if the rocket has detonated, don't move it
+	if (detonated) return;
 
+	GLfloat goalAngle = -atan2(destination.x - position.x, destination.y - position.y);
+	GLfloat angleChange = angularVelocity * deltaTime;
+	// change angle clockwise
+	if (goalAngle - angle > angle - goalAngle)
+	{
+		angle = min(angle - angleChange, goalAngle);
+	}
+	// changle angle counterclockwise
+	else if (goalAngle - angle < angle - goalAngle)
+	{
+		angle = max(angle + angleChange, goalAngle);
+	}
+
+	glm::vec2 velocityVector = glm::vec2(cos(angle), sin(angle)) * velocity * deltaTime;
+	if (position.x < destination.x)
+	{
+		position.x = std::min(position.x + velocityVector.x, destination.x);
+	}
+	else if (position.x > destination.x)
+	{
+		position.x = std::max(position.x + velocityVector.x, destination.x);
+	}
+	if (position.y < destination.y)
+	{
+		position.y = std::min(position.y - velocityVector.y, destination.y);
+	}
+	else if (position.y > destination.y)
+	{
+		position.y = std::max(position.y - velocityVector.y, destination.y);
+	}
 }
 
 void Rocket::detonate(vector<Unit*>& units)
 {
-
+	detonated = true;
+	for (unsigned int i = 0; i < units.size(); i++)
+	{
+		// if the unit is within the hitbox, delete the memory and delete the pointer in the array
+		if (this->inHitbox(units[i]))
+		{
+			delete units[i];
+			units.erase(units.begin() + i);
+		}
+	}
 }
 
 GLboolean Rocket::inHitbox(Unit* argUnit)
 {
-	return false;
+	return (norm(position - argUnit->position)) < size.x;
 }

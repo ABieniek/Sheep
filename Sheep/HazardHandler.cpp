@@ -57,7 +57,9 @@ void HazardHandler::update(vector<Unit*>& argUnits, GLfloat deltaTime)
 	// updating rockets
 	for (unsigned int i = 0; i < rockets.size(); i++)
 	{
-		rockets[i]->update(deltaTime);
+		// if the vector isn't empty, give 
+		if (!argUnits.empty())
+			rockets[i]->update(deltaTime, argUnits[0]);
 		// if the timer runs out, detonate the rocket
 		if (rockets[i]->timer <= 0 && rockets[i]->position == rockets[i]->destination)
 			rockets[i]->detonate(argUnits);
