@@ -5,7 +5,7 @@ HazardHandler::HazardHandler(Difficulty argDifficulty, GLfloat argWidth, GLfloat
 	Texture2D argRocketSprite, Texture2D argRocketSpriteDetonated, Texture2D argRocketSpriteTarget)
 	:difficulty(argDifficulty), width(argWidth), height(argHeight),
 	lazerSprite(argLazerSprite), lazerSPriteDetonated(argLazerSpriteDetonated),
-	rocketSprite(argRocketSprite), rocketSpriteDetonated(argRocketSpriteDetonated), rocketSpriteTarget(argRocketSpriteDetonated)
+	rocketSprite(argRocketSprite), rocketSpriteDetonated(argRocketSpriteDetonated), rocketSpriteTarget(argRocketSpriteTarget)
 {
 
 }
@@ -34,7 +34,7 @@ void HazardHandler::init()
 		// rocket stats
 		rocketTimer = 30;
 		rocketDuration = 1;
-		rocketVelocity = 300.f;
+		rocketVelocity = 80.f;
 		rocketAngularVelocity = .01f;
 	}
 	else
@@ -44,7 +44,7 @@ void HazardHandler::init()
 void HazardHandler::update(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
 	// adding new hazards
-	generate(deltaTime);
+	generate(deltaTime, argUnits);
 	// updating lazers
 	for (unsigned int i = 0; i < lazers.size(); i++)
 	{
@@ -60,9 +60,8 @@ void HazardHandler::update(GLfloat deltaTime, vector<Unit*>& argUnits)
 	// updating rockets
 	for (unsigned int i = 0; i < rockets.size(); i++)
 	{
-		// if the vector isn't empty, give 
-		if (!argUnits.empty())
-			rockets[i]->update(deltaTime, argUnits);
+		rockets[i]->resetDestination();
+		rockets[i]->update(deltaTime, argUnits);
 		// if the rocket has expired, remove it from the array of rockets
 		if (rockets[i]->duration <= 0)
 		{
@@ -73,17 +72,36 @@ void HazardHandler::update(GLfloat deltaTime, vector<Unit*>& argUnits)
 	}
 }
 
+void HazardHandler::updateRocketTargets(vector<Unit*>& argUnits)
+{
+	// for each rocket, we won't choose to update the destination until we make sure
+	// that the rocket's target is still in the array
+	for (unsigned int i = 0; i < rockets.size(); i++)
+	{
+		GLboolean targetExists = false;
+		for (unsigned int j = 0; j < argUnits.size(); j++)
+		{
+			if (rockets[i]->targetUnit == argUnits[j])
+				targetExists = true;
+		}
+		if (targetExists)
+		{
+			rockets[i]->resetDestination();
+		}
+	}
+}
+
 // generation of hazards
-void HazardHandler::generate(GLfloat deltaTime)
+void HazardHandler::generate(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
 	if (difficulty == SIMPLE)
 	{
-		simpleGenerate(deltaTime);
+		simpleGenerate(deltaTime, argUnits);
 	}
 	gameTime += deltaTime;
 }
 
-void HazardHandler::simpleGenerate(GLfloat deltaTime)
+void HazardHandler::simpleGenerate(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
 	// drop lazer every "frequency" seconds
 	if (floor(gameTime/frequency) != floor((gameTime + deltaTime) / frequency))	
@@ -92,8 +110,7 @@ void HazardHandler::simpleGenerate(GLfloat deltaTime)
 	}
 	if (floor(gameTime / (frequency * 5)) != floor((gameTime + deltaTime) / (frequency * 5)))
 	{
-		cout << "new rocket" << endl;
-		addRocket(glm::vec2(0, height / 2));
+		addRocket(glm::vec2(0, height / 2), argUnits);
 	}
 }
 
@@ -104,13 +121,16 @@ void HazardHandler::addLazer(glm::vec2 argPosition, GLfloat argAngle)
 		GL_TRUE, width, height, lazerTimer, lazerDuration, glm::vec2(0, 0)));
 }
 
-void HazardHandler::addRocket(glm::vec2 argPosition)
+void HazardHandler::addRocket(glm::vec2 argPosition, vector<Unit*>& argUnits)
 {
 	// I'm gonna give the dude an angle that always points to the center of the map initially
 	GLfloat tempAngle = -atan2(height / 2 - argPosition.y, width / 2 - argPosition.x);
 	rockets.push_back(new Rocket(argPosition, glm::vec2(100, 100), rocketSprite, rocketSpriteDetonated, rocketSpriteTarget,
 		glm::vec4(1.0f), tempAngle, true, width, height, 
 		rocketTimer, rocketDuration, glm::vec2(width / 2, height / 2), rocketVelocity, rocketAngularVelocity));
+	// immediately give the rocket a target, a random sheep
+	if (!argUnits.empty())
+		rockets[rockets.size() - 1]->setTarget(argUnits[rand() % argUnits.size()]);
 }
 
 GLfloat HazardHandler::randomFloat(GLfloat min, GLfloat max)

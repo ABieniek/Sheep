@@ -35,6 +35,7 @@ public:
 	// behavior and movement
 	void update(GLfloat deltaTime, vector<Unit*>& argUnits); // this function will decrease time and handle rocket travel
 	void setTarget(Unit* argUnit);
+	void resetDestination();
 	void setDestination(glm::vec2 argDestination);
 	void move(GLfloat deltaTime);
 	// explosion

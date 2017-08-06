@@ -57,14 +57,14 @@ public:
 	~HazardHandler();
 	void init();
 	// generating hazards
-	void generate(GLfloat deltaTime);
-	void simpleGenerate(GLfloat deltaTime);
+	void generate(GLfloat deltaTime, vector<Unit*>& argUnits);
+	void simpleGenerate(GLfloat deltaTime, vector<Unit*>& argUnits);
 	void addLazer(glm::vec2 argPosition, GLfloat argAngle);
-	void addRocket(glm::vec2 argPosition);
+	void addRocket(glm::vec2 argPosition, vector<Unit*>& argUnits);
 	GLfloat randomFloat(GLfloat min, GLfloat max);
 	// updating game logic
 	void update(GLfloat deltaTime, vector<Unit*>& argUnits);
-	void checkRocketTargets(vector<Unit*>& argUnits);
+	void updateRocketTargets(vector<Unit*>& argUnits);
 	// rendering - I'll separate rendering of hazards because I want some below and some above the units
 	void drawLazers(SpriteRenderer& renderer);
 	void drawRockets(SpriteRenderer& renderer);

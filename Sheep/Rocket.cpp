@@ -20,6 +20,7 @@ Rocket::Rocket(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Te
 
 void Rocket::update(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
+	move(deltaTime);
 	if ((position == destination) || (timer <= 0))
 		detonate(argUnits);
 	if (!detonated)
@@ -33,11 +34,16 @@ void Rocket::setTarget(Unit* argUnit)
 	targetUnit = argUnit;
 }
 
+void Rocket::resetDestination()
+{
+	if (targetUnit)
+		destination = targetUnit->position;
+}
+
 void Rocket::setDestination(glm::vec2 argDestination)
 {
 	// if the target unit pointer is still valid, update the rocket's destination
-	if (targetUnit)
-		destination = targetUnit->position;
+	destination = argDestination;
 }
 
 void Rocket::move(GLfloat deltaTime)
@@ -104,7 +110,7 @@ void Rocket::draw(SpriteRenderer& renderer)
 		if (!detonated)
 		{
 			renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
-			renderer.DrawSprite(this->sprite, this->destination, this->size, this->rotation, this->color);
+			renderer.DrawSprite(this->targetSprite, this->destination, this->size, this->rotation, this->color);
 		}
 		else
 			renderer.DrawSprite(this->detonatedSprite, this->position, this->size, this->rotation, this->color);

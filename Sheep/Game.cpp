@@ -59,9 +59,9 @@ void Game::Init()
 	ResourceManager::LoadTexture("Textures/White.png", GL_FALSE, "selectionBox");
 	ResourceManager::LoadTexture("Textures/Lazer.jpg", GL_FALSE, "Lazer");
 	ResourceManager::LoadTexture("Textures/LazerExploded.png", GL_FALSE, "LazerExploded");
-	ResourceManager::LoadTexture("Textures/Rocket.jpg", GL_FALSE, "Rocket");
+	ResourceManager::LoadTexture("Textures/Rocket.png", GL_TRUE, "Rocket");
 	ResourceManager::LoadTexture("Textures/RocketExploded.png", GL_TRUE, "RocketExploded");
-	ResourceManager::LoadTexture("Textures/RocketTarget.jpg", GL_FALSE, "RocketTarget");
+	ResourceManager::LoadTexture("Textures/RocketTarget.png", GL_TRUE, "RocketTarget");
 
 	/// Set Game Variables
 	// sheep
