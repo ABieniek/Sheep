@@ -21,7 +21,7 @@ Rocket::Rocket(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Te
 void Rocket::update(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
 	move(deltaTime);
-	if ((position == destination) || (timer <= 0))
+	if ((norm(position - destination) < 25) || (timer <= 0))
 		detonate(argUnits);
 	if (!detonated)
 		timer -= deltaTime;
@@ -36,13 +36,11 @@ void Rocket::setTarget(Unit* argUnit)
 
 void Rocket::resetDestination()
 {
-	if (targetUnit)
-		destination = targetUnit->position;
+	destination = targetUnit->position;
 }
 
 void Rocket::setDestination(glm::vec2 argDestination)
 {
-	// if the target unit pointer is still valid, update the rocket's destination
 	destination = argDestination;
 }
 
@@ -52,7 +50,6 @@ void Rocket::move(GLfloat deltaTime)
 	if (detonated) return;
 
 	GLfloat goalAngle = -atan2(destination.y - position.y, destination.x - position.x);
-	cout << goalAngle << endl;
 	GLfloat angleChange = angularVelocity * deltaTime;
 	GLfloat angleDifference = AngleDiff(goalAngle, rotation);
 	// change angle clockwise

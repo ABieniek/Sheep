@@ -32,10 +32,10 @@ void HazardHandler::init()
 		lazerDuration = .5;
 		frequency = 1;
 		// rocket stats
-		rocketTimer = 3000;
+		rocketTimer = 20;
 		rocketDuration = 1;
 		rocketVelocity = 80.f;
-		rocketAngularVelocity = .5f;
+		rocketAngularVelocity = 1.f;
 	}
 	else
 		cout << "difficulty not handled" << endl;
@@ -44,7 +44,7 @@ void HazardHandler::init()
 void HazardHandler::update(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
 	// adding new hazards
-	// generate(deltaTime, argUnits);
+	generate(deltaTime, argUnits);
 	// updating lazers
 	for (unsigned int i = 0; i < lazers.size(); i++)
 	{
@@ -60,7 +60,7 @@ void HazardHandler::update(GLfloat deltaTime, vector<Unit*>& argUnits)
 	// updating rockets
 	for (unsigned int i = 0; i < rockets.size(); i++)
 	{
-		rockets[i]->resetDestination();
+		updateRocketTargets(argUnits);
 		rockets[i]->update(deltaTime, argUnits);
 		// if the rocket has expired, remove it from the array of rockets
 		if (rockets[i]->duration <= 0)
@@ -83,6 +83,8 @@ void HazardHandler::updateRocketTargets(vector<Unit*>& argUnits)
 		{
 			if (rockets[i]->targetUnit == argUnits[j])
 				targetExists = true;
+			else
+				cout << "rocket not found" << endl;
 		}
 		if (targetExists)
 		{
@@ -104,13 +106,13 @@ void HazardHandler::generate(GLfloat deltaTime, vector<Unit*>& argUnits)
 void HazardHandler::simpleGenerate(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
 	// drop lazer every "frequency" seconds
-	/*if (floor(gameTime/frequency) != floor((gameTime + deltaTime) / frequency))	
+	if (floor(gameTime/frequency) != floor((gameTime + deltaTime) / frequency))	
 	{
-		addLazer(glm::vec2(randomFloat(0, width), height / 2), randomFloat(0, M_PI));
-	}*/
-	if (floor(gameTime / (frequency * 5)) != floor((gameTime + deltaTime) / (frequency * 5)))
+		addLazer(glm::vec2(randomFloat(0, width), height / 2), (rand() % 2) * M_PI / 2);
+	}
+	if (floor(gameTime / (frequency * 10)) != floor((gameTime + deltaTime) / (frequency * 10)))
 	{
-		addRocket(glm::vec2(0, height / 2), argUnits);
+		addRocket(glm::vec2(-50 + (rand() % 2)*(width + 50), height / 2), argUnits);
 	}
 }
 
