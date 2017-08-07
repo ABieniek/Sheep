@@ -32,10 +32,10 @@ void HazardHandler::init()
 		lazerDuration = .5;
 		frequency = 1;
 		// rocket stats
-		rocketTimer = 30;
+		rocketTimer = 3000;
 		rocketDuration = 1;
 		rocketVelocity = 80.f;
-		rocketAngularVelocity = .01f;
+		rocketAngularVelocity = .5f;
 	}
 	else
 		cout << "difficulty not handled" << endl;
@@ -44,7 +44,7 @@ void HazardHandler::init()
 void HazardHandler::update(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
 	// adding new hazards
-	generate(deltaTime, argUnits);
+	// generate(deltaTime, argUnits);
 	// updating lazers
 	for (unsigned int i = 0; i < lazers.size(); i++)
 	{
@@ -104,10 +104,10 @@ void HazardHandler::generate(GLfloat deltaTime, vector<Unit*>& argUnits)
 void HazardHandler::simpleGenerate(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
 	// drop lazer every "frequency" seconds
-	if (floor(gameTime/frequency) != floor((gameTime + deltaTime) / frequency))	
+	/*if (floor(gameTime/frequency) != floor((gameTime + deltaTime) / frequency))	
 	{
 		addLazer(glm::vec2(randomFloat(0, width), height / 2), randomFloat(0, M_PI));
-	}
+	}*/
 	if (floor(gameTime / (frequency * 5)) != floor((gameTime + deltaTime) / (frequency * 5)))
 	{
 		addRocket(glm::vec2(0, height / 2), argUnits);

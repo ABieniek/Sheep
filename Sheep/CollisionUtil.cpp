@@ -35,3 +35,19 @@ GLfloat norm(glm::vec3 vec)
 {
 	return sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
 }
+
+// angle stuff
+GLfloat AngleDiff(GLfloat argAngle1, GLfloat argAngle2)
+{
+	// https://github.com/sim642/AirTraffic/blob/master/Math.hpp#L39-L49
+	return boundNegPiToPi(argAngle2 - argAngle1);
+}
+
+GLfloat boundNegPiToPi(GLfloat argAngle)
+{
+	while (argAngle < -M_PI)
+		argAngle += 2 * M_PI;
+	while (argAngle > M_PI)
+		argAngle -= 2 * M_PI;
+	return argAngle;
+}

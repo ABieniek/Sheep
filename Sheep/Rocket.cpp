@@ -51,20 +51,22 @@ void Rocket::move(GLfloat deltaTime)
 	// if the rocket has detonated, don't move it
 	if (detonated) return;
 
-	GLfloat goalAngle = -atan2(destination.x - position.x, destination.y - position.y);
+	GLfloat goalAngle = -atan2(destination.y - position.y, destination.x - position.x);
+	cout << goalAngle << endl;
 	GLfloat angleChange = angularVelocity * deltaTime;
+	GLfloat angleDifference = AngleDiff(goalAngle, rotation);
 	// change angle clockwise
-	if (goalAngle - angle > angle - goalAngle)
+	if (angleDifference < 0)
 	{
-		angle = min(angle - angleChange, goalAngle);
+		rotation = rotation + angleChange;
 	}
 	// changle angle counterclockwise
-	else if (goalAngle - angle < angle - goalAngle)
+	else if (angleDifference > 0)
 	{
-		angle = max(angle + angleChange, goalAngle);
+		rotation = rotation - angleChange;
 	}
 
-	glm::vec2 velocityVector = glm::vec2(cos(angle), sin(angle)) * velocity * deltaTime;
+	glm::vec2 velocityVector = glm::vec2(cos(rotation), sin(rotation)) * velocity * deltaTime;
 	if (position.x < destination.x)
 	{
 		position.x = std::min(position.x + velocityVector.x, destination.x);
@@ -109,11 +111,11 @@ void Rocket::draw(SpriteRenderer& renderer)
 		// if not detonated, draw the rocket and draw the lazer on the target
 		if (!detonated)
 		{
-			renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
-			renderer.DrawSprite(this->targetSprite, this->destination, this->size, this->rotation, this->color);
+			renderer.DrawSprite(this->sprite, this->position, this->size, -(this->rotation), this->color);
+			renderer.DrawSprite(this->targetSprite, this->destination, this->size, 0, this->color);
 		}
 		else
-			renderer.DrawSprite(this->detonatedSprite, this->position, this->size, this->rotation, this->color);
-	}
-	
+			renderer.DrawSprite(this->detonatedSprite, this->position, this->size, 0, this->color);
+	}	
 }
+

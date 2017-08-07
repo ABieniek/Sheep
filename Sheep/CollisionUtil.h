@@ -6,6 +6,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 using namespace std;
@@ -21,5 +22,9 @@ glm::vec2 penetrationVector(Unit* unit1, Unit* unit2);
 
 GLfloat norm(glm::vec2 vec);
 GLfloat norm(glm::vec3 vec);
+
+// angle stuff
+GLfloat AngleDiff(GLfloat argAngle1, GLfloat argAngle2);
+GLfloat boundNegPiToPi(GLfloat argAngle);
 
 #endif

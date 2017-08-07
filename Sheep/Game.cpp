@@ -87,6 +87,7 @@ void Game::Init()
 		ResourceManager::GetTexture("Lazer"), ResourceManager::GetTexture("LazerExploded"),
 		ResourceManager::GetTexture("Rocket"), ResourceManager::GetTexture("RocketExploded"), ResourceManager::GetTexture("RocketTarget"));
 	hazardHandler->init();
+	hazardHandler->addRocket(glm::vec2(0, Height / 2), units);
 }
 
 void Game::Update(GLfloat dt)
