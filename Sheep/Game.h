@@ -91,8 +91,9 @@ public:
 	void Update(GLfloat dt);
 	void Render();
 
-	// time stuff
+	// other global stuff
 	GLfloat gameTime = 0;
+	GLint gameScore = 0;
 };
 
 #endif

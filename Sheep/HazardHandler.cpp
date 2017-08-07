@@ -84,8 +84,6 @@ void HazardHandler::updateRocketTargets(vector<Unit*>& argUnits)
 		{
 			if (rockets[i]->targetUnit == argUnits[j])
 				targetExists = true;
-			else
-				cout << "rocket not found" << endl;
 		}
 		if (targetExists)
 		{

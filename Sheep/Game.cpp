@@ -139,13 +139,23 @@ void Game::Update(GLfloat dt)
 	{
 		// keep making up new random spots to spawn the powerup until we get a spot that's not too close
 		glm::vec2 randomLocation = glm::vec2((100 + (rand() % (Width - 50)))*1.f, (100 + (rand() % (Height - 50))*1.f));
-		cout << randomLocation.x << ", " << randomLocation.y << endl;
 		powerUps.push_back(new PowerUp(randomLocation, glm::vec2(50, 50), ResourceManager::GetTexture("Life"), glm::vec4(1.0f),
 			GL_TRUE, 100));
 	}
 	// killing units - must occur at the end of updating because
 	// array size and such get modified when a unit is killed
 	hazardHandler->update(dt, units);
+
+	///updating score and handling loss condition
+	// loss condition will just be if the unit count gets too low, let's say about five, which might also depend on difficulty
+
+	// score will increase, each second, for the number of units that are still alive
+	if (floor(gameTime) != floor(gameTime + dt))
+	{
+		gameScore += units.size();
+		cout << "gameScore: " << gameScore << endl;
+	}
+
 	gameTime += dt;
 }
 
