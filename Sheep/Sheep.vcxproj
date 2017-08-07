@@ -123,6 +123,7 @@
     <ClCompile Include="HazardHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Lazer.cpp" />
+    <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Rocket.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="Hazard.h" />
     <ClInclude Include="HazardHandler.h" />
     <ClInclude Include="Lazer.h" />
+    <ClInclude Include="PowerUp.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Rocket.h" />
     <ClInclude Include="Shader.h" />

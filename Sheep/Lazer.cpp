@@ -1,6 +1,8 @@
 #include "Lazer.h"
 
-Lazer::Lazer(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Texture2D argDetonatedSprite, glm::vec4 argColor, GLfloat argRotation, GLboolean argDraw, GLfloat argWidth, GLfloat argHeight, GLfloat argTimer, GLfloat argDuration, glm::vec2 argChunkSize)
+Lazer::Lazer(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, Texture2D argDetonatedSprite, glm::vec4 argColor, 
+	GLfloat argRotation, GLboolean argDraw, GLfloat argWidth, GLfloat argHeight,
+	GLfloat argTimer, GLfloat argDuration, glm::vec2 argChunkSize)
 	: chunkSize(argChunkSize)
 {
 	worldWidth = argWidth;

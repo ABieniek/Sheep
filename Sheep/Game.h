@@ -27,6 +27,7 @@
 #include "Rocket.h"
 #include "Lazer.h"
 #include "HazardHandler.h"
+#include "PowerUp.h"
 
 
 // Represents the current state of the game
@@ -69,9 +70,9 @@ public:
 	vector<Unit*> selectedUnits;
 	vector<Flock> flocks;
 	
-	// hazards
+	// hazards & powerups
 	HazardHandler* hazardHandler;
-	Lazer* lazer;
+	vector<PowerUp*> powerUps;
 
 	// other stuff to draw
 	Drawable* selectionBox;
@@ -90,8 +91,8 @@ public:
 	void Update(GLfloat dt);
 	void Render();
 
-	// debugging stuff
-	GLfloat totalTime = 0;
+	// time stuff
+	GLfloat gameTime = 0;
 };
 
 #endif

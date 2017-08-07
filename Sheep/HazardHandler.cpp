@@ -30,9 +30,10 @@ void HazardHandler::init()
 		// lazer stats
 		lazerTimer = 5;
 		lazerDuration = .5;
-		frequency = 1;
+		lazerFrequency = 5;
 		// rocket stats
-		rocketTimer = 20;
+		rocketFrequency = 15;
+		rocketTimer = 10;
 		rocketDuration = 1;
 		rocketVelocity = 80.f;
 		rocketAngularVelocity = 1.f;
@@ -106,11 +107,11 @@ void HazardHandler::generate(GLfloat deltaTime, vector<Unit*>& argUnits)
 void HazardHandler::simpleGenerate(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
 	// drop lazer every "frequency" seconds
-	if (floor(gameTime/frequency) != floor((gameTime + deltaTime) / frequency))	
+	if (floor(gameTime/lazerFrequency) != floor((gameTime + deltaTime) / lazerFrequency))	
 	{
-		addLazer(glm::vec2(randomFloat(0, width), height / 2), (rand() % 2) * M_PI / 2);
+		addLazer(glm::vec2(randomFloat(0, width), randomFloat(0, height)), (rand() % 2) * M_PI / 2);
 	}
-	if (floor(gameTime / (frequency * 10)) != floor((gameTime + deltaTime) / (frequency * 10)))
+	if (floor(gameTime / (rocketFrequency)) != floor((gameTime + deltaTime) / (rocketFrequency)))
 	{
 		addRocket(glm::vec2(-50 + (rand() % 2)*(width + 50), height / 2), argUnits);
 	}

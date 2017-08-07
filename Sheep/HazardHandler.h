@@ -35,19 +35,18 @@ public:
 	GLfloat gameTime = 0;
 	Difficulty difficulty;
 
-	// hazard generation values
-	GLfloat frequency = -1;
-
 	// lazer stuff
 	GLfloat lazerTimer, lazerDuration;
 	Texture2D lazerSprite;
 	Texture2D lazerSPriteDetonated;
+	GLfloat lazerFrequency = -1;
 
 	// rocket stuff
 	GLfloat rocketTimer, rocketDuration, rocketVelocity, rocketAngularVelocity;
 	Texture2D rocketSprite;
 	Texture2D rocketSpriteDetonated;
 	Texture2D rocketSpriteTarget;
+	GLfloat rocketFrequency = -1;
 
 	
 	// constructors and initialization

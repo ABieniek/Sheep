@@ -62,6 +62,7 @@ void Game::Init()
 	ResourceManager::LoadTexture("Textures/Rocket.png", GL_TRUE, "Rocket");
 	ResourceManager::LoadTexture("Textures/RocketExploded.png", GL_TRUE, "RocketExploded");
 	ResourceManager::LoadTexture("Textures/RocketTarget.png", GL_TRUE, "RocketTarget");
+	ResourceManager::LoadTexture("Textures/PowerUpLife.png", GL_TRUE, "Life");
 
 	/// Set Game Variables
 	// sheep
@@ -87,17 +88,17 @@ void Game::Init()
 		ResourceManager::GetTexture("Lazer"), ResourceManager::GetTexture("LazerExploded"),
 		ResourceManager::GetTexture("Rocket"), ResourceManager::GetTexture("RocketExploded"), ResourceManager::GetTexture("RocketTarget"));
 	hazardHandler->init();
+	srand(time(NULL));
 }
 
 void Game::Update(GLfloat dt)
 {
-
 	// updating values in units
 	for (unsigned int i = 0; i < units.size(); i++)
 	{
 		//updating unit positions
 		units[i]->move(dt);
-		
+
 		for (unsigned int j = 0; j < units.size(); j++)
 		{
 			if (i == j)  // if the unit we're looking at is not the same one we just moved, skip
@@ -113,9 +114,39 @@ void Game::Update(GLfloat dt)
 			}
 		}
 	}
+	// handling powerups
+	for (unsigned int i = 0; i < powerUps.size(); i++)
+	{
+		powerUps[i]->update(dt);
+		for (int j = 0; j < units.size(); j++)
+		{
+			if (powerUps[i]->inHitbox(units[j])) // here
+			{
+				glm::vec2 tempPosition = powerUps[i]->position;
+				// getting rid of powerup
+				delete powerUps[i];
+				powerUps.erase(powerUps.begin() + i);
+				i--;
+				//adding new unit
+				units.push_back(new Unit(tempPosition, glm::vec2(50, 50),
+					ResourceManager::GetTexture("sheep"), glm::vec4(1.0f), true, 0.0f, 100.f));
+				break;
+			}
+		}
+	}
+	// generating new powerups
+	if (floor(gameTime/10) != floor((gameTime + dt) / 10))
+	{
+		// keep making up new random spots to spawn the powerup until we get a spot that's not too close
+		glm::vec2 randomLocation = glm::vec2((100 + (rand() % (Width - 50)))*1.f, (100 + (rand() % (Height - 50))*1.f));
+		cout << randomLocation.x << ", " << randomLocation.y << endl;
+		powerUps.push_back(new PowerUp(randomLocation, glm::vec2(50, 50), ResourceManager::GetTexture("Life"), glm::vec4(1.0f),
+			GL_TRUE, 100));
+	}
 	// killing units - must occur at the end of updating because
 	// array size and such get modified when a unit is killed
 	hazardHandler->update(dt, units);
+	gameTime += dt;
 }
 
 void Game::ProcessInput(GLfloat dt)
@@ -207,6 +238,9 @@ void Game::Render()
 		glm::vec2(Width/2, Height/2), glm::vec2(Width, Height), 0.0f, glm::vec4(1.0f));
 	// draw Lazers behind units
 	hazardHandler->drawLazers(*spriteRenderer);
+	// draw powerups
+	for (unsigned int i = 0; i < powerUps.size(); i++)
+		powerUps[i]->draw(*spriteRenderer);
 	// draw units
 	for (unsigned int i = 0; i < units.size(); i++)
 		units[i]->draw(*spriteRenderer);
