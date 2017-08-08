@@ -76,3 +76,9 @@ void Unit::draw(SpriteRenderer& renderer)
 	if (bDraw)
 		renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
 }
+
+void Unit::draw(SpriteRenderer & renderer, glm::vec2 argSampleDivider, glm::vec2 argSampleOffset)
+{
+	if (bDraw)
+		renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color, argSampleDivider, argSampleOffset);
+}

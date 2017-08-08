@@ -27,8 +27,6 @@ public:
 	// constructors
 	Unit(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec4 color, GLboolean argDraw, GLfloat argRotation, GLfloat velocity);
 
-	// rendering 
-	virtual void draw(SpriteRenderer& Renderer);
 	// movement
 	void setDestination(glm::vec2 argDestination);
 	void move(GLfloat deltaTime);
@@ -36,6 +34,9 @@ public:
 	// selection
 	void select();
 	void deselect();
+	// rendering 
+	virtual void draw(SpriteRenderer& Renderer);
+	void draw(SpriteRenderer & renderer, glm::vec2 argSampleDivider, glm::vec2 argSampleOffset);
 };
 
 #endif

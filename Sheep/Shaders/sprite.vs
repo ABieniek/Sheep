@@ -5,9 +5,12 @@ out vec2 TexCoords;
 
 uniform mat4 model;
 uniform mat4 projection;
+uniform vec2 sampleDivider;
+uniform vec2 sampleOffset;
 
 void main()
 {
-    TexCoords = vertex.zw;
+    TexCoords = vec2(vertex.z / sampleDivider.x + sampleOffset.x, 
+					vertex.w / sampleDivider.y + sampleOffset.y);
     gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
 }

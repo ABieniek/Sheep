@@ -41,6 +41,43 @@ void SpriteRenderer::DrawSprite(Texture2D &texture, glm::vec2 position, glm::vec
 
 	// Render textured quad
 	this->shader.SetVector4f("spriteColor", color);
+	// this function will ignore any type of sampling
+	this->shader.SetVector2f("sampleDivider", glm::vec2(1.0f, 1.0f));
+	this->shader.SetVector2f("sampleOffset", glm::vec2(0.0f, 0.0f));
+
+	glActiveTexture(GL_TEXTURE0);
+	texture.Bind();
+
+	glBindVertexArray(this->quadVAO);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(0);
+}
+
+void SpriteRenderer::DrawSprite(Texture2D &texture, glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec4 color,
+	glm::vec2 argSampleDimensions, glm::vec2 argSampleCoordinate)
+{
+	// Prepare transformations
+	this->shader.Use();
+	glm::mat4 model;
+	model = glm::translate(model, glm::vec3(position, 0.0f));  // First translate (transformations are: scale happens first, then rotation and finally translation happens; reversed order)
+
+															   // model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f)); // Move origin of rotation to center of quad
+	model = glm::rotate(model, rotate, glm::vec3(0.0f, 0.0f, 1.0f)); // Then rotate
+																	 // model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f)); // Move origin back
+
+	model = glm::scale(model, glm::vec3(size, 1.0f)); // Last scale
+
+	this->shader.SetMatrix4("model", model);
+
+	// Render textured quad
+	this->shader.SetVector4f("spriteColor", color);
+
+	// do math for the desired sample
+	glm::vec2 sampleDivider = argSampleDimensions;
+	glm::vec2 sampleOffset = glm::vec2(sampleDivider.x / argSampleCoordinate.x, sampleDivider.y / argSampleCoordinate.y);
+	cout << "sampleOffset: " << sampleOffset.x << ", " << sampleOffset.y << endl;
+	this->shader.SetVector2f("sampleDivider", sampleDivider); 
+	this->shader.SetVector2f("sampleOffset", sampleOffset);
 
 	glActiveTexture(GL_TEXTURE0);
 	texture.Bind();
