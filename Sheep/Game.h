@@ -19,6 +19,7 @@
 #include <irrKlang.h>
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
+#include "SampleRenderer.h"
 #include "Drawable.h"
 #include "Unit.h"
 #include "Flock.h"

@@ -126,6 +126,7 @@
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Rocket.cpp" />
+    <ClCompile Include="SampleRenderer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="PowerUp.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Rocket.h" />
+    <ClInclude Include="SampleRenderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="stb_image.h" />
