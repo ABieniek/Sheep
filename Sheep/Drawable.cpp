@@ -15,8 +15,9 @@ void Drawable::draw(SpriteRenderer& renderer)
 		renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
 }
 
-void Drawable::draw(SpriteRenderer & renderer, glm::vec2 argSampleDivider, glm::vec2 argSampleOffset)
+void Drawable::draw(SpriteRenderer & renderer, glm::vec2 argSampleDivider, GLint argSampleIndex)
 {
 	if (bDraw)
-		renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color, argSampleDivider, argSampleOffset);
+		renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color, 
+			argSampleDivider, argSampleIndex, false, false);
 }

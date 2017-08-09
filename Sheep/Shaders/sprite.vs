@@ -10,7 +10,7 @@ uniform vec2 sampleOffset;
 
 void main()
 {
-    TexCoords = vec2(vertex.z / sampleDivider.x + sampleOffset.x, 
-					vertex.w / sampleDivider.y + sampleOffset.y);
+    TexCoords = vec2((vertex.z + sampleOffset.x)/ sampleDivider.x, 
+					(vertex.w + sampleOffset.y) / sampleDivider.y);
     gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
 }

@@ -54,7 +54,7 @@ void SpriteRenderer::DrawSprite(Texture2D &texture, glm::vec2 position, glm::vec
 }
 
 void SpriteRenderer::DrawSprite(Texture2D &texture, glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec4 color,
-	glm::vec2 argSampleDimensions, glm::vec2 argSampleCoordinate)
+	glm::vec2 argSampleDimensions, GLint argSampleIndex, GLboolean flipXAxis, GLboolean flixYAxis)
 {
 	// Prepare transformations
 	this->shader.Use();
@@ -73,10 +73,12 @@ void SpriteRenderer::DrawSprite(Texture2D &texture, glm::vec2 position, glm::vec
 	this->shader.SetVector4f("spriteColor", color);
 
 	// do math for the desired sample
-	glm::vec2 sampleDivider = argSampleDimensions;
-	glm::vec2 sampleOffset = glm::vec2(sampleDivider.x / argSampleCoordinate.x, sampleDivider.y / argSampleCoordinate.y);
-	cout << "sampleOffset: " << sampleOffset.x << ", " << sampleOffset.y << endl;
+	glm::vec2 sampleDivider = argSampleDimensions; // dimensions by which we divide the picture
 	this->shader.SetVector2f("sampleDivider", sampleDivider); 
+	// I'm gonna pretend that I've turned the image into an array, and this portion will use
+	// math similar to pointer arithmetic to get the sample offset
+	glm::vec2 sampleOffset = glm::vec2((argSampleIndex % (int) sampleDivider.x) * 1.f, 
+										(argSampleIndex / (int) sampleDivider.y) * 1.f);
 	this->shader.SetVector2f("sampleOffset", sampleOffset);
 
 	glActiveTexture(GL_TEXTURE0);

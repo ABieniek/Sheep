@@ -36,7 +36,7 @@ public:
 	void deselect();
 	// rendering 
 	virtual void draw(SpriteRenderer& Renderer);
-	void draw(SpriteRenderer & renderer, glm::vec2 argSampleDivider, glm::vec2 argSampleOffset);
+	void draw(SpriteRenderer & renderer, glm::vec2 argSampleDivider, GLint argSampleIndex);
 };
 
 #endif

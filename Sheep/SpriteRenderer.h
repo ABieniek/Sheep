@@ -31,7 +31,7 @@ public:
 	// Renders a defined quad textured with given sprite
 	void DrawSprite(Texture2D &texture, glm::vec2 position, glm::vec2 size = glm::vec2(10, 10), GLfloat rotate = 0.0f, glm::vec4 color = glm::vec4(1.0f));
 	void DrawSprite(Texture2D & texture, glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec4 color,
-		glm::vec2 argSampleDimensions, glm::vec2 argSampleCoordinate);
+		glm::vec2 argSampleDimensions, GLint argSampleIndex, GLboolean flipXAxis, GLboolean flipYAxis);
 	// Render state
 	Shader shader;
 	GLuint quadVAO;
