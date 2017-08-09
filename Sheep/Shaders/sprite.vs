@@ -7,10 +7,18 @@ uniform mat4 model;
 uniform mat4 projection;
 uniform vec2 sampleDivider;
 uniform vec2 sampleOffset;
+uniform bool mirrorXAxis;
+uniform bool mirrorYAxis;
 
 void main()
 {
     TexCoords = vec2((vertex.z + sampleOffset.x)/ sampleDivider.x, 
 					(vertex.w + sampleOffset.y) / sampleDivider.y);
-    gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
+	
+	//if (mirrorXAxis)
+		TexCoords.x += (1.0) - (sampleOffset.x)/ sampleDivider.x;
+    //if (mirrorYAxis)
+		TexCoords.y = -TexCoords.y;
+		
+	gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
 }
