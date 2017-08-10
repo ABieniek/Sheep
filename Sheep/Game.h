@@ -91,7 +91,7 @@ public:
 	// GameLoop
 	void ProcessInput(GLfloat dt);
 	void Update(GLfloat dt);
-	void Render();
+	void Render(GLfloat dt);
 
 	// other global and debugging stuff
 	GLfloat gameTime = 0;

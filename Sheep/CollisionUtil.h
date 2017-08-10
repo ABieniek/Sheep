@@ -29,4 +29,8 @@ GLfloat norm(glm::vec3 vec);
 GLfloat AngleDiff(GLfloat argAngle1, GLfloat argAngle2);
 GLfloat boundNegPiToPi(GLfloat argAngle);
 
+// time stuff
+inline GLboolean differentTimeInterval(GLfloat t1, GLfloat t2, GLfloat argIntervalLength) 
+	{return (floor(t1 / argIntervalLength) != floor(t2 / argIntervalLength));};
+
 #endif

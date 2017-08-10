@@ -54,7 +54,7 @@ void Game::Init()
 
 	// Load textures
 	// second argument asks if the image file has pixels with non-max alpha components
-	ResourceManager::LoadTexture("Textures/TempSheep.png", GL_TRUE, "sheep");
+	ResourceManager::LoadTexture("Textures/AnimatedSheep.png", GL_TRUE, "sheep");
 	ResourceManager::LoadTexture("Textures/GrassBackground.png", GL_TRUE, "background");
 	ResourceManager::LoadTexture("Textures/White.png", GL_FALSE, "selectionBox");
 	ResourceManager::LoadTexture("Textures/Lazer.jpg", GL_FALSE, "Lazer");
@@ -118,7 +118,7 @@ void Game::Update(GLfloat dt)
 	for (unsigned int i = 0; i < powerUps.size(); i++)
 	{
 		powerUps[i]->update(dt);
-		for (int j = 0; j < units.size(); j++)
+		for (unsigned int j = 0; j < units.size(); j++)
 		{
 			if (powerUps[i]->inHitbox(units[j])) // here
 			{
@@ -135,7 +135,7 @@ void Game::Update(GLfloat dt)
 		}
 	}
 	// generating new powerups
-	if (floor(gameTime/10) != floor((gameTime + dt) / 10))
+	if (differentTimeInterval(gameTime, gameTime + dt, 10))
 	{
 		// keep making up new random spots to spawn the powerup until we get a spot that's not too close
 		glm::vec2 randomLocation = glm::vec2((100 + (rand() % (Width - 50)))*1.f, (100 + (rand() % (Height - 50))*1.f));
@@ -150,7 +150,7 @@ void Game::Update(GLfloat dt)
 	// loss condition will just be if the unit count gets too low, let's say about five, which might also depend on difficulty
 
 	// score will increase, each second, for the number of units that are still alive
-	if (floor(gameTime) != floor(gameTime + dt))
+	if (differentTimeInterval(gameTime, gameTime + dt, 1))
 	{
 		gameScore += units.size();
 		cout << "gameScore: " << gameScore << endl;
@@ -243,7 +243,7 @@ void Game::ProcessInput(GLfloat dt)
 	mbModsPrev = mbMods;
 }
 
-void Game::Render()
+void Game::Render(GLfloat dt)
 {	
 	// draw background
 	spriteRenderer->DrawSprite(ResourceManager::GetTexture("background"),
@@ -255,7 +255,13 @@ void Game::Render()
 		powerUps[i]->draw(*spriteRenderer);
 	// draw units
 	for (unsigned int i = 0; i < units.size(); i++)
-		units[i]->draw(*spriteRenderer, glm::vec2(3.0f, 3.0f), incDebug);
+	{
+		if (!units[i]->moving)
+			units[i]->sampleFrame = 0;
+		else if (differentTimeInterval(gameTime, gameTime + dt, .1) && units[i]->moving)
+			units[i]->sampleFrame++;
+		units[i]->draw(*spriteRenderer, glm::vec2(7.0f, 1.0f), units[i]->sampleFrame);
+	}
 	// draw rockets on top of units
 	hazardHandler->drawRockets(*spriteRenderer);
 	// draw selection box - low alpha value, so I can draw it over stuff

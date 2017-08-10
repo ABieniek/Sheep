@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 		// Render
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		Sheep.Render();
+		Sheep.Render(deltaTime);
 
 		glfwSwapBuffers(window);
 	}

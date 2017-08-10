@@ -49,13 +49,15 @@ void Unit::move(GLfloat deltaTime)
 		if ((position.x < destination.x && velocityVector.x < 0)
 			|| (position.x > destination.x && velocityVector.x > 0)
 			|| (position.y < destination.y && velocityVector.y > 0)
-			|| (position.y > destination.y && velocityVector.y < 0))
-			moving = false;
+			|| (position.y > destination.y && velocityVector.y < 0)
+			|| (position == destination))
+			stop();
 	}	
 }
 void Unit::stop()
 {
 	moving = false;
+	sampleFrame = 0;
 }
 
 // selection
