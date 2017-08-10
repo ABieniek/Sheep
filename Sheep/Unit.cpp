@@ -81,5 +81,5 @@ void Unit::draw(SpriteRenderer & renderer, glm::vec2 argSampleDivider, GLint arg
 {
 	if (bDraw)
 		renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color, 
-			argSampleDivider, argSampleIndex, false, false);
+			argSampleDivider, argSampleIndex, (abs(angle) > M_PI /2), false);
 }

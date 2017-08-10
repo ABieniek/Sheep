@@ -235,6 +235,8 @@ void Game::ProcessInput(GLfloat dt)
 				units[i]->stop();
 		}
 	}
+	if (keys[GLFW_KEY_I])
+		incDebug++;
 	// update previous frame stuff
 	mbButtonPrev = mbButton;
 	mbActionPrev = mbAction;
@@ -253,7 +255,7 @@ void Game::Render()
 		powerUps[i]->draw(*spriteRenderer);
 	// draw units
 	for (unsigned int i = 0; i < units.size(); i++)
-		units[i]->draw(*spriteRenderer, glm::vec2(2.0f, 2.0f), 2);
+		units[i]->draw(*spriteRenderer, glm::vec2(3.0f, 3.0f), incDebug);
 	// draw rockets on top of units
 	hazardHandler->drawRockets(*spriteRenderer);
 	// draw selection box - low alpha value, so I can draw it over stuff

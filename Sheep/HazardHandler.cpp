@@ -36,7 +36,7 @@ void HazardHandler::init()
 		rocketTimer = 10;
 		rocketDuration = 1;
 		rocketVelocity = 80.f;
-		rocketAngularVelocity = 1.f;
+		rocketAngularVelocity = .25f;
 	}
 	else
 		cout << "difficulty not handled" << endl;

@@ -13,7 +13,9 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <tuple>
+#ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
+#endif // !_USE_MATH_DEFINES
 #include <math.h>
 
 #include <irrKlang.h>
@@ -91,9 +93,10 @@ public:
 	void Update(GLfloat dt);
 	void Render();
 
-	// other global stuff
+	// other global and debugging stuff
 	GLfloat gameTime = 0;
 	GLint gameScore = 0;
+	GLint incDebug = 0;
 };
 
 #endif

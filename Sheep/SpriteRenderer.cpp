@@ -54,7 +54,7 @@ void SpriteRenderer::DrawSprite(Texture2D &texture, glm::vec2 position, glm::vec
 }
 
 void SpriteRenderer::DrawSprite(Texture2D &texture, glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec4 color,
-	glm::vec2 argSampleDimensions, GLint argSampleIndex, GLboolean flipXAxis, GLboolean flixYAxis)
+	glm::vec2 argSampleDimensions, GLint argSampleIndex, GLboolean flipXAxis, GLboolean flipYAxis)
 {
 	// Prepare transformations
 	this->shader.Use();
@@ -80,6 +80,11 @@ void SpriteRenderer::DrawSprite(Texture2D &texture, glm::vec2 position, glm::vec
 	glm::vec2 sampleOffset = glm::vec2((argSampleIndex % (int) sampleDivider.x) * 1.f, 
 										(argSampleIndex / (int) sampleDivider.y) * 1.f);
 	this->shader.SetVector2f("sampleOffset", sampleOffset);
+
+	// set the boolean values for flipping sample across vertical or horizontal axis
+	this->shader.SetBoolean("mirrorXAxis", flipXAxis);
+	this->shader.SetBoolean("mirrorYAxis", flipYAxis);
+
 
 	glActiveTexture(GL_TEXTURE0);
 	texture.Bind();
