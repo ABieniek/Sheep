@@ -119,7 +119,7 @@ void HazardHandler::addLazer(glm::vec2 argPosition, GLfloat argAngle)
 {
 	// x size of 2000 so that it can stretch across screen, corner to corner, worst case
 	lazers.push_back(new Lazer(argPosition, glm::vec2(2000, 10),lazerSprite, lazerSPriteDetonated, glm::vec4(1.0f), argAngle,
-		GL_TRUE, width, height, lazerTimer, lazerDuration, glm::vec2(0, 0)));
+		GL_TRUE, width, height, lazerTimer, lazerDuration, glm::vec2(50.f, 10.f)));
 }
 
 void HazardHandler::addRocket(glm::vec2 argPosition, vector<Unit*>& argUnits)
