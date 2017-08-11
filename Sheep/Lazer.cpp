@@ -59,8 +59,8 @@ void Lazer::draw(SpriteRenderer& renderer)
 	if (bDraw)
 	{
 		if (!detonated)
-			renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color);
+			renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color, glm::vec2(4, 1), sampleFrame, false, false);
 		else
-			renderer.DrawSprite(this->detonatedSprite, this->position, this->size, this->rotation, this->color);
+			renderer.DrawSprite(this->detonatedSprite, this->position, this->size, this->rotation, this->color, glm::vec2(4, 1), sampleFrame, false, false);
 	}
 }

@@ -64,22 +64,7 @@ void Rocket::move(GLfloat deltaTime)
 	}
 
 	glm::vec2 velocityVector = glm::vec2(cos(rotation), sin(rotation)) * velocity * deltaTime;
-	if (position.x < destination.x)
-	{
-		position.x = std::min(position.x + velocityVector.x, destination.x);
-	}
-	else if (position.x > destination.x)
-	{
-		position.x = std::max(position.x + velocityVector.x, destination.x);
-	}
-	if (position.y < destination.y)
-	{
-		position.y = std::min(position.y - velocityVector.y, destination.y);
-	}
-	else if (position.y > destination.y)
-	{
-		position.y = std::max(position.y - velocityVector.y, destination.y);
-	}
+	position += glm::vec2(velocityVector.x, -velocityVector.y);
 }
 
 void Rocket::detonate(vector<Unit*>& units)

@@ -54,10 +54,10 @@ void Game::Init()
 
 	// Load textures
 	// second argument asks if the image file has pixels with non-max alpha components
-	ResourceManager::LoadTexture("Textures/AnimatedSheep.png", GL_TRUE, "sheep");
+	ResourceManager::LoadTexture("Textures/SheepAnimated.png", GL_TRUE, "sheep");
 	ResourceManager::LoadTexture("Textures/GrassBackground.png", GL_TRUE, "background");
 	ResourceManager::LoadTexture("Textures/White.png", GL_FALSE, "selectionBox");
-	ResourceManager::LoadTexture("Textures/Lazer.jpg", GL_FALSE, "Lazer");
+	ResourceManager::LoadTexture("Textures/LazerAnimated.png", GL_FALSE, "Lazer");
 	ResourceManager::LoadTexture("Textures/LazerExploded.png", GL_FALSE, "LazerExploded");
 	ResourceManager::LoadTexture("Textures/Rocket.png", GL_TRUE, "Rocket");
 	ResourceManager::LoadTexture("Textures/RocketExploded.png", GL_TRUE, "RocketExploded");
@@ -250,6 +250,9 @@ void Game::Render(GLfloat dt)
 		glm::vec2(Width/2, Height/2), glm::vec2(Width, Height), 0.0f, glm::vec4(1.0f));
 	// draw Lazers behind units
 	hazardHandler->drawLazers(*spriteRenderer);
+	if (differentTimeInterval(gameTime, gameTime + dt, .05f))
+		for (unsigned int i = 0; i < hazardHandler->lazers.size(); i++)
+			hazardHandler->lazers[i]->sampleFrame++;
 	// draw powerups
 	for (unsigned int i = 0; i < powerUps.size(); i++)
 		powerUps[i]->draw(*spriteRenderer);
@@ -258,7 +261,7 @@ void Game::Render(GLfloat dt)
 	{
 		if (!units[i]->moving)
 			units[i]->sampleFrame = 0;
-		else if (differentTimeInterval(gameTime, gameTime + dt, .1) && units[i]->moving)
+		else if (differentTimeInterval(gameTime, gameTime + dt, .1f) && units[i]->moving)
 			units[i]->sampleFrame++;
 		units[i]->draw(*spriteRenderer, glm::vec2(7.0f, 1.0f), units[i]->sampleFrame);
 	}
