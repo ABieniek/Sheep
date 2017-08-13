@@ -6,11 +6,6 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#include <algorithm>
-#include <iostream>
-#include <sstream>
-#include <math.h>
-#include <vector>
 
 #include "game.h"
 
@@ -39,21 +34,28 @@ void Game::Init()
 	// Load shaders
 	ResourceManager::LoadShader("Shaders/sprite.vs", "Shaders/sprite.fs", nullptr, "sprite");
 	ResourceManager::LoadShader("Shaders/selectionBox.vs", "Shaders/selectionBox.fs", nullptr, "selectionBox");
+	ResourceManager::LoadShader("Shaders/text.vs", "Shaders/text.fs", nullptr, "text");
 
-	// Configure shaders
+	/// Configure shaders
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(Width),
 		static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
 	ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
 	ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
 	ResourceManager::GetShader("selectionBox").Use().SetInteger("image", 0);
 	ResourceManager::GetShader("selectionBox").SetMatrix4("projection", projection);
+	// text
+	ResourceManager::GetShader("text").SetMatrix4("projection", 
+		glm::ortho(0.0f, static_cast<GLfloat> (Width), 0.0f, static_cast<GLfloat>(Height)));
+
+	// initializing text rendering
+	TextUtil::init();
 
 	// Set render-specific controls
 	spriteRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 	selectionBoxRenderer = new SpriteRenderer(ResourceManager::GetShader("selectionBox"));
+	textRenderer = new SpriteRenderer(ResourceManager::GetShader("text"));
 
 	// Load textures
-	// second argument asks if the image file has pixels with non-max alpha components
 	ResourceManager::LoadTexture("Textures/SheepAnimated.png", GL_TRUE, "sheep");
 	ResourceManager::LoadTexture("Textures/GrassBackground.png", GL_TRUE, "background");
 	ResourceManager::LoadTexture("Textures/White.png", GL_FALSE, "selectionBox");

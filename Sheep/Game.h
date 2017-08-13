@@ -15,10 +15,11 @@
 #include <tuple>
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
-#endif // !_USE_MATH_DEFINES
+#endif //_USE_MATH_DEFINES
 #include <math.h>
-
 #include <irrKlang.h>
+
+#include "TextUtil.h"
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
 #include "Drawable.h"
@@ -82,6 +83,7 @@ public:
 	// renderers
 	SpriteRenderer* spriteRenderer;
 	SpriteRenderer* selectionBoxRenderer;
+	SpriteRenderer* textRenderer;
 
 	// Constructor/Destructor
 	Game(GLuint width, GLuint height);

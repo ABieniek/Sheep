@@ -32,6 +32,7 @@ Shader ResourceManager::GetShader(std::string name)
 	return Shaders[name];
 }
 
+// second argument asks if the image file has pixels with non-max alpha components
 Texture2D ResourceManager::LoadTexture(const GLchar *file, GLboolean alpha, std::string name)
 {
 	Textures[name] = loadTextureFromFile(file, alpha);
