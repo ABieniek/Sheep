@@ -1,5 +1,9 @@
 #include "TextUtil.h"
 
+GLuint TextUtil::VAO;
+GLuint TextUtil::VBO;
+std::map<GLchar, Character> TextUtil::Characters;
+
 void TextUtil::init()
 {
 	// set up text rendering
