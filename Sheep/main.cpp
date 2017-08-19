@@ -22,7 +22,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 Game Sheep(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) 
 {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
