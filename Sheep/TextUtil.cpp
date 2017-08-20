@@ -72,11 +72,11 @@ void TextUtil::init()
 	glBindVertexArray(0);
 }
 
-void TextUtil::RenderText(Shader & shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
+void TextUtil::RenderText(Shader & shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec4 color)
 {
 	// Activate corresponding render state	
 	shader.Use();
-	glUniform3f(glGetUniformLocation(shader.ID, "textColor"), color.x, color.y, color.z);
+	glUniform4f(glGetUniformLocation(shader.ID, "textColor"), color.x, color.y, color.z, color.a);
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAO);
 

@@ -35,7 +35,7 @@ public:
 
 	static void init();
 
-	static void RenderText(Shader &shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
+	static void RenderText(Shader &shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec4 color);
 };
 
 #endif
