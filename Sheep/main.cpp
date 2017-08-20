@@ -48,9 +48,9 @@ int main(int argc, char *argv[])
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Initialize game
-	Sheep.Init(); // @debug here
+	Sheep.Init();
 
-					 // DeltaTime variables
+	// DeltaTime variables
 	GLfloat deltaTime = 0.0f;
 	GLfloat lastFrame = 0.0f;
 

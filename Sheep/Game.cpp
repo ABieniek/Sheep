@@ -43,6 +43,7 @@ void Game::Init()
 	ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
 	ResourceManager::GetShader("selectionBox").Use().SetInteger("image", 0);
 	ResourceManager::GetShader("selectionBox").SetMatrix4("projection", projection);
+	ResourceManager::GetShader("text").Use();
 	ResourceManager::GetShader("text").SetMatrix4("projection", 
 		glm::ortho(0.0f, static_cast<GLfloat> (Width), 0.0f, static_cast<GLfloat>(Height)));
 
