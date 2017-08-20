@@ -279,5 +279,6 @@ void Game::Render(GLfloat dt)
 	selectionBox->position.y -= selectionBox->size.y / 2;
 
 	// rendering text test
-	TextUtil::RenderText(ResourceManager::GetShader("text"), "WWWWWWWWWW", 25.f, 25.f, 1.f, glm::vec4(1.f));
+	TextUtil::RenderText(ResourceManager::GetShader("text"), "Score: " + std::to_string(gameScore),
+		5.f, Height - 20.f, .5f, glm::vec4(1.f));
 }
