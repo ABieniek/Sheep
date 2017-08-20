@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
 	glewExperimental = GL_TRUE;
 	glewInit();
-	cout << glGetError(); // Call it once to catch glewInit() bug, all other errors are now from our application.
+	cout << glGetError();
 
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
@@ -48,7 +48,6 @@ int main(int argc, char *argv[])
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	Sheep.InitGraphics();
-	Sheep.InitGamestate();
 
 	// DeltaTime variables
 	GLfloat deltaTime = 0.0f;
@@ -59,24 +58,31 @@ int main(int argc, char *argv[])
 
 	while (!glfwWindowShouldClose(window))
 	{
-		// Calculate delta time
-		GLfloat currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-
 		glfwPollEvents();
 
-		//deltaTime = 0.001f;
-		// Manage user input
-		Sheep.ProcessInput(deltaTime);
+		if (Sheep.State == GAME_MENU)
+		{
+			// initialization
 
-		// Update Game state
-		Sheep.Update(deltaTime);
+		}
+		else if (Sheep.State == GAME_PLAYING)
+		{
+			// initialization
+			if (!Sheep.gamestateInitialized)
+				Sheep.InitGamestate();
+			// Calculate delta time
+			GLfloat currentFrame = glfwGetTime();
+			deltaTime = currentFrame - lastFrame;
+			lastFrame = currentFrame;
 
-		// Render
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		Sheep.Render(deltaTime);
+			// Manage user input
+			Sheep.ProcessInput(deltaTime);
+			// Update Game state
+			Sheep.Update(deltaTime);
+			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+			Sheep.RenderGame(deltaTime);
+		}
 
 		glfwSwapBuffers(window);
 	}
@@ -93,6 +99,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// When a user presses the escape key, we set the WindowShouldClose property to true, closing the application
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+		Sheep.State = GAME_PLAYING;
 	if (key >= 0 && key < 1024)
 	{
 		if (action == GLFW_PRESS)

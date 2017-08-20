@@ -21,14 +21,10 @@ Game::Game(GLuint width, GLuint height)
 
 Game::~Game()
 {
+	clearGamestate();
 	delete spriteRenderer;
 	delete selectionBoxRenderer;
 	delete textRenderer;
-
-	delete selectionBox;
-	for (unsigned int i = 0; i < units.size(); i++)
-		delete units[i];
-	delete hazardHandler;
 }
 
 void Game::InitGamestate()
@@ -58,6 +54,8 @@ void Game::InitGamestate()
 		ResourceManager::GetTexture("Rocket"), ResourceManager::GetTexture("RocketExploded"), ResourceManager::GetTexture("RocketTarget"));
 	hazardHandler->init();
 	srand(time(NULL));
+
+	gamestateInitialized = true;
 }
 
 void Game::InitGraphics()
@@ -96,6 +94,19 @@ void Game::InitGraphics()
 	ResourceManager::LoadTexture("Textures/RocketExploded.png", GL_TRUE, "RocketExploded");
 	ResourceManager::LoadTexture("Textures/RocketTarget.png", GL_TRUE, "RocketTarget");
 	ResourceManager::LoadTexture("Textures/PowerUpLife.png", GL_TRUE, "Life");
+}
+
+void Game::clearGamestate()
+{
+	delete selectionBox;
+	for (unsigned int i = 0; i < units.size(); i++)
+		delete units[i];
+	units.clear();
+	for (unsigned int i = 0; i < powerUps.size(); i++)
+		delete powerUps[i];
+	powerUps.clear();
+	delete hazardHandler;
+	gamestateInitialized = false;
 }
 
 void Game::Update(GLfloat dt)
@@ -153,12 +164,13 @@ void Game::Update(GLfloat dt)
 	// array size and such get modified when a unit is killed
 	hazardHandler->update(dt, units);
 
-	///updating score and handling loss condition
-	// loss condition will just be if the unit count gets too low, let's say about five, which might also depend on difficulty
-
 	// score will increase, each second, for the number of units that are still alive
 	if (differentTimeInterval(gameTime, gameTime + dt, 1))
 		gameScore += units.size();
+
+	// lose condition
+	// if (units.size() < 5)
+
 
 	gameTime += dt;
 }
@@ -239,16 +251,14 @@ void Game::ProcessInput(GLfloat dt)
 				units[i]->stop();
 		}
 	}
-	if (keys[GLFW_KEY_I])
-		incDebug++;
 	// update previous frame stuff
 	mbButtonPrev = mbButton;
 	mbActionPrev = mbAction;
 	mbModsPrev = mbMods;
 }
 
-void Game::Render(GLfloat dt)
-{	
+void Game::RenderGame(GLfloat dt)
+{
 	// draw background
 	spriteRenderer->DrawSprite(ResourceManager::GetTexture("background"),
 		glm::vec2(Width/2, Height/2), glm::vec2(Width, Height), 0.0f, glm::vec4(1.0f));

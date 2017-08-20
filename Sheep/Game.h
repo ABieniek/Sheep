@@ -47,8 +47,9 @@ class Game
 {
 public:
 	// Game state
-	GameState				State;
-	GLuint					Width, Height;
+	GameState State;
+	GLboolean gamestateInitialized;
+	GLuint Width, Height;
 	
 	/// controls
 	// key
@@ -88,13 +89,15 @@ public:
 	// Constructor/Destructor
 	Game(GLuint width, GLuint height);
 	~Game();
-	// Initialize game state (load all shaders/textures/levels)
+	// Initialize game state
 	void InitGamestate();
 	void InitGraphics();
+	// clear game state
+	void clearGamestate();
 	// GameLoop
 	void ProcessInput(GLfloat dt);
 	void Update(GLfloat dt);
-	void Render(GLfloat dt);
+	void RenderGame(GLfloat dt);
 
 	// other global and debugging stuff
 	GLfloat gameTime = 0;
