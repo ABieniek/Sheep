@@ -47,15 +47,15 @@ int main(int argc, char *argv[])
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Initialize game
-	Sheep.Init();
+	Sheep.InitGraphics();
+	Sheep.InitGamestate();
 
 	// DeltaTime variables
 	GLfloat deltaTime = 0.0f;
 	GLfloat lastFrame = 0.0f;
 
 	// Start Game within Menu State
-	Sheep.State = GAME_ACTIVE;
+	Sheep.State = GAME_MENU;
 
 	while (!glfwWindowShouldClose(window))
 	{

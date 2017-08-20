@@ -14,7 +14,7 @@ using namespace irrklang;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
 
 Game::Game(GLuint width, GLuint height)
-	: State(GAME_ACTIVE), keys(), Width(width), Height(height)
+	: State(GAME_MENU), keys(), Width(width), Height(height)
 {
 
 }
@@ -23,49 +23,16 @@ Game::~Game()
 {
 	delete spriteRenderer;
 	delete selectionBoxRenderer;
+	delete textRenderer;
+
 	delete selectionBox;
 	for (unsigned int i = 0; i < units.size(); i++)
 		delete units[i];
 	delete hazardHandler;
 }
 
-void Game::Init()
+void Game::InitGamestate()
 {
-	// Load shaders
-	ResourceManager::LoadShader("Shaders/sprite.vs", "Shaders/sprite.fs", nullptr, "sprite");
-	ResourceManager::LoadShader("Shaders/selectionBox.vs", "Shaders/selectionBox.fs", nullptr, "selectionBox");
-	ResourceManager::LoadShader("Shaders/text.vs", "Shaders/text.fs", nullptr, "text");
-
-	/// Configure shaders
-	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(Width),
-		static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
-	ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
-	ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
-	ResourceManager::GetShader("selectionBox").Use().SetInteger("image", 0);
-	ResourceManager::GetShader("selectionBox").SetMatrix4("projection", projection);
-	ResourceManager::GetShader("text").Use();
-	ResourceManager::GetShader("text").SetMatrix4("projection", 
-		glm::ortho(0.0f, static_cast<GLfloat> (Width), 0.0f, static_cast<GLfloat>(Height)));
-
-	// Set render-specific controls
-	spriteRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
-	selectionBoxRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
-	textRenderer = new SpriteRenderer(ResourceManager::GetShader("text"));
-
-	// initializing text rendering
-	TextUtil::init();
-
-	// Load textures
-	ResourceManager::LoadTexture("Textures/SheepAnimated.png", GL_TRUE, "sheep");
-	ResourceManager::LoadTexture("Textures/GrassBackground.png", GL_TRUE, "background");
-	ResourceManager::LoadTexture("Textures/White.png", GL_FALSE, "selectionBox");
-	ResourceManager::LoadTexture("Textures/LazerAnimated.png", GL_TRUE, "Lazer");
-	ResourceManager::LoadTexture("Textures/LazerExplodedAnimated.png", GL_TRUE, "LazerExploded");
-	ResourceManager::LoadTexture("Textures/Rocket.png", GL_TRUE, "Rocket");
-	ResourceManager::LoadTexture("Textures/RocketExploded.png", GL_TRUE, "RocketExploded");
-	ResourceManager::LoadTexture("Textures/RocketTarget.png", GL_TRUE, "RocketTarget");
-	ResourceManager::LoadTexture("Textures/PowerUpLife.png", GL_TRUE, "Life");
-
 	/// Set Game Variables
 	// sheep
 	vector<glm::vec2> locs;
@@ -91,6 +58,44 @@ void Game::Init()
 		ResourceManager::GetTexture("Rocket"), ResourceManager::GetTexture("RocketExploded"), ResourceManager::GetTexture("RocketTarget"));
 	hazardHandler->init();
 	srand(time(NULL));
+}
+
+void Game::InitGraphics()
+{
+	// Load shaders
+	ResourceManager::LoadShader("Shaders/sprite.vs", "Shaders/sprite.fs", nullptr, "sprite");
+	ResourceManager::LoadShader("Shaders/selectionBox.vs", "Shaders/selectionBox.fs", nullptr, "selectionBox");
+	ResourceManager::LoadShader("Shaders/text.vs", "Shaders/text.fs", nullptr, "text");
+
+	/// Configure shaders
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(Width),
+		static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
+	ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
+	ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
+	ResourceManager::GetShader("selectionBox").Use().SetInteger("image", 0);
+	ResourceManager::GetShader("selectionBox").SetMatrix4("projection", projection);
+	ResourceManager::GetShader("text").Use();
+	ResourceManager::GetShader("text").SetMatrix4("projection",
+		glm::ortho(0.0f, static_cast<GLfloat> (Width), 0.0f, static_cast<GLfloat>(Height)));
+
+	// Set render-specific controls
+	spriteRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
+	selectionBoxRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
+	textRenderer = new SpriteRenderer(ResourceManager::GetShader("text"));
+
+	// initializing text rendering
+	TextUtil::init();
+
+	// Load textures
+	ResourceManager::LoadTexture("Textures/SheepAnimated.png", GL_TRUE, "sheep");
+	ResourceManager::LoadTexture("Textures/GrassBackground.png", GL_TRUE, "background");
+	ResourceManager::LoadTexture("Textures/White.png", GL_FALSE, "selectionBox");
+	ResourceManager::LoadTexture("Textures/LazerAnimated.png", GL_TRUE, "Lazer");
+	ResourceManager::LoadTexture("Textures/LazerExplodedAnimated.png", GL_TRUE, "LazerExploded");
+	ResourceManager::LoadTexture("Textures/Rocket.png", GL_TRUE, "Rocket");
+	ResourceManager::LoadTexture("Textures/RocketExploded.png", GL_TRUE, "RocketExploded");
+	ResourceManager::LoadTexture("Textures/RocketTarget.png", GL_TRUE, "RocketTarget");
+	ResourceManager::LoadTexture("Textures/PowerUpLife.png", GL_TRUE, "Life");
 }
 
 void Game::Update(GLfloat dt)
@@ -153,10 +158,7 @@ void Game::Update(GLfloat dt)
 
 	// score will increase, each second, for the number of units that are still alive
 	if (differentTimeInterval(gameTime, gameTime + dt, 1))
-	{
 		gameScore += units.size();
-		cout << "gameScore: " << gameScore << endl;
-	}
 
 	gameTime += dt;
 }

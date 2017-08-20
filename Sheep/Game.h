@@ -35,9 +35,9 @@
 
 // Represents the current state of the game
 enum GameState {
-	GAME_ACTIVE,
 	GAME_MENU,
-	GAME_WIN
+	GAME_PLAYING,
+	GAME_END
 };
 
 // Game holds all game-related state and functionality.
@@ -89,7 +89,8 @@ public:
 	Game(GLuint width, GLuint height);
 	~Game();
 	// Initialize game state (load all shaders/textures/levels)
-	void Init();
+	void InitGamestate();
+	void InitGraphics();
 	// GameLoop
 	void ProcessInput(GLfloat dt);
 	void Update(GLfloat dt);
