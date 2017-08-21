@@ -35,8 +35,10 @@ vector<Flock> Game::flocks;
 HazardHandler* Game::hazardHandler;
 Difficulty Game::difficulty;
 vector<PowerUp*> Game::powerUps;
+GLfloat Game::powerUpSpawnTime = 10;
 Drawable* Game::selectionBox;
 vector<Button*> Game::buttons;
+Button* Game::endButton;
 SpriteRenderer* Game::spriteRenderer;
 SpriteRenderer* Game::selectionBoxRenderer;
 SpriteRenderer* Game::textRenderer;
@@ -103,6 +105,7 @@ void Game::InitGraphics()
 	// buttons
 	ResourceManager::LoadTexture("Textures/Buttons/StartButton.png", GL_TRUE, "startButton");
 	ResourceManager::LoadTexture("Textures/Buttons/RadioButton.png", GL_TRUE, "radioButton");
+	ResourceManager::LoadTexture("Textures/Buttons/RestartButton.png", GL_TRUE, "restartButton");
 }
 
 void Game::InitMenu()
@@ -115,6 +118,8 @@ void Game::InitMenu()
 	buttons.push_back(new Button(glm::vec2(.6 * Width, .7 * Height), glm::vec2(150.0, 100.0),
 		ResourceManager::GetTexture("radioButton"), glm::vec4(1.0f), 0.0f, true, &(Game::cbSetNormal)));
 	// end menu buttons
+	endButton = new Button(glm::vec2(.5 * Width, .8 * Height), glm::vec2(150.0, 100.0),
+		ResourceManager::GetTexture("restartButton"), glm::vec4(1.0f), 0.0f, true, &(Game::cbRestart));
 }
 
 void Game::InitGamestate()
@@ -205,12 +210,13 @@ void Game::UpdateGame(GLfloat dt)
 		}
 	}
 	// generating new powerups
-	if (differentTimeInterval(gameTime, gameTime + dt, 10))
+	if (gameTime > powerUpSpawnTime)
 	{
-		// keep making up new random spots to spawn the powerup until we get a spot that's not too close
 		glm::vec2 randomLocation = glm::vec2((100 + (rand() % (Width - 50)))*1.f, (100 + (rand() % (Height - 50))*1.f));
 		powerUps.push_back(new PowerUp(randomLocation, glm::vec2(50, 50), ResourceManager::GetTexture("Life"), glm::vec4(1.0f),
 			GL_TRUE, 100));
+		if (difficulty == NORMAL)
+			powerUpSpawnTime += powerUpSpawnTime + 1.f;
 	}
 	// killing units - must occur at the end of updating because
 	// array size and such get modified when a unit is killed
@@ -221,26 +227,42 @@ void Game::UpdateGame(GLfloat dt)
 		gameScore += units.size();
 
 	// lose condition
-	// if (units.size() < 5)
+	if (units.size() < 5)
+		(State == GAME_END);
 
 	gameTime += dt;
 }
 
 void Game::UpdateMenu(GLfloat dt)
 {
-	for (unsigned int i = 0; i < buttons.size(); i++)
+	if (State == GAME_START)
 	{
-		if (buttons[i]->cursorOnButton(mXpos, mYpos))
+		for (unsigned int i = 0; i < buttons.size(); i++)
+		{
+			if (buttons[i]->cursorOnButton(mXpos, mYpos))
+			{
+				if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_PRESS)
+				{
+					buttons[i]->callbackFunction();
+					buttons[i]->sampleFrame = BUTTON_PRESSED;
+				}
+				else buttons[i]->sampleFrame = BUTTON_HOVERED;
+			}
+			else buttons[i]->sampleFrame = BUTTON_CLEAR;
+		}
+	}
+	else if (State == GAME_END)
+	{
+		if (endButton->cursorOnButton(mXpos, mYpos))
 		{
 			if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_PRESS)
 			{
-				buttons[i]->callbackFunction();
-				buttons[i]->sampleFrame = BUTTON_PRESSED;
+				endButton->callbackFunction();
+				endButton->sampleFrame = BUTTON_PRESSED;
 			}
-			else buttons[i]->sampleFrame = BUTTON_HOVERED;
+			else endButton->sampleFrame = BUTTON_HOVERED;
 		}
-		else
-			buttons[i]->sampleFrame = BUTTON_CLEAR;
+		else endButton->sampleFrame = BUTTON_CLEAR;
 	}
 }
 
@@ -369,8 +391,17 @@ void Game::RenderMenu(GLfloat dt)
 	// draw background
 	spriteRenderer->DrawSprite(ResourceManager::GetTexture("background"),
 		glm::vec2(Width / 2, Height / 2), glm::vec2(Width, Height), 0.0f, glm::vec4(1.0f));
-	TextUtil::RenderText(ResourceManager::GetShader("text"), "Sheep",
-		.275 * Width, .65 * Height, 3.f, glm::vec4(1.f));
-	for (unsigned int i = 0; i < buttons.size(); i++)
-		buttons[i]->render(*spriteRenderer, glm::vec2(3.f, 1.f), buttons[i]->sampleFrame);
+	if (State = GAME_START)
+	{
+		TextUtil::RenderText(ResourceManager::GetShader("text"), "Sheep",
+			.275 * Width, .65 * Height, 3.f, glm::vec4(1.f));
+		for (unsigned int i = 0; i < buttons.size(); i++)
+			buttons[i]->render(*spriteRenderer, glm::vec2(3.f, 1.f), buttons[i]->sampleFrame);
+	}
+	else if (State = GAME_END)
+	{
+		TextUtil::RenderText(ResourceManager::GetShader("text"), "Final Score: " + std::to_string(gameScore),
+			.275 * Width, .4 * Height, 1.5f, glm::vec4(1.f));
+		endButton->render(*spriteRenderer, glm::vec2(3.f, 1.f), endButton->sampleFrame);
+	}
 }

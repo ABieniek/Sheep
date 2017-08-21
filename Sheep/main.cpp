@@ -81,6 +81,11 @@ int main(int argc, char *argv[])
 			glClear(GL_COLOR_BUFFER_BIT);
 			Game::RenderGame(deltaTime);
 		}
+		else if (Game::State == GAME_END)
+		{
+			Game::UpdateMenu(deltaTime);
+			Game::RenderMenu(deltaTime);
+		}
 
 		glfwSwapBuffers(window);
 	}

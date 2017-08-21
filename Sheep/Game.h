@@ -79,12 +79,14 @@ public:
 	static HazardHandler* hazardHandler;
 	static Difficulty difficulty;
 	static vector<PowerUp*> powerUps;
+	static GLfloat powerUpSpawnTime;
 
 	// other stuff to draw
 	static Drawable* selectionBox;
 
 	// menu stuff
 	static vector<Button*> buttons;
+	static Button* endButton;
 
 	// renderers
 	static SpriteRenderer* spriteRenderer;
@@ -104,6 +106,7 @@ public:
 	static void cbStart() {State = GAME_PLAYING;};
 	static void cbSetSimple() { difficulty = SIMPLE; cout << "clicked simple" << endl; };
 	static void cbSetNormal() {difficulty = NORMAL;};
+	static void cbRestart() { State = GAME_START; clearGamestate(); }
 	// GameLoop
 	static void ProcessInput(GLfloat dt);
 	static void UpdateGame(GLfloat dt);
