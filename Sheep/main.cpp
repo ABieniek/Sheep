@@ -33,7 +33,8 @@ int main(int argc, char *argv[])
 
 	glewExperimental = GL_TRUE;
 	glewInit();
-	cout << glGetError();
+	if (glGetError())
+		exit(glGetError());
 
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
@@ -48,6 +49,7 @@ int main(int argc, char *argv[])
 	Game::InitVariables(SCREEN_WIDTH, SCREEN_HEIGHT);
 	Game::InitGraphics();
 	Game::InitMenu();
+	// cout << Game::State << endl;
 
 	// DeltaTime variables
 	GLfloat deltaTime = 0.0f;
@@ -56,6 +58,7 @@ int main(int argc, char *argv[])
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
+		// cout << Game::State << endl;
 
 		if (Game::State == GAME_START)
 		{

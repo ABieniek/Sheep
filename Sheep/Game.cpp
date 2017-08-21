@@ -150,6 +150,7 @@ void Game::InitGamestate()
 	hazardHandler->init();
 	srand(time(NULL));
 
+	gameScore = 0;
 	gamestateInitialized = true;
 }
 
@@ -228,7 +229,9 @@ void Game::UpdateGame(GLfloat dt)
 
 	// lose condition
 	if (units.size() < 5)
-		(State == GAME_END);
+	{
+		State = GAME_END;
+	}
 
 	gameTime += dt;
 }
@@ -391,14 +394,14 @@ void Game::RenderMenu(GLfloat dt)
 	// draw background
 	spriteRenderer->DrawSprite(ResourceManager::GetTexture("background"),
 		glm::vec2(Width / 2, Height / 2), glm::vec2(Width, Height), 0.0f, glm::vec4(1.0f));
-	if (State = GAME_START)
+	if (State == GAME_START)
 	{
 		TextUtil::RenderText(ResourceManager::GetShader("text"), "Sheep",
 			.275 * Width, .65 * Height, 3.f, glm::vec4(1.f));
 		for (unsigned int i = 0; i < buttons.size(); i++)
 			buttons[i]->render(*spriteRenderer, glm::vec2(3.f, 1.f), buttons[i]->sampleFrame);
 	}
-	else if (State = GAME_END)
+	else if (State == GAME_END)
 	{
 		TextUtil::RenderText(ResourceManager::GetShader("text"), "Final Score: " + std::to_string(gameScore),
 			.275 * Width, .4 * Height, 1.5f, glm::vec4(1.f));
