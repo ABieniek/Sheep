@@ -13,11 +13,38 @@ using namespace std;
 using namespace irrklang;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
 
-Game::Game(GLuint width, GLuint height)
-	: keys(), Width(width), Height(height)
-{
+// externals
+GameState Game::State;
+GLboolean Game::gamestateInitialized;
+GLuint Game::Width, Game::Height;
+GLboolean Game::keys[1024];
+int Game::scancode;
+int Game::action;
+int Game::mode;
+double Game::mXpos;
+double Game::mYpos;
+int Game::mbButton;
+int Game::mbAction;
+int Game::mbMods;
+int Game::mbButtonPrev;
+int Game::mbActionPrev;
+int Game::mbModsPrev;
+vector<Unit*> Game::units;
+vector<Unit*> Game::selectedUnits;
+vector<Flock> Game::flocks;
+HazardHandler* Game::hazardHandler;
+vector<PowerUp*> Game::powerUps;
+Drawable* Game::selectionBox;
+vector<Button*> Game::buttons;
+SpriteRenderer* Game::spriteRenderer;
+SpriteRenderer* Game::selectionBoxRenderer;
+SpriteRenderer* Game::textRenderer;
+GLfloat Game::gameTime;
+GLint Game::gameScore;
+GLint Game::incDebug;
 
-}
+
+
 
 Game::~Game()
 {
@@ -25,6 +52,16 @@ Game::~Game()
 	delete spriteRenderer;
 	delete selectionBoxRenderer;
 	delete textRenderer;
+}
+
+void Game::InitVariables(GLuint width, GLuint height)
+{
+	Width = width;
+	Height = height;
+	gameTime = 0.f;
+	gameScore = 0.f;
+	incDebug = 0.f;
+	State = GAME_START;
 }
 
 void Game::InitGraphics()
@@ -36,7 +73,7 @@ void Game::InitGraphics()
 
 	/// Configure shaders
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(Width),
-		static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
+		static_cast<GLfloat>(Height), 0.0f, -1.0f, 1.0f);
 	ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
 	ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
 	ResourceManager::GetShader("selectionBox").Use().SetInteger("image", 0);
@@ -74,7 +111,7 @@ void Game::InitMenu()
 {
 	// start menu buttons
 	buttons.push_back(new Button(glm::vec2(.4 * Width, .3 * Height), glm::vec2(250.0, 100.0), 
-		ResourceManager::GetTexture("startButton"),	glm::vec4(1.0f), 0.0f, true, (this->cb_start())));
+		ResourceManager::GetTexture("startButton"),	glm::vec4(1.0f), 0.0f, true, &(Game::cb_start)));
 
 	// end menu buttons
 }

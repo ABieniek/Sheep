@@ -4,7 +4,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Drawable.h"
-#include "Game.h"
 
 enum ButtonState {
 	BUTTON_CLEAR = 0,
@@ -18,7 +17,7 @@ public:
 	void(*callbackFunction);
 	GLboolean pressed;
 	Button(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite,
-		glm::vec4 argColor, GLfloat argRotation, GLboolean argDraw, void((Game::*argCallback)()));
+		glm::vec4 argColor, GLfloat argRotation, GLboolean argDraw, void(*argCallback)());
 	GLboolean cursorOnButton(GLfloat x, GLfloat y);
 	void render(SpriteRenderer& renderer, glm::vec2 argSampleDivider, GLint argSampleIndex);
 };

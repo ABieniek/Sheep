@@ -20,8 +20,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
-Game Sheep(SCREEN_WIDTH, SCREEN_HEIGHT);
-
 int main(int argc, char *argv[]) 
 {
 	glfwInit();
@@ -47,41 +45,39 @@ int main(int argc, char *argv[])
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	Sheep.InitGraphics();
+	Game::InitVariables(SCREEN_WIDTH, SCREEN_HEIGHT);
+	Game::InitGraphics();
 
 	// DeltaTime variables
 	GLfloat deltaTime = 0.0f;
 	GLfloat lastFrame = 0.0f;
 
-	// Start Game within Menu State
-	Sheep.State = GAME_START;
-
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 
-		if (Sheep.State == GAME_START)
+		if (Game::State == GAME_START)
 		{
 			// initialization
-			Sheep.RenderMenu(deltaTime);
+			Game::RenderMenu(deltaTime);
 		}
-		else if (Sheep.State == GAME_PLAYING)
+		else if (Game::State == GAME_PLAYING)
 		{
 			// initialization
-			if (!Sheep.gamestateInitialized)
-				Sheep.InitGamestate();
+			if (!Game::gamestateInitialized)
+				Game::InitGamestate();
 			// Calculate delta time
 			GLfloat currentFrame = glfwGetTime();
 			deltaTime = currentFrame - lastFrame;
 			lastFrame = currentFrame;
 
 			// Manage user input
-			Sheep.ProcessInput(deltaTime);
+			Game::ProcessInput(deltaTime);
 			// Update Game state
-			Sheep.Update(deltaTime);
+			Game::Update(deltaTime);
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
-			Sheep.RenderGame(deltaTime);
+			Game::RenderGame(deltaTime);
 		}
 
 		glfwSwapBuffers(window);
@@ -100,25 +96,25 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-		Sheep.State = GAME_PLAYING;
+		Game::State = GAME_PLAYING;
 	if (key >= 0 && key < 1024)
 	{
 		if (action == GLFW_PRESS)
-			Sheep.keys[key] = GL_TRUE;
+			Game::keys[key] = GL_TRUE;
 		else if (action == GLFW_RELEASE)
-			Sheep.keys[key] = GL_FALSE;
+			Game::keys[key] = GL_FALSE;
 	}
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-	Sheep.mXpos = xpos;
-	Sheep.mYpos = ypos;
+	Game::mXpos = xpos;
+	Game::mYpos = ypos;
 }
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	Sheep.mbButton = button;
-	Sheep.mbAction = action;
-	Sheep.mbMods = mods;
+	Game::mbButton = button;
+	Game::mbAction = action;
+	Game::mbMods = mods;
 }

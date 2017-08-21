@@ -1,7 +1,7 @@
 #include "Button.h"
 
 Button::Button(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite, glm::vec4 argColor,
-	GLfloat argRotation, GLboolean argDraw, void((Game::*argCallback)()))
+	GLfloat argRotation, GLboolean argDraw, void(*argCallback)())
 {
 	position = argPosition;
 	size = argSize;

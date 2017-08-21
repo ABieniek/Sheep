@@ -48,69 +48,69 @@ class Game
 {
 public:
 	// Game state
-	GameState State = GAME_START;
-	GLboolean gamestateInitialized;
-	GLuint Width, Height;
+	static GameState State;
+	static GLboolean gamestateInitialized;
+	static GLuint Width, Height;
 	
 	/// controls
 	// key
-	GLboolean keys[1024];
-	int scancode;
-	int action;
-	int mode;
+	static GLboolean keys[1024];
+	static int scancode;
+	static int action;
+	static int mode;
 	// mouse position
-	double mXpos;
-	double mYpos;
+	static double mXpos;
+	static double mYpos;
 	// mouse button - this frame
-	int mbButton;
-	int mbAction;
-	int mbMods;
+	static int mbButton;
+	static int mbAction;
+	static int mbMods;
 	// mouse button - last frame
-	int mbButtonPrev;
-	int mbActionPrev;
-	int mbModsPrev;
+	static int mbButtonPrev;
+	static int mbActionPrev;
+	static int mbModsPrev;
 
 	// units
-	vector<Unit*> units;
-	vector<Unit*> selectedUnits;
-	vector<Flock> flocks;
+	static vector<Unit*> units;
+	static vector<Unit*> selectedUnits;
+	static vector<Flock> flocks;
 	
 	// hazards & powerups
-	HazardHandler* hazardHandler;
-	vector<PowerUp*> powerUps;
+	static HazardHandler* hazardHandler;
+	static vector<PowerUp*> powerUps;
 
 	// other stuff to draw
-	Drawable* selectionBox;
+	static Drawable* selectionBox;
 
 	// menu stuff
-	vector<Button*> buttons;
+	static vector<Button*> buttons;
 
 	// renderers
-	SpriteRenderer* spriteRenderer;
-	SpriteRenderer* selectionBoxRenderer;
-	SpriteRenderer* textRenderer;
+	static SpriteRenderer* spriteRenderer;
+	static SpriteRenderer* selectionBoxRenderer;
+	static SpriteRenderer* textRenderer;
 
 	// Constructor/Destructor
-	Game(GLuint width, GLuint height);
 	~Game();
 	// Initialize game state
-	void InitGamestate();
-	void InitMenu();
-	void InitGraphics();
+	static void InitVariables(GLuint width, GLuint height);
+	static void InitGamestate();
+	static void InitMenu();
+	static void InitGraphics();
 	// clear game state
-	void clearGamestate();
+	static void clearGamestate();
 	// gamestate handling callbacks
-	void cb_start();
+	static void cb_start();
 	// GameLoop
-	void ProcessInput(GLfloat dt);
-	void Update(GLfloat dt);
-	void RenderGame(GLfloat dt);
-	void RenderMenu(GLfloat dt);
+	static void ProcessInput(GLfloat dt);
+	static void Update(GLfloat dt);
+	static void RenderGame(GLfloat dt);
+	static void RenderMenu(GLfloat dt);
 
 	// other global and debugging stuff
-	GLfloat gameTime = 0;
-	GLint gameScore = 0;
-	GLint incDebug = 0;
+	static GLfloat gameTime;
+	static GLint gameScore;
+	static GLint incDebug;
 };
 
 #endif
