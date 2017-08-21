@@ -66,14 +66,15 @@ void Game::InitGraphics()
 	ResourceManager::LoadTexture("Textures/PowerUpLife.png", GL_TRUE, "Life");
 	// buttons
 	ResourceManager::LoadTexture("Textures/Buttons/Start.png", GL_TRUE, "startButton");
+	ResourceManager::LoadTexture("Textures/Buttons/ModeNormal.png", GL_TRUE, "modeButtonSimple");
+	ResourceManager::LoadTexture("Textures/Buttons/ModeNormal.png", GL_TRUE, "modeButtonSimple");
 }
 
 void Game::InitMenu()
 {
 	// start menu buttons
-	buttons.push_back(new Button(glm::vec2(.4 * Width, .3 * Height), glm::vec2(250.0, 100.0), ResourceManager::GetTexture("startButton"),
-		glm::vec4(1.0f), 0.0f, true, cb_start));
-
+	buttons.push_back(new Button(glm::vec2(.4 * Width, .3 * Height), glm::vec2(250.0, 100.0), 
+		ResourceManager::GetTexture("startButton"),	glm::vec4(1.0f), 0.0f, true, (this->cb_start())));
 
 	// end menu buttons
 }
@@ -124,7 +125,7 @@ void Game::clearGamestate()
 
 void Game::cb_start()
 {
-	GameState = GAME_PLAYING;
+	State = GAME_PLAYING;
 
 }
 
