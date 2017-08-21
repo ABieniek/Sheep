@@ -31,11 +31,12 @@
 #include "Lazer.h"
 #include "HazardHandler.h"
 #include "PowerUp.h"
+#include "Button.h"
 
 
 // Represents the current state of the game
 enum GameState {
-	GAME_MENU,
+	GAME_START,
 	GAME_PLAYING,
 	GAME_END
 };
@@ -47,7 +48,7 @@ class Game
 {
 public:
 	// Game state
-	GameState State;
+	GameState State = GAME_START;
 	GLboolean gamestateInitialized;
 	GLuint Width, Height;
 	
@@ -81,6 +82,9 @@ public:
 	// other stuff to draw
 	Drawable* selectionBox;
 
+	// menu stuff
+	vector<Button*> buttons;
+
 	// renderers
 	SpriteRenderer* spriteRenderer;
 	SpriteRenderer* selectionBoxRenderer;
@@ -91,13 +95,17 @@ public:
 	~Game();
 	// Initialize game state
 	void InitGamestate();
+	void InitMenu();
 	void InitGraphics();
 	// clear game state
 	void clearGamestate();
+	// gamestate handling callbacks
+	void cb_start();
 	// GameLoop
 	void ProcessInput(GLfloat dt);
 	void Update(GLfloat dt);
 	void RenderGame(GLfloat dt);
+	void RenderMenu(GLfloat dt);
 
 	// other global and debugging stuff
 	GLfloat gameTime = 0;

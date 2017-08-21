@@ -115,6 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="CollisionUtil.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="Flock.cpp" />
@@ -133,6 +134,7 @@
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="CollisionUtil.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Flock.h" />

@@ -54,16 +54,16 @@ int main(int argc, char *argv[])
 	GLfloat lastFrame = 0.0f;
 
 	// Start Game within Menu State
-	Sheep.State = GAME_MENU;
+	Sheep.State = GAME_START;
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 
-		if (Sheep.State == GAME_MENU)
+		if (Sheep.State == GAME_START)
 		{
 			// initialization
-
+			Sheep.RenderMenu(deltaTime);
 		}
 		else if (Sheep.State == GAME_PLAYING)
 		{
