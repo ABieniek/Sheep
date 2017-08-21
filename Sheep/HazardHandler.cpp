@@ -45,15 +45,15 @@ void HazardHandler::init()
 		lazerDuration = 5;
 		lazerFrequency = 3;
 		lazerDistribution = new std::normal_distribution<GLfloat>(lazerFrequency, lazerFrequency/4.f);
-		nextLazerTime = lazerFrequency;
+		nextLazerTime = glfwGetTime() + lazerFrequency;
 		// rocket stats
-		rocketFrequency = 5;
-		rocketTimer = 10;
+		rocketFrequency = 10;
+		rocketTimer = 30;
 		rocketDuration = 1;
 		rocketVelocity = 100.f;
 		rocketAngularVelocity = .5f;
 		rocketDistribution = new std::normal_distribution<GLfloat>(rocketFrequency, rocketFrequency/4.f);
-		nextRocketTime = rocketFrequency;
+		nextRocketTime = glfwGetTime() + rocketFrequency;
 		seed = std::chrono::system_clock::now().time_since_epoch().count();
 		std::default_random_engine generator(seed);
 	}
@@ -138,7 +138,7 @@ void HazardHandler::normalGenerate(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
 	if (gameTime > nextLazerTime)
 	{
-		addLazer(glm::vec2(randomFloat(0, width), randomFloat(0, height)), (rand() % 2) * M_PI / 2);
+		addLazer(glm::vec2(randomFloat(0, width), randomFloat(0, height)), (randomFloat(0, M_PI / 2)));
 		nextLazerTime += (*lazerDistribution)(generator);
 	}
 	if (gameTime > nextRocketTime)

@@ -1,7 +1,9 @@
 #ifndef HAZARD_HANDLER_H
 #define HAZAR_DHANDLER_H
 
+#define GLEW_STATIC
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
 #include "Texture2D.h"

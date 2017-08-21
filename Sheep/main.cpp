@@ -58,7 +58,6 @@ int main(int argc, char *argv[])
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
-		// cout << Game::State << endl;
 
 		if (Game::State == GAME_START)
 		{

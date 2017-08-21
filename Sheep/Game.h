@@ -103,7 +103,7 @@ public:
 	// clear game state
 	static void clearGamestate();
 	// gamestate handling callbacks
-	static void cbStart() {State = GAME_PLAYING;};
+	static void cbStart() {InitGamestate(); State = GAME_PLAYING; };
 	static void cbSetSimple() { difficulty = SIMPLE; cout << "clicked simple" << endl; };
 	static void cbSetNormal() {difficulty = NORMAL;};
 	static void cbRestart() { State = GAME_START; clearGamestate(); }

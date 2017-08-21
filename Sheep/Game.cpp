@@ -49,9 +49,9 @@ GLint Game::incDebug;
 Game::~Game()
 {
 	clearGamestate();
-	delete spriteRenderer;
-	delete selectionBoxRenderer;
-	delete textRenderer;
+	if (spriteRenderer) delete spriteRenderer;
+	if (selectionBoxRenderer) delete selectionBoxRenderer;
+	if (textRenderer) delete textRenderer;
 }
 
 void Game::InitVariables(GLuint width, GLuint height)
@@ -148,14 +148,17 @@ void Game::InitGamestate()
 		ResourceManager::GetTexture("Lazer"), ResourceManager::GetTexture("LazerExploded"),
 		ResourceManager::GetTexture("Rocket"), ResourceManager::GetTexture("RocketExploded"), ResourceManager::GetTexture("RocketTarget"));
 	hazardHandler->init();
+	powerUpSpawnTime = glfwGetTime() + 10.f;
 	srand(time(NULL));
 
 	gameScore = 0;
+	gameTime = 0;
 	gamestateInitialized = true;
 }
 
 void Game::clearGamestate()
 {
+	if (selectionBox)
 	delete selectionBox;
 	for (unsigned int i = 0; i < units.size(); i++)
 		delete units[i];
@@ -163,6 +166,7 @@ void Game::clearGamestate()
 	for (unsigned int i = 0; i < powerUps.size(); i++)
 		delete powerUps[i];
 	powerUps.clear();
+	if (hazardHandler)
 	delete hazardHandler;
 	gamestateInitialized = false;
 }
@@ -403,6 +407,7 @@ void Game::RenderMenu(GLfloat dt)
 	}
 	else if (State == GAME_END)
 	{
+		RenderGame(dt);
 		TextUtil::RenderText(ResourceManager::GetShader("text"), "Final Score: " + std::to_string(gameScore),
 			.275 * Width, .4 * Height, 1.5f, glm::vec4(1.f));
 		endButton->render(*spriteRenderer, glm::vec2(3.f, 1.f), endButton->sampleFrame);

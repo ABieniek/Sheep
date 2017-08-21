@@ -63,7 +63,7 @@ void Rocket::move(GLfloat deltaTime)
 		rotation = rotation - angleChange;
 	}
 
-	glm::vec2 velocityVector = glm::vec2(cos(rotation), sin(rotation)) * velocity * deltaTime;
+	glm::vec2 velocityVector = glm::vec2(cos(rotation), sin(rotation)) * velocity * deltaTime / (1 + abs(angleDifference));
 	position += glm::vec2(velocityVector.x, -velocityVector.y);
 }
 
