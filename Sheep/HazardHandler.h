@@ -17,15 +17,14 @@
 #include <algorithm>
 #include <stdlib.h> // srand, rand
 #include <time.h> // time
+#include <random>
+#include <chrono>
 
 enum Difficulty
 {
-	DEBUG = 0,
+	DEBUG,
 	SIMPLE,
-	EASY,
-	MEDIUM,
-	HARD,
-	IMPOSSIBLE
+	NORMAL
 };
 
 class HazardHandler
@@ -36,15 +35,22 @@ public:
 	GLfloat width, height;
 	GLfloat gameTime = 0;
 	Difficulty difficulty;
+	// randomness
+	std::normal_distribution<GLfloat>* lazerDistribution;
+	std::normal_distribution<GLfloat>* rocketDistribution;
+	unsigned seed;
+	std::default_random_engine generator;
+	
 
 	// lazer stuff
 	GLfloat lazerTimer, lazerDuration;
+	GLfloat nextLazerTime;
 	Texture2D lazerSprite;
 	Texture2D lazerSPriteDetonated;
 	GLfloat lazerFrequency = -1;
-
 	// rocket stuff
 	GLfloat rocketTimer, rocketDuration, rocketVelocity, rocketAngularVelocity;
+	GLfloat nextRocketTime;
 	Texture2D rocketSprite;
 	Texture2D rocketSpriteDetonated;
 	Texture2D rocketSpriteTarget;
@@ -60,6 +66,7 @@ public:
 	// generating hazards
 	void generate(GLfloat deltaTime, vector<Unit*>& argUnits);
 	void simpleGenerate(GLfloat deltaTime, vector<Unit*>& argUnits);
+	void normalGenerate(GLfloat deltaTime, vector<Unit*>& argUnits);
 	void addLazer(glm::vec2 argPosition, GLfloat argAngle);
 	void addRocket(glm::vec2 argPosition, vector<Unit*>& argUnits);
 	GLfloat randomFloat(GLfloat min, GLfloat max);

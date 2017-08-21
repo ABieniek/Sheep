@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 
 	Game::InitVariables(SCREEN_WIDTH, SCREEN_HEIGHT);
 	Game::InitGraphics();
+	Game::InitMenu();
 
 	// DeltaTime variables
 	GLfloat deltaTime = 0.0f;
@@ -59,6 +60,7 @@ int main(int argc, char *argv[])
 		if (Game::State == GAME_START)
 		{
 			// initialization
+			Game::UpdateMenu(deltaTime);
 			Game::RenderMenu(deltaTime);
 		}
 		else if (Game::State == GAME_PLAYING)
@@ -74,7 +76,7 @@ int main(int argc, char *argv[])
 			// Manage user input
 			Game::ProcessInput(deltaTime);
 			// Update Game state
-			Game::Update(deltaTime);
+			Game::UpdateGame(deltaTime);
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			Game::RenderGame(deltaTime);
@@ -95,8 +97,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// When a user presses the escape key, we set the WindowShouldClose property to true, closing the application
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-		Game::State = GAME_PLAYING;
 	if (key >= 0 && key < 1024)
 	{
 		if (action == GLFW_PRESS)

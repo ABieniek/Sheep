@@ -77,6 +77,7 @@ public:
 	
 	// hazards & powerups
 	static HazardHandler* hazardHandler;
+	static Difficulty difficulty;
 	static vector<PowerUp*> powerUps;
 
 	// other stuff to draw
@@ -100,10 +101,13 @@ public:
 	// clear game state
 	static void clearGamestate();
 	// gamestate handling callbacks
-	static void cb_start();
+	static void cbStart() {State = GAME_PLAYING;};
+	static void cbSetSimple() { difficulty = SIMPLE; cout << "clicked simple" << endl; };
+	static void cbSetNormal() {difficulty = NORMAL;};
 	// GameLoop
 	static void ProcessInput(GLfloat dt);
-	static void Update(GLfloat dt);
+	static void UpdateGame(GLfloat dt);
+	static void UpdateMenu(GLfloat dt);
 	static void RenderGame(GLfloat dt);
 	static void RenderMenu(GLfloat dt);
 

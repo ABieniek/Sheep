@@ -38,6 +38,25 @@ void HazardHandler::init()
 		rocketVelocity = 80.f;
 		rocketAngularVelocity = .25f;
 	}
+	else if (difficulty == NORMAL)
+	{
+		// lazer stats
+		lazerTimer = 5;
+		lazerDuration = 5;
+		lazerFrequency = 3;
+		lazerDistribution = new std::normal_distribution<GLfloat>(lazerFrequency, lazerFrequency/4.f);
+		nextLazerTime = lazerFrequency;
+		// rocket stats
+		rocketFrequency = 5;
+		rocketTimer = 10;
+		rocketDuration = 1;
+		rocketVelocity = 100.f;
+		rocketAngularVelocity = .5f;
+		rocketDistribution = new std::normal_distribution<GLfloat>(rocketFrequency, rocketFrequency/4.f);
+		nextRocketTime = rocketFrequency;
+		seed = std::chrono::system_clock::now().time_since_epoch().count();
+		std::default_random_engine generator(seed);
+	}
 	else
 		cout << "difficulty not handled" << endl;
 }
@@ -96,15 +115,15 @@ void HazardHandler::updateRocketTargets(vector<Unit*>& argUnits)
 void HazardHandler::generate(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
 	if (difficulty == SIMPLE)
-	{
 		simpleGenerate(deltaTime, argUnits);
-	}
+	else if (difficulty = NORMAL)
+		normalGenerate(deltaTime, argUnits);
 	gameTime += deltaTime;
 }
 
 void HazardHandler::simpleGenerate(GLfloat deltaTime, vector<Unit*>& argUnits)
 {
-	// drop lazer every "frequency" seconds
+	// drop lazers and rockets every "frequency" seconds
 	if (differentTimeInterval(gameTime, gameTime + deltaTime, lazerFrequency)) 
 	{
 		addLazer(glm::vec2(randomFloat(0, width), randomFloat(0, height)), (rand() % 2) * M_PI / 2);
@@ -112,6 +131,20 @@ void HazardHandler::simpleGenerate(GLfloat deltaTime, vector<Unit*>& argUnits)
 	if (differentTimeInterval(gameTime, gameTime + deltaTime, rocketFrequency))
 	{
 		addRocket(glm::vec2(-50 + (rand() % 2)*(width + 50), height / 2), argUnits);
+	}
+}
+
+void HazardHandler::normalGenerate(GLfloat deltaTime, vector<Unit*>& argUnits)
+{
+	if (gameTime > nextLazerTime)
+	{
+		addLazer(glm::vec2(randomFloat(0, width), randomFloat(0, height)), (rand() % 2) * M_PI / 2);
+		nextLazerTime += (*lazerDistribution)(generator);
+	}
+	if (gameTime > nextRocketTime)
+	{
+		addRocket(glm::vec2(-50 + (rand() % 2)*(width + 50), height / 2), argUnits);
+		nextRocketTime += (*rocketDistribution)(generator);
 	}
 }
 

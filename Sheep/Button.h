@@ -14,7 +14,7 @@ enum ButtonState {
 class Button : public Drawable
 {
 public:
-	void(*callbackFunction);
+	void(*callbackFunction)();
 	GLboolean pressed;
 	Button(glm::vec2 argPosition, glm::vec2 argSize, Texture2D argSprite,
 		glm::vec4 argColor, GLfloat argRotation, GLboolean argDraw, void(*argCallback)());

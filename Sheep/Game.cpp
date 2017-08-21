@@ -33,6 +33,7 @@ vector<Unit*> Game::units;
 vector<Unit*> Game::selectedUnits;
 vector<Flock> Game::flocks;
 HazardHandler* Game::hazardHandler;
+Difficulty Game::difficulty;
 vector<PowerUp*> Game::powerUps;
 Drawable* Game::selectionBox;
 vector<Button*> Game::buttons;
@@ -42,9 +43,6 @@ SpriteRenderer* Game::textRenderer;
 GLfloat Game::gameTime;
 GLint Game::gameScore;
 GLint Game::incDebug;
-
-
-
 
 Game::~Game()
 {
@@ -62,6 +60,7 @@ void Game::InitVariables(GLuint width, GLuint height)
 	gameScore = 0.f;
 	incDebug = 0.f;
 	State = GAME_START;
+	difficulty = SIMPLE;
 }
 
 void Game::InitGraphics()
@@ -102,17 +101,19 @@ void Game::InitGraphics()
 	ResourceManager::LoadTexture("Textures/RocketTarget.png", GL_TRUE, "RocketTarget");
 	ResourceManager::LoadTexture("Textures/PowerUpLife.png", GL_TRUE, "Life");
 	// buttons
-	ResourceManager::LoadTexture("Textures/Buttons/Start.png", GL_TRUE, "startButton");
-	ResourceManager::LoadTexture("Textures/Buttons/ModeNormal.png", GL_TRUE, "modeButtonSimple");
-	ResourceManager::LoadTexture("Textures/Buttons/ModeNormal.png", GL_TRUE, "modeButtonSimple");
+	ResourceManager::LoadTexture("Textures/Buttons/StartButton.png", GL_TRUE, "startButton");
+	ResourceManager::LoadTexture("Textures/Buttons/RadioButton.png", GL_TRUE, "radioButton");
 }
 
 void Game::InitMenu()
 {
 	// start menu buttons
-	buttons.push_back(new Button(glm::vec2(.4 * Width, .3 * Height), glm::vec2(250.0, 100.0), 
-		ResourceManager::GetTexture("startButton"),	glm::vec4(1.0f), 0.0f, true, &(Game::cb_start)));
-
+	buttons.push_back(new Button(glm::vec2(.5 * Width, .5 * Height), glm::vec2(250.0, 100.0), 
+		ResourceManager::GetTexture("startButton"),	glm::vec4(1.0f), 0.0f, true, &(Game::cbStart)));
+	buttons.push_back(new Button(glm::vec2(.4 * Width, .7 * Height), glm::vec2(150.0, 100.0),
+		ResourceManager::GetTexture("radioButton"), glm::vec4(1.0f), 0.0f, true, &(Game::cbSetSimple)));
+	buttons.push_back(new Button(glm::vec2(.6 * Width, .7 * Height), glm::vec2(150.0, 100.0),
+		ResourceManager::GetTexture("radioButton"), glm::vec4(1.0f), 0.0f, true, &(Game::cbSetNormal)));
 	// end menu buttons
 }
 
@@ -138,7 +139,7 @@ void Game::InitGamestate()
 		ResourceManager::GetTexture("selectionBox"), glm::vec4(1.0, 1.0, .4, .25), 0.0, false);
 
 	// hazards - test lazer, for now
-	hazardHandler = new HazardHandler(SIMPLE, Width, Height,
+	hazardHandler = new HazardHandler(difficulty, Width, Height,
 		ResourceManager::GetTexture("Lazer"), ResourceManager::GetTexture("LazerExploded"),
 		ResourceManager::GetTexture("Rocket"), ResourceManager::GetTexture("RocketExploded"), ResourceManager::GetTexture("RocketTarget"));
 	hazardHandler->init();
@@ -160,13 +161,7 @@ void Game::clearGamestate()
 	gamestateInitialized = false;
 }
 
-void Game::cb_start()
-{
-	State = GAME_PLAYING;
-
-}
-
-void Game::Update(GLfloat dt)
+void Game::UpdateGame(GLfloat dt)
 {
 	// updating values in units
 	for (unsigned int i = 0; i < units.size(); i++)
@@ -228,8 +223,25 @@ void Game::Update(GLfloat dt)
 	// lose condition
 	// if (units.size() < 5)
 
-
 	gameTime += dt;
+}
+
+void Game::UpdateMenu(GLfloat dt)
+{
+	for (unsigned int i = 0; i < buttons.size(); i++)
+	{
+		if (buttons[i]->cursorOnButton(mXpos, mYpos))
+		{
+			if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_PRESS)
+			{
+				buttons[i]->callbackFunction();
+				buttons[i]->sampleFrame = BUTTON_PRESSED;
+			}
+			else buttons[i]->sampleFrame = BUTTON_HOVERED;
+		}
+		else
+			buttons[i]->sampleFrame = BUTTON_CLEAR;
+	}
 }
 
 void Game::ProcessInput(GLfloat dt)
@@ -358,5 +370,7 @@ void Game::RenderMenu(GLfloat dt)
 	spriteRenderer->DrawSprite(ResourceManager::GetTexture("background"),
 		glm::vec2(Width / 2, Height / 2), glm::vec2(Width, Height), 0.0f, glm::vec4(1.0f));
 	TextUtil::RenderText(ResourceManager::GetShader("text"), "Sheep",
-		.35 * Width, .75 * Height, 2.f, glm::vec4(1.f));
+		.275 * Width, .65 * Height, 3.f, glm::vec4(1.f));
+	for (unsigned int i = 0; i < buttons.size(); i++)
+		buttons[i]->render(*spriteRenderer, glm::vec2(3.f, 1.f), buttons[i]->sampleFrame);
 }
