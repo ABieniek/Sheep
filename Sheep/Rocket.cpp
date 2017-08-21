@@ -50,8 +50,8 @@ void Rocket::move(GLfloat deltaTime)
 	if (detonated) return;
 
 	GLfloat goalAngle = -atan2(destination.y - position.y, destination.x - position.x);
-	GLfloat angleChange = angularVelocity * deltaTime;
 	GLfloat angleDifference = AngleDiff(goalAngle, rotation);
+	GLfloat angleChange = (angularVelocity + abs(angleDifference)/2.f) * deltaTime;
 	// change angle clockwise
 	if (angleDifference < 0)
 	{

@@ -48,7 +48,7 @@ void HazardHandler::init()
 		nextLazerTime = glfwGetTime() + lazerFrequency;
 		// rocket stats
 		rocketFrequency = 10;
-		rocketTimer = 30;
+		rocketTimer = 15;
 		rocketDuration = 1;
 		rocketVelocity = 100.f;
 		rocketAngularVelocity = .5f;
