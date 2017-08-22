@@ -85,8 +85,7 @@ public:
 	static Drawable* selectionBox;
 
 	// menu stuff
-	static vector<Button*> buttons;
-	static Button* endButton;
+	static Button *buttonStart, *buttonSetSimple, *buttonSetNormal, *buttonEnd;
 
 	// renderers
 	static SpriteRenderer* spriteRenderer;
@@ -104,7 +103,7 @@ public:
 	static void clearGamestate();
 	// gamestate handling callbacks
 	static void cbStart() {InitGamestate(); State = GAME_PLAYING; };
-	static void cbSetSimple() { difficulty = SIMPLE; cout << "clicked simple" << endl; };
+	static void cbSetSimple() { difficulty = SIMPLE;};
 	static void cbSetNormal() {difficulty = NORMAL;};
 	static void cbRestart() { State = GAME_START; clearGamestate(); }
 	// GameLoop
