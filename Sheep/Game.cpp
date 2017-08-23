@@ -75,7 +75,7 @@ void Game::InitGraphics()
 
 	// Set render-specific controls
 	spriteRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
-	selectionBoxRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
+	selectionBoxRenderer = new SpriteRenderer(ResourceManager::GetShader("selectionBox"));
 	textRenderer = new SpriteRenderer(ResourceManager::GetShader("text"));
 
 	// initializing text rendering
