@@ -32,7 +32,6 @@
 #include "HazardHandler.h"
 #include "PowerUp.h"
 #include "Button.h"
-#include "InputHandler.h"
 
 
 // Represents the current state of the game
@@ -53,6 +52,24 @@ public:
 	static GLboolean gamestateInitialized;
 	static GLuint Width, Height;
 	
+	/// controls
+	// key
+	static GLboolean keys[1024];
+	static int scancode;
+	static int action;
+	static int mode;
+	// mouse position
+	static double mXpos;
+	static double mYpos;
+	// mouse button - this frame
+	static int mbButton;
+	static int mbAction;
+	static int mbMods;
+	// mouse button - last frame
+	static int mbButtonPrev;
+	static int mbActionPrev;
+	static int mbModsPrev;
+
 	// units
 	static vector<Unit*> units;
 	static vector<Unit*> selectedUnits;
