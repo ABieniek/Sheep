@@ -25,13 +25,13 @@ void Button::render(SpriteRenderer & renderer, glm::vec2 argSampleDivider, GLint
 			argSampleDivider, argSampleIndex, false, false);
 }
 
-void Button::process(GLfloat mXpos, GLfloat mYpos, GLint argButtonState, GLint argButtonStatePrev)
+void Button::process(GLfloat mXpos, GLfloat mYpos, GLint argButton, GLint argAction, GLint argButtonPrev, GLint argActionPrev)
 {
 	if (cursorOnButton(mXpos, mYpos))
 	{
-		if (argButtonState == GLFW_PRESS)
+		if (argButton == GLFW_MOUSE_BUTTON_LEFT && argAction == GLFW_PRESS)
 			sampleFrame = BUTTON_PRESSED;
-		else if (argButtonState == GLFW_RELEASE && argButtonStatePrev == GLFW_PRESS)
+		else if (argButton == GLFW_MOUSE_BUTTON_LEFT && argActionPrev != GLFW_RELEASE && argAction == GLFW_RELEASE)
 			callbackFunction();
 		else sampleFrame = BUTTON_HOVERED;
 	}

@@ -20,7 +20,7 @@ public:
 		glm::vec4 argColor, GLfloat argRotation, GLboolean argDraw, void(*argCallback)());
 	GLboolean cursorOnButton(GLfloat x, GLfloat y);
 	void render(SpriteRenderer& renderer, glm::vec2 argSampleDivider, GLint argSampleIndex);
-	void Button::process(GLfloat mXpos, GLfloat mYpos, GLint argButtonState, GLint argButtonStatePrev);
+	void Button::process(GLfloat mXpos, GLfloat mYpos, GLint argButton, GLint argAction, GLint argButtonPrev, GLint argActionPrev);
 };
 
 #endif
