@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
 
 	glfwSetKeyCallback(window, InputHandler::key_callback);
 	glfwSetCursorPosCallback(window, InputHandler::mouse_callback);
-	glfwSetMouseButtonCallback(window, InputHandler::mouse_button_callback);
 
 	// OpenGL configuration
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -45,7 +44,6 @@ int main(int argc, char *argv[])
 	Game::InitVariables(SCREEN_WIDTH, SCREEN_HEIGHT);
 	Game::InitGraphics();
 	Game::InitMenu();
-	// cout << Game::State << endl;
 
 	// DeltaTime variables
 	GLfloat deltaTime = 0.0f;
@@ -54,6 +52,7 @@ int main(int argc, char *argv[])
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
+		InputHandler::update(window);
 
 		if (Game::State == GAME_START)
 		{
@@ -84,7 +83,6 @@ int main(int argc, char *argv[])
 			Game::UpdateMenu(deltaTime);
 			Game::RenderMenu(deltaTime);
 		}
-
 		glfwSwapBuffers(window);
 	}
 

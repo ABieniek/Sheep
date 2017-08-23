@@ -261,7 +261,7 @@ void Game::ProcessInput(GLfloat dt)
 	{
 		selectionBox->size = glm::vec2(InputHandler::mXpos, InputHandler::mYpos) - selectionBox->position;
 	}
-	if (InputHandler::leftClickState == GLFW_RELEASE && InputHandler::leftClickStatePrev == GLFW_RELEASE)
+	if (InputHandler::leftClickState == GLFW_RELEASE && InputHandler::leftClickStatePrev == GLFW_PRESS)
 	{
 		// place second point of selection box - also, stop rendering it
 		selectionBox->size = glm::vec2(InputHandler::mXpos, InputHandler::mYpos) - selectionBox->position;
@@ -292,7 +292,7 @@ void Game::ProcessInput(GLfloat dt)
 			else
 			{
 				// if not holding shift, deselect
-				if (InputHandler::leftMod != GLFW_MOD_SHIFT)
+				if (InputHandler::mod != GLFW_MOD_SHIFT)
 					units[i]->deselect();
 			}
 		}

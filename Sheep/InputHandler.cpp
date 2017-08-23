@@ -12,9 +12,7 @@ GLint InputHandler::rightClickState;
 GLint InputHandler::leftClickStatePrev;
 GLint InputHandler::midClickStatePrev;
 GLint InputHandler::rightClickStatePrev;
-GLint InputHandler::leftMod;
-GLint InputHandler::midMod;
-GLint InputHandler::rightMod;
+GLint InputHandler::mod;
 GLfloat InputHandler::mXpos;
 GLfloat InputHandler::mYpos;
 
@@ -25,7 +23,17 @@ InputHandler::InputHandler()
 void InputHandler::init()
 {
 	leftClickState = midClickState = rightClickState = leftClickStatePrev = midClickStatePrev = rightClickStatePrev = GLFW_RELEASE;
-	leftMod = midMod = rightMod = 0;
+	mod = 0;
+}
+
+void InputHandler::update(GLFWwindow* window)
+{
+	leftClickStatePrev = leftClickState;
+	leftClickState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+	midClickStatePrev = midClickState;
+	midClickState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE);
+	rightClickStatePrev = rightClickState;
+	rightClickState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT);
 }
 
 void InputHandler::key_callback(GLFWwindow * window, int key, int scancode, int action, int mode)
@@ -50,23 +58,6 @@ void InputHandler::mouse_callback(GLFWwindow * window, double xpos, double ypos)
 
 void InputHandler::mouse_button_callback(GLFWwindow * window, int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT)
-	{
-		leftClickStatePrev = leftClickState;
-		leftClickState = action;
-		leftMod = mods;
-	}
-	else if (button == GLFW_MOUSE_BUTTON_MIDDLE)
-	{
-		midClickStatePrev = midClickState;
-		midClickState = action;
-		midMod = mods;
-	}
-	else if (button == GLFW_MOUSE_BUTTON_RIGHT)
-	{
-		rightClickStatePrev = rightClickState;
-		rightClickState = action;
-		rightMod = mods;
-	}
+	mod = mods;
 }
 
