@@ -32,6 +32,7 @@
 #include "HazardHandler.h"
 #include "PowerUp.h"
 #include "Button.h"
+#include "InputHandler.h"
 
 
 // Represents the current state of the game
