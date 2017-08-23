@@ -17,18 +17,6 @@ ISoundEngine* SoundEngine = createIrrKlangDevice();
 GameState Game::State;
 GLboolean Game::gamestateInitialized;
 GLuint Game::Width, Game::Height;
-GLboolean Game::keys[1024];
-int Game::scancode;
-int Game::action;
-int Game::mode;
-double Game::mXpos;
-double Game::mYpos;
-int Game::mbButton;
-int Game::mbAction;
-int Game::mbMods;
-int Game::mbButtonPrev;
-int Game::mbActionPrev;
-int Game::mbModsPrev;
 vector<Unit*> Game::units;
 vector<Unit*> Game::selectedUnits;
 vector<Flock> Game::flocks;
@@ -241,42 +229,43 @@ void Game::UpdateGame(GLfloat dt)
 
 void Game::UpdateMenu(GLfloat dt)
 {
+	cout << cout << leftClickState;
 	if (State == GAME_START)
 	{
-		buttonStart->process(mXpos, mYpos, mbButton, mbAction, mbButtonPrev, mbActionPrev);
-		buttonSetSimple->process(mXpos, mYpos, mbButton, mbAction, mbButtonPrev, mbActionPrev);
-		buttonSetNormal->process(mXpos, mYpos, mbButton, mbAction, mbButtonPrev, mbActionPrev);
+		buttonStart->process(InputHandler::mXpos, InputHandler::mYpos, 
+			InputHandler::leftClickState, InputHandler::leftClickStatePrev);
+		buttonSetSimple->process(InputHandler::mXpos, InputHandler::mYpos,
+			InputHandler::leftClickState, InputHandler::leftClickStatePrev);
+		buttonSetNormal->process(InputHandler::mXpos, InputHandler::mYpos,
+			InputHandler::leftClickState, InputHandler::leftClickStatePrev);
 		if (difficulty == SIMPLE)
 			buttonSetSimple->sampleFrame = BUTTON_PRESSED;
 		else if (difficulty == NORMAL)
 			buttonSetNormal->sampleFrame = BUTTON_PRESSED;
 	}
 	else if (State == GAME_END)
-		buttonEnd->process(mXpos, mYpos, mbButton, mbAction, mbButtonPrev, mbActionPrev);
-	// update previous frame's input
-	mbButtonPrev = mbButton;
-	mbActionPrev = mbAction;
-	mbModsPrev = mbMods;
+		buttonEnd->process(InputHandler::mXpos, InputHandler::mYpos,
+			InputHandler::leftClickState, InputHandler::leftClickStatePrev);
 }
 
 void Game::ProcessInput(GLfloat dt)
 {
 	// selection input
-	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_PRESS && mbActionPrev == GLFW_RELEASE)
+	if (InputHandler::leftClickState == GLFW_PRESS && InputHandler::leftClickStatePrev == GLFW_RELEASE)
 	{
 		// place first point of selection box
-		selectionBox->position = glm::vec2(mXpos, mYpos);
+		selectionBox->position = glm::vec2(InputHandler::mXpos, InputHandler::mYpos);
 		selectionBox->size = glm::vec2(0.0);
 		selectionBox->bDraw = true;
 	}
-	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_PRESS && mbButtonPrev == GLFW_MOUSE_BUTTON_LEFT && mbActionPrev == GLFW_PRESS)
+	if (InputHandler::leftClickState == GLFW_PRESS && InputHandler::leftClickStatePrev == GLFW_PRESS)
 	{
-		selectionBox->size = glm::vec2(mXpos, mYpos) - selectionBox->position;
+		selectionBox->size = glm::vec2(InputHandler::mXpos, InputHandler::mYpos) - selectionBox->position;
 	}
-	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_RELEASE && mbButtonPrev == GLFW_MOUSE_BUTTON_LEFT && mbActionPrev != GLFW_RELEASE)
+	if (InputHandler::leftClickState == GLFW_RELEASE && InputHandler::leftClickStatePrev == GLFW_RELEASE)
 	{
 		// place second point of selection box - also, stop rendering it
-		selectionBox->size = glm::vec2(mXpos, mYpos) - selectionBox->position;
+		selectionBox->size = glm::vec2(InputHandler::mXpos, InputHandler::mYpos) - selectionBox->position;
 		selectionBox->bDraw = false;
 		// for convenience of calculation, I'm gonna force the starting position to be the top-left
 		if (selectionBox->size.x < 0)
@@ -304,13 +293,13 @@ void Game::ProcessInput(GLfloat dt)
 			else
 			{
 				// if not holding shift, deselect
-				if (mbMods != GLFW_MOD_SHIFT)
+				if (InputHandler::leftMod != GLFW_MOD_SHIFT)
 					units[i]->deselect();
 			}
 		}
 	}
 	// movement input
-	else if (mbButton == GLFW_MOUSE_BUTTON_RIGHT && mbAction == GLFW_PRESS && mbActionPrev == GLFW_RELEASE)
+	else if (InputHandler::rightClickState == GLFW_PRESS && InputHandler::rightClickStatePrev == GLFW_RELEASE)
 	{
 		// only consider units that are selected in the flock stuff
 		selectedUnits.clear();
@@ -324,10 +313,10 @@ void Game::ProcessInput(GLfloat dt)
 
 		for (unsigned int i = 0; i < flocks.size(); i++)
 		{
-			flocks[i].setDestination(glm::vec2(mXpos, mYpos));
+			flocks[i].setDestination(glm::vec2(InputHandler::mXpos, InputHandler::mYpos));
 		}
 	}
-	if (keys[GLFW_KEY_S])
+	if (InputHandler::keys[GLFW_KEY_S])
 	{
 		for (unsigned int i = 0; i < units.size(); i++)
 		{
@@ -335,10 +324,6 @@ void Game::ProcessInput(GLfloat dt)
 				units[i]->stop();
 		}
 	}
-	// update previous frame stuff
-	mbButtonPrev = mbButton;
-	mbActionPrev = mbAction;
-	mbModsPrev = mbMods;
 }
 
 void Game::RenderGame(GLfloat dt)

@@ -5,6 +5,7 @@
 
 #include "Game.h"
 #include "ResourceManager.h"
+#include "InputHandler.h"
 
 /*#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -14,11 +15,6 @@ using namespace std;
 
 const GLuint SCREEN_WIDTH = 800;
 const GLuint SCREEN_HEIGHT = 600;
-
-// GLFW callback function declarations
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 int main(int argc, char *argv[]) 
 {
@@ -36,9 +32,9 @@ int main(int argc, char *argv[])
 	if (glGetError())
 		exit(glGetError());
 
-	glfwSetKeyCallback(window, key_callback);
-	glfwSetCursorPosCallback(window, mouse_callback);
-	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	glfwSetKeyCallback(window, InputHandler::key_callback);
+	glfwSetCursorPosCallback(window, InputHandler::mouse_callback);
+	glfwSetMouseButtonCallback(window, InputHandler::mouse_button_callback);
 
 	// OpenGL configuration
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -97,31 +93,4 @@ int main(int argc, char *argv[])
 
 	glfwTerminate();
 	return 0;
-}
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-	// When a user presses the escape key, we set the WindowShouldClose property to true, closing the application
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
-	if (key >= 0 && key < 1024)
-	{
-		if (action == GLFW_PRESS)
-			Game::keys[key] = GL_TRUE;
-		else if (action == GLFW_RELEASE)
-			Game::keys[key] = GL_FALSE;
-	}
-}
-
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-	Game::mXpos = xpos;
-	Game::mYpos = ypos;
-}
-
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-{
-	Game::mbButton = button;
-	Game::mbAction = action;
-	Game::mbMods = mods;
 }
