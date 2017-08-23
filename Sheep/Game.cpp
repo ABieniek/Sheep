@@ -66,7 +66,7 @@ void Game::InitVariables(GLuint width, GLuint height)
 	State = GAME_START;
 	difficulty = SIMPLE;
 }
-
+ 
 void Game::InitGraphics()
 {
 	// Load shaders
