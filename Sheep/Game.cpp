@@ -222,7 +222,7 @@ void Game::UpdateGame(GLfloat dt)
 		glm::vec2 randomLocation = glm::vec2((100 + (rand() % (Width - 50)))*1.f, (100 + (rand() % (Height - 50))*1.f));
 		powerUps.push_back(new PowerUp(randomLocation, glm::vec2(50, 50), ResourceManager::GetTexture("Life"), glm::vec4(1.0f),
 			GL_TRUE, 100));
-			powerUpSpawnTime += powerUpSpawnTime + 1.f;
+		powerUpSpawnTime += powerUpSpawnTime + 1.f;
 	}
 	// killing units - must occur at the end of updating because
 	// array size and such get modified when a unit is killed
@@ -234,9 +234,7 @@ void Game::UpdateGame(GLfloat dt)
 
 	// lose condition
 	if (units.size() < 5)
-	{
 		State = GAME_END;
-	}
 
 	gameTime += dt;
 }
@@ -254,9 +252,7 @@ void Game::UpdateMenu(GLfloat dt)
 			buttonSetNormal->sampleFrame = BUTTON_PRESSED;
 	}
 	else if (State == GAME_END)
-	{
 		buttonEnd->process(mXpos, mYpos, mbButton, mbAction, mbButtonPrev, mbActionPrev);
-	}
 	// update previous frame's input
 	mbButtonPrev = mbButton;
 	mbActionPrev = mbAction;
@@ -399,7 +395,7 @@ void Game::RenderMenu(GLfloat dt)
 		TextUtil::RenderText(ResourceManager::GetShader("text"), "Final Score:",
 			.3 * Width, .4 * Height, 1.5f, glm::vec4(0.f, 0.f, 0.f, 1.f));
 		TextUtil::RenderText(ResourceManager::GetShader("text"), std::to_string(gameScore),
-			.4 * Width, .325 * Height, 1.5f, glm::vec4(0.f, 0.f, 0.f, 1.f));
+			.4 * Width, .32 * Height, 1.5f, glm::vec4(0.f, 0.f, 0.f, 1.f));
 		buttonEnd->render(*spriteRenderer, glm::vec2(3.f, 1.f), buttonEnd->sampleFrame);
 	}
 }
