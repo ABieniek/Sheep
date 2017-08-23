@@ -47,7 +47,7 @@ void HazardHandler::init()
 		lazerDistribution = new std::normal_distribution<GLfloat>(lazerFrequency, lazerFrequency/4.f);
 		nextLazerTime = glfwGetTime() + lazerFrequency;
 		// rocket stats
-		rocketFrequency = 10;
+		rocketFrequency = 15;
 		rocketTimer = 15;
 		rocketDuration = 1;
 		rocketVelocity = 100.f;

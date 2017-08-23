@@ -21,3 +21,37 @@ void Drawable::draw(SpriteRenderer & renderer, glm::vec2 argSampleDivider, GLint
 		renderer.DrawSprite(this->sprite, this->position, this->size, this->rotation, this->color, 
 			argSampleDivider, argSampleIndex, false, false);
 }
+
+void Drawable::drawTopLeft(SpriteRenderer & renderer)
+{
+	bool yNeg = false, xNeg = false;
+	if (size.x < 0)
+	{
+		xNeg = true;
+		size.x *= -1.f;
+		position.x -= size.x;
+	}
+	if (size.y < 0)
+	{
+		yNeg = true;
+		size.y *= -1.f;
+		position.y -= size.y;
+	}
+
+	position.x += size.x / 2;
+	position.y += size.y / 2;
+	draw(renderer);
+	position.x -= size.x / 2;
+	position.y -= size.y / 2;
+
+	if (xNeg)
+	{
+		size.x *= -1.f;
+		position.x -= size.x;
+	}
+	if (yNeg)
+	{
+		size.y *= -1.f;
+		position.y -= size.y;
+	}
+}

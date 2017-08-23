@@ -274,11 +274,11 @@ void Game::ProcessInput(GLfloat dt)
 		selectionBox->size = glm::vec2(0.0);
 		selectionBox->bDraw = true;
 	}
-	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_PRESS && mbActionPrev == GLFW_PRESS)
+	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_PRESS && mbButtonPrev == GLFW_MOUSE_BUTTON_LEFT && mbActionPrev == GLFW_PRESS)
 	{
 		selectionBox->size = glm::vec2(mXpos, mYpos) - selectionBox->position;
 	}
-	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbActionPrev != GLFW_RELEASE && mbAction == GLFW_RELEASE)
+	if (mbButton == GLFW_MOUSE_BUTTON_LEFT && mbAction == GLFW_RELEASE && mbButtonPrev == GLFW_MOUSE_BUTTON_LEFT && mbActionPrev != GLFW_RELEASE)
 	{
 		// place second point of selection box - also, stop rendering it
 		selectionBox->size = glm::vec2(mXpos, mYpos) - selectionBox->position;
@@ -370,14 +370,7 @@ void Game::RenderGame(GLfloat dt)
 	}
 	// draw rockets on top of units
 	hazardHandler->drawRockets(*spriteRenderer);
-	// draw selection box - low alpha value, so I can draw it over stuff
-	// now that I'm rendering from the center of objects, rendering the selection box will probably need to get hacky
-	// but this is a one-time thing because I only need one of these
-	selectionBox->position.x += selectionBox->size.x / 2;
-	selectionBox->position.y += selectionBox->size.y / 2;
-	selectionBox->draw(*selectionBoxRenderer);
-	selectionBox->position.x -= selectionBox->size.x / 2;
-	selectionBox->position.y -= selectionBox->size.y / 2;
+	selectionBox->drawTopLeft(*selectionBoxRenderer);
 
 	// rendering text test
 	TextUtil::RenderText(ResourceManager::GetShader("text"), "Score: " + std::to_string(gameScore),

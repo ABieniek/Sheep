@@ -25,6 +25,7 @@ public:
 	Drawable(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec4 color, GLfloat argRotation, GLboolean argDraw);
 	virtual void draw(SpriteRenderer &renderer);
 	virtual void draw(SpriteRenderer& renderer, glm::vec2 argSampleDivider, GLint argSampleIndex);
+	virtual void drawTopLeft(SpriteRenderer& renderer);
 };
 
 #endif
