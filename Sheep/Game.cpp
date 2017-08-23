@@ -229,7 +229,6 @@ void Game::UpdateGame(GLfloat dt)
 
 void Game::UpdateMenu(GLfloat dt)
 {
-	cout << cout << leftClickState;
 	if (State == GAME_START)
 	{
 		buttonStart->process(InputHandler::mXpos, InputHandler::mYpos, 
