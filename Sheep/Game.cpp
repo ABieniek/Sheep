@@ -222,7 +222,6 @@ void Game::UpdateGame(GLfloat dt)
 		glm::vec2 randomLocation = glm::vec2((100 + (rand() % (Width - 50)))*1.f, (100 + (rand() % (Height - 50))*1.f));
 		powerUps.push_back(new PowerUp(randomLocation, glm::vec2(50, 50), ResourceManager::GetTexture("Life"), glm::vec4(1.0f),
 			GL_TRUE, 100));
-		if (difficulty == NORMAL)
 			powerUpSpawnTime += powerUpSpawnTime + 1.f;
 	}
 	// killing units - must occur at the end of updating because
